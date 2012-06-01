@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<classes>
+  <class id="0" name="Human Fighter" icon="0" />
+  <class id="1" name="Warrior" icon="0" />
+  <class id="2" name="Gladiator" icon="2" />
+  <class id="3" name="Warlord" icon="2" />
+  <class id="4" name="Human Knight" icon="0" />
+  <class id="5" name="Paladin" icon="4" />
+  <class id="6" name="Dark Avenger" icon="4" />
+  <class id="7" name="Rogue" icon="2" />
+  <class id="8" name="Treasure Hunter" icon="2" />
+  <class id="9" name="Hawkeye" icon="3" />
+  <class id="10" name="Human Mystic" icon="1" />
+  <class id="11" name="Human Wizard" icon="1" />
+  <class id="12" name="Sorceror" icon="6" />
+  <class id="13" name="Necromancer" icon="6" />
+  <class id="14" name="Warlock" icon="8" />
+  <class id="15" name="Cleric" icon="2" />
+  <class id="16" name="Bishop" icon="7" />
+  <class id="17" name="Prophet" icon="7" />
+  <class id="18" name="Elven Fighter" icon="1" />
+  <class id="19" name="Elven Knight" icon="0" />
+  <class id="20" name="Temple Knight" icon="4" />
+  <class id="21" name="Swordsinger" icon="5" />
+  <class id="22" name="Elven Scout" icon="0" />
+  <class id="23" name="Plainswalker" icon="2" />
+  <class id="24" name="Silver Ranger" icon="3" />
+  <class id="25" name="Elven Mystic" icon="1" />
+  <class id="26" name="Elven Wizard" icon="1" />
+  <class id="27" name="Spellsinger" icon="6" />
+  <class id="28" name="Elemental Summoner" icon="8" />
+  <class id="29" name="Elven Oracle" icon="1" />
+  <class id="30" name="Elven Elder" icon="7" />
+  <class id="31" name="Dark Fighter" icon="0" />
+  <class id="32" name="Palus Knight" icon="0" />
+  <class id="33" name="Shillien Knight" icon="4" />
+  <class id="34" name="Bladedancer" icon="5" />
+  <class id="35" name="Assassin" icon="1" />
+  <class id="36" name="Abyss Walker" icon="2" />
+  <class id="37" name="Phantom Ranger" icon="3" />
+  <class id="38" name="Dark Elven Mystic" icon="1" />
+  <class id="39" name="Dark Elven Wizard" icon="1" />
+  <class id="40" name="Spellhowler" icon="6" />
+  <class id="41" name="Phantom Summoner" icon="8" />
+  <class id="42" name="Shillien Oracle" icon="1" />
+  <class id="43" name="Shillien Elder" icon="7" />
+  <class id="44" name="Orc Fighter" icon="0" />
+  <class id="45" name="Orc Raider" icon="0" />
+  <class id="46" name="Destroyer" icon="2" />
+  <class id="47" name="Orc Monk" icon="0" />
+  <class id="48" name="Tyrant" icon="2" />
+  <class id="49" name="Orc Mystic" icon="1" />
+  <class id="50" name="Orc Shaman" icon="1" />
+  <class id="51" name="Overlord" icon="7" />
+  <class id="52" name="Warcryer" icon="7" />
+  <class id="53" name="Dwarven Fighter" icon="0" />
+  <class id="54" name="Dwarven Scavenger" icon="0" />
+  <class id="55" name="Bounty Hunter" icon="2" />
+  <class id="56" name="Dwarven Artisan" icon="0" />
+  <class id="57" name="Warsmith" icon="2" />
+  <class id="88" name="Duelist" icon="9" />
+  <class id="89" name="DreadNought" icon="9" />
+  <class id="90" name="Phoenix Knight" icon="11" />
+  <class id="91" name="Hell Knight" icon="11" />
+  <class id="92" name="Sagittarius" icon="10" />
+  <class id="93" name="Adventurer" icon="9" />
+  <class id="94" name="Archmage" icon="13" />
+  <class id="95" name="Soultaker" icon="13" />
+  <class id="96" name="Arcana Lord" icon="15" />
+  <class id="97" name="Cardinal" icon="14" />
+  <class id="98" name="Hierophant" icon="14" />
+  <class id="99" name="Eva Templar" icon="11" />
+  <class id="100" name="Sword Muse" icon="12" />
+  <class id="101" name="Wind Rider" icon="9" />
+  <class id="102" name="Moonlight Sentinel" icon="10" />
+  <class id="103" name="Mystic Muse" icon="13" />
+  <class id="104" name="Elemental Master" icon="15" />
+  <class id="105" name="Evas Saint" icon="14" />
+  <class id="106" name="Shillien Templar" icon="11" />
+  <class id="107" name="Spectral Dancer" icon="12" />
+  <class id="108" name="Ghost Hunter" icon="9" />
+  <class id="109" name="Ghost Sentinel" icon="10" />
+  <class id="110" name="Storm Screamer" icon="13" />
+  <class id="111" name="Spectral Master" icon="15" />
+  <class id="112" name="Shillien Saint" icon="16" />
+  <class id="113" name="Titan" icon="9" />
+  <class id="114" name="Grand Khauatari" icon="9" />
+  <class id="115" name="Dominator" icon="14" />
+  <class id="116" name="Doomcryer" icon="14" />
+  <class id="117" name="Fortune Seeker" icon="9" />
+  <class id="118" name="Maestro" icon="9" />
+  <class id="123" name="Kamael Soldier M" icon="0" />
+  <class id="124" name="Kamael Soldier F" icon="0" />
+  <class id="125" name="Trooper" icon="0" />
+  <class id="126" name="Warder" icon="0" />
+  <class id="127" name="Berserker" icon="2" />
+  <class id="128" name="Male Soulbreaker" icon="2" />
+  <class id="129" name="Female Souldbreaker" icon="2" />
+  <class id="130" name="Arbalester" icon="10" />
+  <class id="131" name="Doombringer" icon="9" />
+  <class id="132" name="Male Soulhound" icon="9" />
+  <class id="133" name="Female Soulhound" icon="9" />
+  <class id="134" name="Trickster" icon="10" />
+  <class id="135" name="Inspector" icon="2" />
+  <class id="136" name="Judicator" icon="9" />
+  <class id="139" name="Сигель" icon="18" />
+  <class id="140" name="Тир" icon="16" />
+  <class id="141" name="Одал" icon="16" />
+  <class id="142" name="Эур" icon="17" />
+  <class id="143" name="Фео" icon="20" />
+  <class id="144" name="Ис" icon="19" />
+  <class id="145" name="Веньо" icon="22" />
+  <class id="146" name="Альгиза" icon="21" />
+</classes>

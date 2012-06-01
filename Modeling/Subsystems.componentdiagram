@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<componentModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="ae85f791-abab-44aa-b3d7-f7bed65a83b5" name="Subsystems" linkedPackageId="cb69b06a-c044-46e3-8887-ea898cc3177d" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner">
+  <packagedElements>
+    <componentModelHasComponents>
+      <component Id="ec3e813f-e9d9-4c92-b8ce-5b262aa58043" name="User Interface" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="77748ed5-7a08-42f3-ab40-2d9682325ba2" />
+        <suppliersInternal>
+          <dependency Id="8f388214-06fa-4b90-9e8d-d03c01afe140">
+            <componentMoniker Id="ea350aca-26f2-4ff5-8392-4d921dd25124" LastKnownName="Graphic Operations" />
+            <elementDefinition Id="a4129959-cf57-463c-8d67-1c1fe0c3021f" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </componentModelHasComponents>
+    <componentModelHasComponents>
+      <component Id="ea350aca-26f2-4ff5-8392-4d921dd25124" name="Graphic Operations" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e899dce1-7d86-40d6-a73b-4c05be2e2792" />
+      </component>
+    </componentModelHasComponents>
+    <componentModelHasComponents>
+      <component Id="18594e5e-5edc-4422-b1bd-47cf4875ae7c" name="Saving Settings" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="83e0ab90-91a8-45a5-888a-b03728c2d55c" />
+      </component>
+    </componentModelHasComponents>
+    <componentModelHasComponents>
+      <component Id="c2e79da7-de17-4df8-a226-390f62156881" name="Inner Logic" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="944a049b-a861-46b2-8458-446a2d51261e" />
+        <suppliersInternal>
+          <dependency Id="c978d04d-e6c8-45fd-8496-3094843e166e">
+            <componentMoniker Id="ec3e813f-e9d9-4c92-b8ce-5b262aa58043" LastKnownName="User Interface" />
+            <elementDefinition Id="8da36ef3-e309-401a-8d64-1eed5324014b" />
+          </dependency>
+          <dependency Id="901df9a7-37b3-4731-8ec7-b4a0e1408a82">
+            <componentMoniker Id="18594e5e-5edc-4422-b1bd-47cf4875ae7c" LastKnownName="Saving Settings" />
+            <elementDefinition Id="c4a71fae-cb07-4ea5-8328-f528d0cc24cc" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </componentModelHasComponents>
+    <componentModelHasComponents>
+      <component Id="9f6a2280-d036-40a8-87d2-76bf55b39c4d" name="Data Translator" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="23e4f556-68a3-48c7-9645-feb2387bf902" />
+        <suppliersInternal>
+          <dependency Id="a4371993-8df0-48ac-81e4-05d4c1c50c87">
+            <componentMoniker Id="c2e79da7-de17-4df8-a226-390f62156881" LastKnownName="Inner Logic" />
+            <elementDefinition Id="5dc714ed-ccc7-4d93-8dfc-ccd3611dd18b" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </componentModelHasComponents>
+  </packagedElements>
+  <package Id="cb69b06a-c044-46e3-8887-ea898cc3177d" name="Modeling">
+    <elementDefinition Id="b0011459-2204-4167-9dbc-6208a808611b" />
+    <profileInstances>
+      <packageHasProfileInstances Id="28d7bc2c-4447-4436-b79d-f0b200147b60">
+        <profileInstance Id="dabce856-e9d1-4a0c-9532-49cb8e408941" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="1a235871-5771-41fd-9581-eed24f4fb729">
+        <profileInstance Id="65a6fa78-c451-4e8b-9e76-2d703553d0ec" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+    </profileInstances>
+  </package>
+</componentModel>
