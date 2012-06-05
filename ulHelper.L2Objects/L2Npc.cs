@@ -10,6 +10,10 @@ namespace ulHelper.L2Objects
     {
         public int NpcID { get; set; }
 
+        public L2Npc()
+        {
+        }
+
         public L2Npc(NpcInfo pck)
         {
             Update(pck);

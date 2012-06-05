@@ -55,6 +55,9 @@
     <Compile Include="ClientPackets\3A_Appearing.cs" />
     <Compile Include="ClientPackets\1F_Action.cs" />
     <Compile Include="ClientPackets\23_ReqBypassToServer.cs" />
+    <Compile Include="ClientPackets\0F_MoveBackwardToLocation.cs" />
+    <Compile Include="ClientPackets\74_SendBypassBuildCmd.cs" />
+    <Compile Include="ClientPackets\B3_RequestUserCommand.cs" />
     <Compile Include="ClientPackets\D09D.cs" />
     <Compile Include="ClientPackets\D0A0.cs" />
     <Compile Include="ClientPackets\17_RequestDropItem.cs" />
@@ -71,6 +74,7 @@
     <Compile Include="ServerPackets\18_StatusUpdate.cs" />
     <Compile Include="ServerPackets\11_ItemList.cs" />
     <Compile Include="ServerPackets\19_NpcHtmlMessage.cs" />
+    <Compile Include="ServerPackets\62_SystemMessage.cs" />
     <Compile Include="ServerPackets\D0_MultiSellList.cs" />
     <Compile Include="ServerPackets\FEF6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

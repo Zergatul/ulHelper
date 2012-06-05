@@ -1,0 +1,233 @@
+menu_select?ask=-503&reply=100 // открыть диалог вставки ЛСов
+
+астрид руна:
+
+
+450 - viewed from
+500 // хуйня за реагенты
+501
+...
+506 // ивент медаль магаз
+507 // ц пухи за коинты
+508 // ц шмот за коинты
+509 // ц бижа за коинты
+510 // магаз за небулитовую сферу
+511 // ресы за счет ясона хейна
+512 // рецы а пух за коинты
+513 // старый олимп
+514 // ресы
+515 // ресы
+516 // поплавки
+517 // пруфы за рыбу
+518 // сое за алмазы
+519 // хуйня
+...
+526 // хуйня
+menu_select?ask=-303&reply=528 // нубо пухи нг
+menu_select?ask=-303&reply=529 // маг сняряжение
+menu_select?ask=-303&reply=533 // хуйня за рб итемы
+...
+menu_select?ask=-303&reply=542 // с,б арм, трансы за рб итемы
+menu_select?ask=-303&reply=543 // ц шлемы за рб итемы
+menu_select?ask=-303&reply=544 // а грейд пухи за рб итемы
+menu_select?ask=-303&reply=545 // а грейд армор за рб итемы
+menu_select?ask=-303&reply=546 // хилки соски точки за манор
+menu_select?ask=-303&reply=547 // хилки соски точки за манор
+menu_select?ask=-303&reply=548 // коробка путешественника
+menu_select?ask=-303&reply=550 // хуевый магаз с хилками сое
+menu_select?ask=-303&reply=551 // апелла
+menu_select?ask=-303&reply=565 // са в гиране
+menu_select?ask=-303&reply=566 // контрабандист мамон
+menu_select?ask=-303&reply=581 // шедов пухи
+menu_select?ask=-303&reply=599 // феерерки
+menu_select?ask=-303&reply=602 // итемы с рб странный магаз
+menu_select?ask=-303&reply=603 // шедов пухи
+menu_select?ask=-303&reply=604 // шедов пухи
+menu_select?ask=-303&reply=605 // шедов пухи
+menu_select?ask=-303&reply=606 // диадемы за эполеты
+menu_select?ask=-303&reply=608 // зелье аттр
+menu_select?ask=-303&reply=609 // рубахи
+menu_select?ask=-303&reply=610 // браслеты
+menu_select?ask=-303&reply=611 // парнас магаз с дино
+menu_select?ask=-303&reply=612 // эликсир караванщика
+menu_select?ask=-303&reply=613 // олимп магаз с красками
+menu_select?ask=-303&reply=614 // магаз у торговца под крепами
+menu_select?ask=-303&reply=615 // болты на стрелы
+menu_select?ask=-303&reply=618 // ебанутый магаз с рецами и точками за хуету
+menu_select?ask=-303&reply=619 // обмен кристалов, руды
+menu_select?ask=-303&reply=620 // какойто д грейд странный шмот
+menu_select?ask=-303&reply=621 // ониксовый зверь
+menu_select?ask=-303&reply=626 // магаз какой то странный
+menu_select?ask=-303&reply=631 // заточки
+menu_select?ask=-303&reply=632 // дуалки
+menu_select?ask=-303&reply=633 // моар дуалки
+menu_select?ask=-303&reply=640 // гавно за славу
+menu_select?ask=-303&reply=641 // лсы в бижу
+menu_select?ask=-303&reply=642 // награды за каму
+menu_select?ask=-303&reply=643 // магазин острова грез
+menu_select?ask=-303&reply=646 // магазин с кецеруса
+menu_select?ask=-303&reply=647 // магазин с SoI
+menu_select?ask=-303&reply=648 // магазин с кецеруса 2
+menu_select?ask=-303&reply=650 // распечатка плащей
+menu_select?ask=-303&reply=651 // глудио ТВ
+menu_select?ask=-303&reply=652 // дион ТВ
+menu_select?ask=-303&reply=653 // гиран ТВ
+menu_select?ask=-303&reply=654 // орен ТВ
+menu_select?ask=-303&reply=655 // аден ТВ
+menu_select?ask=-303&reply=656 // хейн ТВ
+menu_select?ask=-303&reply=657 // гдд ТВ
+menu_select?ask=-303&reply=658 // руна ТВ
+menu_select?ask=-303&reply=659 // штт ТВ
+menu_select?ask=-303&reply=660 // глудио тв - говно
+...
+menu_select?ask=-303&reply=668 // штт тв - говно
+menu_select?ask=-303&reply=669 // кристалы за брилиантит
+menu_select?ask=-303&reply=670 // дуалы Р+
+menu_select?ask=-303&reply=676 // обмен плащей
+menu_select?ask=-303&reply=677 // глудио тв - говно2
+...
+menu_select?ask=-303&reply=685 // штт тв - говно2
+menu_select?ask=-303&reply=686 // грудио тв - говно3
+...
+menu_select?ask=-303&reply=694 // грудио тв - говно3
+menu_select?ask=-303&reply=698 // SoI 2
+menu_select?ask=-303&reply=707 // магазин за лепестки
+menu_select?ask=-303&reply=708 // магазин с сосками
+menu_select?ask=-303&reply=709 // магазин с нектаром
+menu_select?ask=-303&reply=713 // магазин с рецами ресов
+menu_select?ask=-303&reply=714 // книги 81-83 за знаки рассвета
+menu_select?ask=-303&reply=715 // тои бижа
+menu_select?ask=-303&reply=717 // магаз после 1 профы
+menu_select?ask=-303&reply=718 // магаз после 2 профы
+menu_select?ask=-303&reply=719 // краски ГОД
+menu_select?ask=-303&reply=720 // магаз за печати верности
+menu_select?ask=-303&reply=721 // магаз за печати обета
+menu_select?ask=-303&reply=722 // магаз за печати искренности
+menu_select?ask=-303&reply=723 // магаз за печати воли
+menu_select?ask=-303&reply=727 // талики за печать верности
+menu_select?ask=-303&reply=728 // талики за печаль обета
+menu_select?ask=-303&reply=729 // талики за печать искренности
+menu_select?ask=-303&reply=730 // талики за печать воли
+menu_select?ask=-303&reply=731 // талики за печать верности
+menu_select?ask=-303&reply=732 // талики за печаль обета
+menu_select?ask=-303&reply=733 // талики за печать искренности
+menu_select?ask=-303&reply=734 // талики за печать воли
+// талики за верность
+menu_select?ask=-303&reply=735 // спецталики защита щитом
+menu_select?ask=-303&reply=736 // спецталик энергия
+menu_select?ask=-303&reply=737 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=738 // спецталик дистанция
+menu_select?ask=-303&reply=739 // спецталик кансел
+menu_select?ask=-303&reply=740 // спецталик мп кост
+menu_select?ask=-303&reply=741 // копия
+menu_select?ask=-303&reply=742 // спецталик хил
+// талики за обет
+menu_select?ask=-303&reply=743 // спецталики защита щитом
+menu_select?ask=-303&reply=744 // спецталик энергия
+menu_select?ask=-303&reply=745 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=746 // спецталик дистанция
+menu_select?ask=-303&reply=747 // спецталик кансел
+menu_select?ask=-303&reply=748 // спецталик мп кост
+menu_select?ask=-303&reply=749 // копия
+menu_select?ask=-303&reply=750 // спецталик хил
+// талики за искренность
+menu_select?ask=-303&reply=751 // спецталики защита щитом
+menu_select?ask=-303&reply=752 // спецталик энергия
+menu_select?ask=-303&reply=753 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=754 // спецталик дистанция
+menu_select?ask=-303&reply=755 // спецталик кансел
+menu_select?ask=-303&reply=756 // спецталик мп кост
+menu_select?ask=-303&reply=757 // копия
+menu_select?ask=-303&reply=758 // спецталик хил
+// талики за волю
+menu_select?ask=-303&reply=759 // спецталики защита щитом
+menu_select?ask=-303&reply=760 // спецталик энергия
+menu_select?ask=-303&reply=761 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=762 // спецталик дистанция
+menu_select?ask=-303&reply=763 // спецталик кансел
+menu_select?ask=-303&reply=764 // спецталик мп кост
+menu_select?ask=-303&reply=765 // копия
+menu_select?ask=-303&reply=766 // спецталик хил
+
+menu_select?ask=-303&reply=769 // кодексы 4проф за эссенцию
+menu_select?ask=-303&reply=770 // хуйня за доказательство обещания
+menu_select?ask=-303&reply=771 // хуйня за доказательство жизни
+menu_select?ask=-303&reply=772 // хуйня за доказательство героя
+menu_select?ask=-303&reply=773 // хуйня за доказательство ада
+menu_select?ask=-303&reply=774 // хуйня за доказательство верности
+
+menu_select?ask=-303&reply=776 // снятие оков за ивент
+menu_select?ask=-303&reply=777 // кристалы Р+
+
+menu_select?ask=-303&reply=789 // талики Р85 за 10 эполетов
+menu_select?ask=-303&reply=790 // талики Р90 за 10 эполетов
+menu_select?ask=-303&reply=791 // талики Р95 за 10 эполетов
+menu_select?ask=-303&reply=792 // талики Р99 за 10 эполетов
+menu_select?ask=-303&reply=793 // талики Р85 за 10 эполетов
+menu_select?ask=-303&reply=794 // талики Р90 за 10 эполетов
+menu_select?ask=-303&reply=795 // талики Р95 за 10 эполетов
+menu_select?ask=-303&reply=796 // талики Р99 за 10 эполетов
+
+// спецталики за 10 эполетов р85
+menu_select?ask=-303&reply=797 // спецталики защита щитом
+menu_select?ask=-303&reply=798 // спецталик энергия
+menu_select?ask=-303&reply=799 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=800 // спецталик дистанция
+menu_select?ask=-303&reply=801 // спецталик кансел
+menu_select?ask=-303&reply=802 // спецталик мп кост
+menu_select?ask=-303&reply=803 // копия
+menu_select?ask=-303&reply=804 // спецталик хил
+
+// спецталики за 10 эполетов р90
+menu_select?ask=-303&reply=805 // спецталики защита щитом
+menu_select?ask=-303&reply=806 // спецталик энергия
+menu_select?ask=-303&reply=807 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=808 // спецталик дистанция
+menu_select?ask=-303&reply=809 // спецталик кансел
+menu_select?ask=-303&reply=810 // спецталик мп кост
+menu_select?ask=-303&reply=811 // копия
+menu_select?ask=-303&reply=812 // спецталик хил
+
+// спецталики за 10 эполетов р95
+menu_select?ask=-303&reply=813 // спецталики защита щитом
+menu_select?ask=-303&reply=814 // спецталик энергия
+menu_select?ask=-303&reply=815 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=816 // спецталик дистанция
+menu_select?ask=-303&reply=817 // спецталик кансел
+menu_select?ask=-303&reply=818 // спецталик мп кост
+menu_select?ask=-303&reply=819 // копия
+menu_select?ask=-303&reply=820 // спецталик хил
+
+// спецталики за 10 эполетов р99
+menu_select?ask=-303&reply=821 // спецталики защита щитом
+menu_select?ask=-303&reply=822 // спецталик энергия
+menu_select?ask=-303&reply=823 // спецталик вампиризм, поглощение маны
+menu_select?ask=-303&reply=824 // спецталик дистанция
+menu_select?ask=-303&reply=825 // спецталик кансел
+menu_select?ask=-303&reply=826 // спецталик мп кост
+menu_select?ask=-303&reply=827 // копия
+menu_select?ask=-303&reply=828 // спецталик хил
+
+menu_select?ask=-303&reply=829 // сундуки героя
+menu_select?ask=-303&reply=831 // сундуки героя 2
+menu_select?ask=-303&reply=832 // вещи за кампанию
+menu_select?ask=-303&reply=833 // вещи за кампанию 2
+menu_select?ask=-303&reply=834 // вставка кулонов
+menu_select?ask=-303&reply=835 // Ц грейд за знаки возвратившегося
+menu_select?ask=-303&reply=836 // Б грейд за знаки возвратившегося
+menu_select?ask=-303&reply=837 // А грейд за знаки возвратившегося
+menu_select?ask=-303&reply=838 // Ы грейд за знаки возвратившегося
+
+menu_select?ask=-303&reply=839 // хуета за знаки наставника
+menu_select?ask=-303&reply=840 // хуета за серт окончания
+
+menu_select?ask=-303&reply=848 // запечатка Ц грейда
+menu_select?ask=-303&reply=849 // запечатка Б грейда
+menu_select?ask=-303&reply=850 // запечатка А грейда
+menu_select?ask=-303&reply=851 // запечатка Ы грейда
+
+menu_select?ask=-303&reply=857 // сосуд опыта
+menu_select?ask=-303&reply=858 // вставка заколок
+menu_select?ask=-303&reply=859 // шапки
+
+900 viewed

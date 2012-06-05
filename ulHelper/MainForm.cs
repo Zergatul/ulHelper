@@ -17,6 +17,7 @@ namespace ulHelper.App
     public partial class MainForm : KryptonForm
     {
         public static MainForm Instance;
+        public static bool DebugDraw = true;
 
         internal List<AccountData> Accounts;
         internal bool NeedTerminate;
@@ -35,9 +36,30 @@ namespace ulHelper.App
             Accounts = new List<AccountData>();
             AccManager = new AccountManagerModule(this);
 
-            // this for test
-            Accounts.Add(new AccountData("ololo"));
-            RefreshAccounts();
+            if (DebugDraw)
+            {
+                Accounts.Add(new AccountData("ololo"));
+                Accounts.First().World.Player.Target = new L2Objects.L2Npc
+                {
+                    CurHP = 12344,
+                    MaxHP = 19222,
+                    Level = 99,
+                    Name = "Волякасик",
+                    NpcID = 93120
+                };
+                for (int i = 0; i < 20; i++)
+                    Accounts.First().World.Characters.Add(new L2Objects.L2Character
+                    {
+                        X = (int)Math.Round(3000 * Math.Sin(2 * i * Math.PI / 20)),
+                        Y = (int)Math.Round(3000 * Math.Cos(2 * i * Math.PI / 20)),
+                        Name = "kokoko" + i,
+                        CurHP = 1500,
+                        MaxHP = 2000,
+                        ClassID = 140 + i
+                    });
+                Accounts.First().World.___PerformAddCharacter();
+                RefreshAccounts();
+            }
         }        
 
         internal void RefreshAccounts()

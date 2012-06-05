@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using System.Drawing;
 using ulHelper.L2Objects;
+using System.Drawing;
 
 namespace ulHelper.App.Drawing
 {
-    public class PlayerPanel
+    public class TargetPanel
     {
         PictureBox pb;
         Form form;
@@ -17,21 +17,19 @@ namespace ulHelper.App.Drawing
         Thread redrawThread;
         GameWorld world;
 
-        CPBar cp;
-        HPBar hp;
-        MPBar mp;
-        ExpBar exp;
+        HPBar hpNpc;
+        HPBar hpChar;
         LevelBar lvl;
 
-        public PlayerPanel(Control parent, GameWorld world)
+        public TargetPanel(Control parent, GameWorld world)
         {
             this.world = world;
-            this.world.PlayerStatusUpdate += (s, e) => { this.Update(); };
+            this.world.PlayerTargetUpdate += (s, e) => { this.Update(); };
 
             pb = new PictureBox();
             pb.Width = 230;
-            pb.Height = 57;
-            pb.Top = 0;
+            pb.Height = 42;
+            pb.Top = 60;
             pb.Left = 0;
             pb.Paint += pb_Paint;
             parent.Controls.Add(pb);
@@ -39,10 +37,8 @@ namespace ulHelper.App.Drawing
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
 
-            cp = new CPBar(pb.Width - 8);
-            hp = new HPBar(pb.Width - 8);
-            mp = new MPBar(pb.Width - 8 - 23);
-            exp = new ExpBar(pb.Width - 8 - 23);
+            hpNpc = new HPBar(pb.Width - 8 - 23);
+            hpChar = new HPBar(pb.Width - 8);
             lvl = new LevelBar();
         }
 
@@ -60,15 +56,27 @@ namespace ulHelper.App.Drawing
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
             lock (world.Player)
-            {
-                cp.Draw(e.Graphics, 4, 3, world.Player.CurCP, world.Player.MaxCP);
-                hp.Draw(e.Graphics, 4, 16, world.Player.CurHP, world.Player.MaxHP);
-                mp.Draw(e.Graphics, 27, 29, world.Player.CurMP, world.Player.MaxMP);
-                exp.Draw(e.Graphics, 27, 42,
-                    world.Player.Exp - GameInfo.LevelsExp[world.Player.Level],
-                    world.Player.Level == 99 ? 0 : GameInfo.LevelsExp[world.Player.Level + 1] - GameInfo.LevelsExp[world.Player.Level]);
-                lvl.Draw(e.Graphics, 4, 31, world.Player.Level);
-            }
+                if (world.Player.Target != null)
+                    lock (world.Player.Target)
+                    {
+                        if (world.Player.Target is L2Character)
+                        {
+                            var ch = world.Player.Target as L2Character;
+                            hpChar.Draw(e.Graphics, 3, 3, ch.CurHP, ch.MaxHP);
+                            e.Graphics.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, 3, 15);
+                        }
+                        if (world.Player.Target is L2Npc)
+                        {
+                            var npc = world.Player.Target as L2Npc;
+                            hpNpc.Draw(e.Graphics, 27, 3, npc.CurHP, npc.MaxHP);
+                            lvl.Draw(e.Graphics, 3, 3, npc.Level);
+                            string name = "[unknown]";
+                            if (GameInfo.Npcs.ContainsKey(npc.NpcID))
+                                name = GameInfo.Npcs[npc.NpcID];
+                            e.Graphics.DrawString(name, GUI.Font, GUI.NpcBrush, 27, 15);
+                            e.Graphics.DrawString("ID: " + npc.NpcID, GUI.Font, Brushes.Black, 4, 27);
+                        }
+                    }
         }
 
         public void Update()
@@ -78,7 +86,7 @@ namespace ulHelper.App.Drawing
 
         void RedrawThreadFunc()
         {
-            int delay = Properties.Settings.Default.PlayerPanelRefreshTime;
+            int delay = Properties.Settings.Default.TargetPanelRefreshTime;
             while (true)
             {
                 needRedraw = false;

@@ -43,7 +43,7 @@
     <Compile Include="GameWorld.cs" />
     <Compile Include="L2Character.cs" />
     <Compile Include="L2LiveObject.cs" />
-    <Compile Include="L2MyCharacter.cs" />
+    <Compile Include="L2Player.cs" />
     <Compile Include="L2Npc.cs" />
     <Compile Include="L2Object.cs" />
     <Compile Include="L2PositionObject.cs" />

@@ -42,6 +42,10 @@ namespace ulHelper.L2Objects
                         Characters.Remove(ch);
                         if (DeleteCharacter != null)
                             DeleteCharacter(this, EventArgs.Empty);
+                        if (PlayerTargetUpdate != null)
+                            lock (Player)
+                                if (Player.Target == ch)
+                                    PlayerTargetUpdate(this, EventArgs.Empty);
                         return;
                     }
                 }
@@ -54,6 +58,10 @@ namespace ulHelper.L2Objects
                         Npcs.Remove(npc);
                         if (DeleteNpc != null)
                             DeleteNpc(this, EventArgs.Empty);
+                        if (PlayerTargetUpdate != null)
+                            lock (Player)
+                                if (Player.Target == npc)
+                                    PlayerTargetUpdate(this, EventArgs.Empty);
                     }
                 }
                 return;
@@ -68,7 +76,8 @@ namespace ulHelper.L2Objects
                     var npc = Npcs.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
                     if (npc == null)
                     {
-                        Npcs.Add(new L2Npc(pck));
+                        npc = new L2Npc(pck);
+                        Npcs.Add(npc);
                         if (AddNpc != null)
                             AddNpc(this, EventArgs.Empty);
                     }
@@ -106,6 +115,9 @@ namespace ulHelper.L2Objects
                 if (obj == Player)
                     if (PlayerStatusUpdate != null)
                         PlayerStatusUpdate(this, EventArgs.Empty);
+                if (obj == Player.Target)
+                    if (PlayerTargetUpdate != null)
+                        PlayerTargetUpdate(this, EventArgs.Empty);
                 return;
             }
             #endregion
@@ -130,7 +142,11 @@ namespace ulHelper.L2Objects
                 var pck = packet as TargetUnselected;
                 lock (Player)
                     if (pck.TargetID == Player.ObjectID)
+                    {
                         Player.Target = null;
+                        if (PlayerTargetUpdate != null)
+                            PlayerTargetUpdate(this, EventArgs.Empty);
+                    }
                 return;
             }
             #endregion
@@ -171,6 +187,8 @@ namespace ulHelper.L2Objects
                         lock (Player)
                         {
                             Player.Target = ch;
+                            if (PlayerTargetUpdate != null)
+                                PlayerTargetUpdate(this, EventArgs.Empty);
                             return;
                         }
                 }
@@ -183,11 +201,19 @@ namespace ulHelper.L2Objects
                             if (Player.Level != 0)
                                 npc.Level = Player.Level - pck.Color;
                             Player.Target = npc;
+                            if (PlayerTargetUpdate != null)
+                                PlayerTargetUpdate(this, EventArgs.Empty);
                         }
                 }
                 return;
             }
             #endregion
+        }
+
+        public void ___PerformAddCharacter()
+        {
+            if (AddCharacter != null)
+                AddCharacter(this, EventArgs.Empty);
         }
     }
 }

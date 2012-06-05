@@ -15,11 +15,14 @@ namespace ulHelper.App
             bmp = new Bitmap(@"Images\map.png");
         }
 
-        public static void DrawAt(Graphics g, Size size, int x, int y)
+        public static void DrawAt(Graphics g, int x, int y, int width, int height, int gameX, int gameY, float scale)
         {
-            float xm = GameXtoMapX(x);
-            float ym = GameYtoMapY(y);
-            g.DrawImage(bmp, new RectangleF(0, 0, size.Width, size.Height), new RectangleF(xm - 50, ym - 50, 100, 100), GraphicsUnit.Pixel); 
+            float xm = GameXtoMapX(gameX);
+            float ym = GameYtoMapY(gameY);
+            g.DrawImage(bmp, 
+                new RectangleF(x, y, width, height),
+                new RectangleF(xm - scale / 2, ym - scale / 2, scale, scale),
+                GraphicsUnit.Pixel); 
         }
 
         public static float GameXtoMapX(int x)
@@ -30,6 +33,16 @@ namespace ulHelper.App
         public static float GameYtoMapY(int y)
         {
             return 1.0f * (y + 261460) / 133.18f;
+        }
+
+        public static float ScaleX(int dx)
+        {
+            return dx / 133.18f;
+        }
+
+        public static float ScaleY(int dy)
+        {
+            return dy / 133.18f;
         }
     }
 }

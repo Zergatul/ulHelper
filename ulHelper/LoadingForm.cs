@@ -43,12 +43,17 @@ namespace ulHelper.App
             CPBar.Load();
             HPBar.Load();
             MPBar.Load();
+            ExpBar.Load();
+            LevelBar.Load();
+            MiniHPBar.Load();
+            ObjectsList.Load();
             progress = 50;
 
             operText = "Загрузка игровых классов . . .";
             this.Invoke((SimpleCall)TextChange);
             this.Invoke((SimpleCall)ProgressChange);
             GameInfo.LoadClasses();
+            GameInfo.LoadLevels();
             progress = 55;
 
             operText = "Загрузка NPC . . .";

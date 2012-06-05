@@ -9,7 +9,6 @@ namespace ulHelper.App.Drawing
     public class MPBar
     {
         static Bitmap leftBmp, rightBmp, centerBmp, leftBgBmp, rightBgBmp, centerBgBmp;
-        static Font font = new Font("Arial", 8.25f, FontStyle.Bold, GraphicsUnit.Point);
 
         public static void Load()
         {
@@ -20,6 +19,9 @@ namespace ulHelper.App.Drawing
             leftBgBmp = new Bitmap(@"Images\MP_bg_left.png");
             centerBgBmp = new Bitmap(@"Images\MP_bg_center.png");
             rightBgBmp = new Bitmap(@"Images\MP_bg_right.png");
+            BitmapFunctions.RemoveAlphaChannel(leftBgBmp);
+            BitmapFunctions.RemoveAlphaChannel(centerBgBmp);
+            BitmapFunctions.RemoveAlphaChannel(rightBgBmp);
         }
 
         Bitmap bg, active;
@@ -61,8 +63,8 @@ namespace ulHelper.App.Drawing
             g.DrawImage(bg, x, y);
             g.DrawImage(active, x, y, pos, 12);
             var str = cur + " / " + max;
-            float strWidth = g.MeasureString(str, font).Width;
-            g.DrawString(str, font, Brushes.White, x + (width - strWidth) / 2, y);
+            float strWidth = g.MeasureString(str, GUI.Font).Width;
+            g.DrawString(str, GUI.Font, Brushes.White, x + (width - strWidth) / 2, y);
         }
     }
 }

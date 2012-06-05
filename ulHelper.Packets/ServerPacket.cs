@@ -51,6 +51,8 @@ namespace ulHelper.Packets
                 return new CharInfo(this);
             if (ID == 0x32)
                 return new UserInfo(this);
+            if (ID == 0x62)
+                return new SystemMessage(this);
             if (ID == 0xB9)
                 return new MyTargetSelected(this);
             if (ID == 0xCE)

@@ -37,10 +37,13 @@ namespace ulHelper.App
             this.LoadedPlugins = new List<BasePlugin>();
             this.SendBuffer = new List<ClientPacket>();
 
-            /*pckReceive = new PacketsReceiveModule(this);
-            accLive = new AccountLiveModule(this);
-            appLive = new AppLiveModule(this);
-            pckSend = new PacketsSendModule(this);*/
+            if (!MainForm.DebugDraw)
+            {
+                pckReceive = new PacketsReceiveModule(this);
+                accLive = new AccountLiveModule(this);
+                appLive = new AppLiveModule(this);
+                pckSend = new PacketsSendModule(this);
+            }
         }
 
         public override string ToString()
@@ -85,10 +88,13 @@ namespace ulHelper.App
                 if (disposing)
                 {
                     NeedTerminate = true;
-                    /*pckReceive.Terminate();
-                    accLive.Terminate();
-                    appLive.Terminate();
-                    pckSend.Terminate();*/
+                    if (!MainForm.DebugDraw)
+                    {
+                        pckReceive.Terminate();
+                        accLive.Terminate();
+                        appLive.Terminate();
+                        pckSend.Terminate();
+                    }
                     this.Form.NeedTerminate = true;
                     if (this.Form.InvokeRequired)
                         this.Form.Invoke((ThreadStart)this.Form.Close);

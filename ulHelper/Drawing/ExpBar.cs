@@ -6,19 +6,19 @@ using System.Drawing;
 
 namespace ulHelper.App.Drawing
 {
-    public class HPBar
+    public class ExpBar
     {
         static Bitmap leftBmp, rightBmp, centerBmp, leftBgBmp, rightBgBmp, centerBgBmp;
 
         public static void Load()
         {
-            leftBmp = new Bitmap(@"Images\HP_left.png");
-            centerBmp = new Bitmap(@"Images\HP_center.png");
-            rightBmp = new Bitmap(@"Images\HP_right.png");
+            leftBmp = new Bitmap(@"Images\EXP_left.png");
+            centerBmp = new Bitmap(@"Images\EXP_center.png");
+            rightBmp = new Bitmap(@"Images\EXP_right.png");
 
-            leftBgBmp = new Bitmap(@"Images\HP_bg_left.png");
-            centerBgBmp = new Bitmap(@"Images\HP_bg_center.png");
-            rightBgBmp = new Bitmap(@"Images\HP_bg_right.png");
+            leftBgBmp = new Bitmap(@"Images\EXP_bg_left.png");
+            centerBgBmp = new Bitmap(@"Images\EXP_bg_center.png");
+            rightBgBmp = new Bitmap(@"Images\EXP_bg_right.png");
             BitmapFunctions.RemoveAlphaChannel(leftBgBmp);
             BitmapFunctions.RemoveAlphaChannel(centerBgBmp);
             BitmapFunctions.RemoveAlphaChannel(rightBgBmp);
@@ -27,7 +27,7 @@ namespace ulHelper.App.Drawing
         Bitmap bg, active;
         int width;
 
-        public HPBar(int width)
+        public ExpBar(int width)
         {
             this.width = width;
             bg = new Bitmap(width, 12);
@@ -57,12 +57,12 @@ namespace ulHelper.App.Drawing
             }
         }
 
-        public void Draw(Graphics g, int x, int y, int cur, int max)
+        public void Draw(Graphics g, int x, int y, long cur, long max)
         {
             float pos = max == 0 ? 0 : 1f * width * cur / max;
             g.DrawImage(bg, x, y);
             g.DrawImage(active, x, y, pos, 12);
-            var str = cur + " / " + max;
+            var str = (Math.Floor(10000d * cur / max) / 100).ToString("#00.00") + "%";
             float strWidth = g.MeasureString(str, GUI.Font).Width;
             g.DrawString(str, GUI.Font, Brushes.White, x + (width - strWidth) / 2, y);
         }

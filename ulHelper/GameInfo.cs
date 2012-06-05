@@ -11,6 +11,7 @@ namespace ulHelper.App
     {
         public static Dictionary<int, L2Class> Classes;
         public static SortedDictionary<int, string> Npcs;
+        public static SortedDictionary<int, long> LevelsExp;
 
         public static void LoadClasses()
         {
@@ -46,6 +47,15 @@ namespace ulHelper.App
             var xDoc = XDocument.Load(@"Data\Npcs.xml");
             foreach (var npcNode in xDoc.Element("npcs").Elements("npc"))
                 Npcs.Add((int)npcNode.Attribute("id"), (string)npcNode.Attribute("name"));
+        }
+
+        public static void LoadLevels()
+        {
+            LevelsExp = new SortedDictionary<int, long>();
+            var xDoc = XDocument.Load(@"Data\Levels.xml");
+            int index = 1;
+            foreach (var lvlNode in xDoc.Element("levels").Elements("level"))
+                LevelsExp.Add(index++, (long)lvlNode.Attribute("exp"));
         }
 
         public class L2Class

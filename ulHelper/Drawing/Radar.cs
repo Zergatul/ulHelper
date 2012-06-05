@@ -4,46 +4,46 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using System.Drawing;
 using ulHelper.L2Objects;
+using System.Drawing;
 
 namespace ulHelper.App.Drawing
 {
-    public class PlayerPanel
+    public class Radar
     {
         PictureBox pb;
         Form form;
-        bool needRedraw;
         Thread redrawThread;
         GameWorld world;
+        float scale;
+        static Pen NeutralPen = new Pen(GUI.NeutralColor, 2f);
+        static Pen PlayerPen = new Pen(GUI.PlayerColor, 2f);
 
-        CPBar cp;
-        HPBar hp;
-        MPBar mp;
-        ExpBar exp;
-        LevelBar lvl;
-
-        public PlayerPanel(Control parent, GameWorld world)
+        public Radar(Control parent, GameWorld world)
         {
             this.world = world;
-            this.world.PlayerStatusUpdate += (s, e) => { this.Update(); };
+            this.scale = 100;
 
             pb = new PictureBox();
             pb.Width = 230;
-            pb.Height = 57;
-            pb.Top = 0;
+            pb.Height = 230;
+            pb.Top = 104;
             pb.Left = 0;
             pb.Paint += pb_Paint;
             parent.Controls.Add(pb);
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
+            form.MouseWheel += Radar_MouseWheel;
+        }
 
-            cp = new CPBar(pb.Width - 8);
-            hp = new HPBar(pb.Width - 8);
-            mp = new MPBar(pb.Width - 8 - 23);
-            exp = new ExpBar(pb.Width - 8 - 23);
-            lvl = new LevelBar();
+        void Radar_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (pb.Bounds.Contains(e.Location))
+            {
+                int wheelCount = e.Delta / 120;
+                scale *= (float)Math.Pow(1.05f, -wheelCount);
+            }
         }
 
         void form_HandleCreated(object sender, EventArgs e)
@@ -51,7 +51,6 @@ namespace ulHelper.App.Drawing
             redrawThread = new Thread((ThreadStart)RedrawThreadFunc);
             redrawThread.IsBackground = true;
             redrawThread.Start();
-            Update();
         }
 
         void pb_Paint(object sender, PaintEventArgs e)
@@ -59,34 +58,39 @@ namespace ulHelper.App.Drawing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
+
+            int pX, pY;
             lock (world.Player)
             {
-                cp.Draw(e.Graphics, 4, 3, world.Player.CurCP, world.Player.MaxCP);
-                hp.Draw(e.Graphics, 4, 16, world.Player.CurHP, world.Player.MaxHP);
-                mp.Draw(e.Graphics, 27, 29, world.Player.CurMP, world.Player.MaxMP);
-                exp.Draw(e.Graphics, 27, 42,
-                    world.Player.Exp - GameInfo.LevelsExp[world.Player.Level],
-                    world.Player.Level == 99 ? 0 : GameInfo.LevelsExp[world.Player.Level + 1] - GameInfo.LevelsExp[world.Player.Level]);
-                lvl.Draw(e.Graphics, 4, 31, world.Player.Level);
+                WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.Player.X, world.Player.Y, scale);
+                pX = world.Player.X;
+                pY = world.Player.Y;
             }
-        }
+            float xc = 1.0f * pb.Width / 2;
+            float yc = 1.0f * pb.Height / 2;
 
-        public void Update()
-        {
-            needRedraw = true;
+            lock (world.Characters)
+                foreach (var ch in world.Characters)
+                {
+                    int dx = ch.X - pX;
+                    int dy = ch.Y - pY;
+                    e.Graphics.DrawEllipse(NeutralPen,
+                        xc + WorldMap.ScaleX(dx) * pb.Width / scale,
+                        yc + WorldMap.ScaleX(dy) * pb.Height / scale,
+                        4, 4);
+                }
+
+            e.Graphics.DrawEllipse(PlayerPen, xc - 2, yc - 2, 4, 4);
         }
 
         void RedrawThreadFunc()
         {
-            int delay = Properties.Settings.Default.PlayerPanelRefreshTime;
+            int delay = Properties.Settings.Default.RadarRefreshTime;
             while (true)
             {
-                needRedraw = false;
                 if (form.IsHandleCreated)
                     pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
                 Thread.Sleep(delay);
-                while (!needRedraw)
-                    Thread.Sleep(1);
             }
         }
 
