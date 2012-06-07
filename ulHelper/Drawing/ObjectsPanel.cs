@@ -19,6 +19,7 @@ namespace ulHelper.App.Drawing
         GameWorld world;
         KryptonCheckBox showWar, showAlly, showNeutral, showNpc;
         ObjectsList list;
+        PaintStatus paintStatus;
 
         public ObjectsPanel(Control parent, GameWorld world)
         {
@@ -79,7 +80,7 @@ namespace ulHelper.App.Drawing
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
             list = new ObjectsList(pb, world, 3, 3, 223, 168);
-            list.ScrollChanged += (s, e) => { this.Update(); };
+            list.ScrollChanged += (s, e) => { this.ExigentUpdate(); };
         }
 
         void form_HandleCreated(object sender, EventArgs e)
@@ -92,6 +93,13 @@ namespace ulHelper.App.Drawing
 
         void pb_Paint(object sender, PaintEventArgs e)
         {
+            if (paintStatus == PaintStatus.WaitOne)
+            {
+                paintStatus = PaintStatus.TypicalCycle;
+                return;
+            }
+            if (paintStatus == PaintStatus.ExigentPaint)
+                paintStatus = PaintStatus.WaitOne;
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
@@ -112,6 +120,12 @@ namespace ulHelper.App.Drawing
             needRedraw = true;
         }
 
+        public void ExigentUpdate()
+        {
+            paintStatus = PaintStatus.ExigentPaint;
+            pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
+        }
+
         void RedrawThreadFunc()
         {
             int delay = Properties.Settings.Default.ObjectsPanelRefreshTime;
@@ -130,6 +144,13 @@ namespace ulHelper.App.Drawing
         {
             g.Clear(GUI.BgColor);
             GUI.RoundedRectangle(g, 0, 0, pb.Width - 1, pb.Height - 1);
+        }
+
+        private enum PaintStatus
+        {
+            TypicalCycle,
+            WaitOne,
+            ExigentPaint
         }
     }
 }

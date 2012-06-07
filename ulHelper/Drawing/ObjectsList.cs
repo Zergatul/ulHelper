@@ -65,7 +65,7 @@ namespace ulHelper.App.Drawing
                 if (scroll.Maximum != world.Characters.Count - 1)
                     scroll.Maximum = world.Characters.Count - 1;
                 scroll.Enabled = scroll.LargeChange < scroll.Maximum;
-                for (int i = scroll.Value; i < scroll.Value + scroll.LargeChange; i++)
+                for (int i = scroll.Value; i < Math.Min(scroll.Value + scroll.LargeChange, world.Characters.Count - 1); i++)
                     DrawObject(g, world.Characters[i], 4, 4 + itemHeight * (i - scroll.Value), 206);
             }
         }
@@ -76,8 +76,8 @@ namespace ulHelper.App.Drawing
                 g.DrawImage(GameInfo.Classes[ch.ClassID].Icon, x, y);
             else
                 g.DrawImage(unknownClass,  x, y);
-            bar.Draw(g, x + 11, y, ch.CurHP, ch.MaxHP);
-            g.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, x + 85, y);
+            bar.Draw(g, x + 12, y + 1, ch.CurHP, ch.MaxHP);
+            g.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, x + 84, y);
         }
     }
 }

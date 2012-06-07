@@ -62,7 +62,7 @@ namespace ulHelper.App.Drawing
             int pX, pY;
             lock (world.Player)
             {
-                WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.Player.X, world.Player.Y, scale);
+                //WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.Player.X, world.Player.Y, scale);
                 pX = world.Player.X;
                 pY = world.Player.Y;
             }

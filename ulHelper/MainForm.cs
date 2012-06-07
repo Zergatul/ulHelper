@@ -17,7 +17,8 @@ namespace ulHelper.App
     public partial class MainForm : KryptonForm
     {
         public static MainForm Instance;
-        public static bool DebugDraw = true;
+        public static bool DebugDraw = false;
+        static Random rnd = new Random();
 
         internal List<AccountData> Accounts;
         internal bool NeedTerminate;
@@ -53,7 +54,7 @@ namespace ulHelper.App
                         X = (int)Math.Round(3000 * Math.Sin(2 * i * Math.PI / 20)),
                         Y = (int)Math.Round(3000 * Math.Cos(2 * i * Math.PI / 20)),
                         Name = "kokoko" + i,
-                        CurHP = 1500,
+                        CurHP = rnd.Next(1, 20) * 100,
                         MaxHP = 2000,
                         ClassID = 140 + i
                     });

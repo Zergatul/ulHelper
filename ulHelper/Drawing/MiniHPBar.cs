@@ -45,7 +45,7 @@ namespace ulHelper.App.Drawing
         {
             float pos = max == 0 ? 0 : 1f * width * cur / max;
             g.DrawImage(bg, x, y);
-            g.DrawImage(active, x, y, pos, 12);
+            g.DrawImage(active, x, y, pos, 10);
         }
     }
 }
