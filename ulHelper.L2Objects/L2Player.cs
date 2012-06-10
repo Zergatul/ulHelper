@@ -33,6 +33,7 @@ namespace ulHelper.L2Objects
             this.MaxCP = pck.MaxCP;
             this.Title = pck.Title;
             this.Level = pck.Level;
+            this.Speed = (int)Math.Round((pck.IsRun == 1 ? pck.RunSpeed : pck.WalkSpeed) * pck.MoveMult);
         }
     }
 }

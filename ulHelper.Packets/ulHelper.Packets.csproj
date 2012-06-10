@@ -75,6 +75,8 @@
     <Compile Include="ServerPackets\11_ItemList.cs" />
     <Compile Include="ServerPackets\19_NpcHtmlMessage.cs" />
     <Compile Include="ServerPackets\62_SystemMessage.cs" />
+    <Compile Include="ServerPackets\2F_MoveToLocation.cs" />
+    <Compile Include="ServerPackets\47_StopMove.cs" />
     <Compile Include="ServerPackets\D0_MultiSellList.cs" />
     <Compile Include="ServerPackets\FEF6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

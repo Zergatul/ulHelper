@@ -15,15 +15,34 @@ namespace ulHelper.L2Objects
         public int MaxMP { get; set; }
         public int AbnormalEffect { get; set; }
         public string Title { get; set; }
-        public float Speed { get; set; }
+        public int Speed { get; set; }
+        public int CastSpeed { get; set; }
+        public int AtkSpeed { get; set; }
         public int Level { get; set; }
         public L2LiveObject Target { get; set; }
-        public bool Deleted { get; set; }
-        public bool New { get; set; }
+
+        internal bool IsMoving { get; set; }
+        internal int MoveFromX { get; set; }
+        internal int MoveFromY { get; set; }
+        internal int MoveToX { get; set; }
+        internal int MoveToY { get; set; }
+        internal double Cos { get; set; }
+        internal double Sin { get; set; }
+        internal double MovingDistance { get; set; }
+        internal DateTime StartMove { get; set; }
 
         public L2LiveObject()
         {
-            this.New = true;
+            
+        }
+
+        internal void CalcMoveData()
+        {
+            MovingDistance = Math.Sqrt(
+                (MoveFromX - MoveToX) * (MoveFromX - MoveToX) + (MoveFromY - MoveToY) * (MoveFromY - MoveToY));
+            this.Cos = (MoveToX - MoveFromX) / MovingDistance;
+            this.Sin = (MoveToY - MoveFromY) / MovingDistance;
+            this.StartMove = DateTime.Now;
         }
     }
 }

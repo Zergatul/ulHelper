@@ -1,4 +1,13 @@
 ﻿pattern observer - for plugins
-классы для приема пакетов должны быть так, что бы не было видно способ их работы
 
-accountform использует только объект world а он скрывает пакетную реализацию
+хинты над радаром????
+
+для аккаунт форм отдельные потоки
+
+с плагинами отдельные потоки??? как
+
+radar, objectspanel,tooltipform поток убивается через аборт - переделать
+
+tooltip focused show sometimes???
+
+live thread use mutex

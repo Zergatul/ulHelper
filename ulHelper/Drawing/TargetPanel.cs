@@ -6,46 +6,134 @@ using System.Windows.Forms;
 using System.Threading;
 using ulHelper.L2Objects;
 using System.Drawing;
+using ulHelper.App.Tooltips;
 
 namespace ulHelper.App.Drawing
 {
-    public class TargetPanel
+    public class TargetPanel : IDisposable
     {
+        static Bitmap settingsBmp, settingsOverBmp;
+
+        public static void Load()
+        {
+            settingsBmp = new Bitmap(@"Images\settings.png");
+            settingsOverBmp = new Bitmap(@"Images\settings_over.png");
+        }
+
         PictureBox pb;
         Form form;
         bool needRedraw;
+        bool needTerminate;
         Thread redrawThread;
         GameWorld world;
-
         HPBar hpNpc;
         HPBar hpChar;
+        MPBar mpNpc;
+        MPBar mpChar;
         LevelBar lvl;
+        bool buttonHovered;
+        CharacterToolTip characterToolTip;
+        NpcToolTip npcToolTip;
+        IToolTip currentToolTip;
 
-        public TargetPanel(Control parent, GameWorld world)
+        public event EventHandler SettingsClick;
+
+        public TargetPanel(Control parent, GameWorld world, CharacterToolTip charToolTip, NpcToolTip npcToolTip)
         {
             this.world = world;
-            this.world.PlayerTargetUpdate += (s, e) => { this.Update(); };
+            this.characterToolTip = charToolTip;
+            this.npcToolTip = npcToolTip;
+            this.world.PlayerTargetUpdate += world_TargetPlayerUpdate;
 
             pb = new PictureBox();
             pb.Width = 230;
-            pb.Height = 42;
+            pb.Height = 54;
             pb.Top = 60;
             pb.Left = 0;
             pb.Paint += pb_Paint;
             parent.Controls.Add(pb);
+            pb.MouseMove += pb_MouseMove;
+            pb.MouseLeave += pb_MouseLeave;
+            pb.MouseClick += pb_MouseClick;
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
 
             hpNpc = new HPBar(pb.Width - 8 - 23);
             hpChar = new HPBar(pb.Width - 8);
+            mpNpc = new MPBar(pb.Width - 8 - 23);
+            mpChar = new MPBar(pb.Width - 8);
             lvl = new LevelBar();
+        }
+
+        void pb_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (buttonHovered)
+                if (SettingsClick != null)
+                    SettingsClick(this, EventArgs.Empty);
+        }
+
+        void pb_MouseLeave(object sender, EventArgs e)
+        {
+            if (buttonHovered)
+            {
+                buttonHovered = false;
+                Update();
+            }
+            if (currentToolTip != null)
+                if (currentToolTip.Visible)
+                    currentToolTip.Hide();
+        }
+
+        void pb_MouseMove(object sender, MouseEventArgs e)
+        {
+            bool hover = e.X >= pb.Width - 15 && e.Y >= pb.Height - 15;
+            if (hover != buttonHovered)
+            {
+                buttonHovered = hover;
+                Update();
+            }
+
+            bool toolTipVisible = e.X < pb.Width - 17 || e.Y < pb.Height - 17;
+            if (world.Player.Target != null)
+                if (currentToolTip != null)
+                    if (toolTipVisible)
+                    {
+                        var loc = pb.PointToScreen(e.Location);
+                        loc.Offset(16, 16);
+                        currentToolTip.Show(loc);
+                    }
+                    else
+                        currentToolTip.Hide();
+        }
+
+        void world_TargetPlayerUpdate(object sender, EventArgs e)
+        {
+            this.Update();
+            if (world.Player.Target == null)
+            {
+                currentToolTip.Hide();
+                currentToolTip = null;
+            }
+            else
+            {
+                if (world.Player.Target is L2Character)
+                {
+                    characterToolTip.Character = world.Player.Target as L2Character;
+                    currentToolTip = characterToolTip;
+                }
+                else
+                {
+                    npcToolTip.Npc = world.Player.Target as L2Npc;
+                    currentToolTip = npcToolTip;
+                }
+                currentToolTip.Update();
+            }
         }
 
         void form_HandleCreated(object sender, EventArgs e)
         {
             redrawThread = new Thread((ThreadStart)RedrawThreadFunc);
-            redrawThread.IsBackground = true;
             redrawThread.Start();
             Update();
         }
@@ -55,28 +143,33 @@ namespace ulHelper.App.Drawing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
-            lock (world.Player)
-                if (world.Player.Target != null)
-                    lock (world.Player.Target)
-                    {
-                        if (world.Player.Target is L2Character)
-                        {
-                            var ch = world.Player.Target as L2Character;
-                            hpChar.Draw(e.Graphics, 3, 3, ch.CurHP, ch.MaxHP);
-                            e.Graphics.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, 3, 15);
-                        }
-                        if (world.Player.Target is L2Npc)
-                        {
-                            var npc = world.Player.Target as L2Npc;
-                            hpNpc.Draw(e.Graphics, 27, 3, npc.CurHP, npc.MaxHP);
-                            lvl.Draw(e.Graphics, 3, 3, npc.Level);
-                            string name = "[unknown]";
-                            if (GameInfo.Npcs.ContainsKey(npc.NpcID))
-                                name = GameInfo.Npcs[npc.NpcID];
-                            e.Graphics.DrawString(name, GUI.Font, GUI.NpcBrush, 27, 15);
-                            e.Graphics.DrawString("ID: " + npc.NpcID, GUI.Font, Brushes.Black, 4, 27);
-                        }
-                    }
+            if (buttonHovered)
+                e.Graphics.DrawImage(settingsOverBmp, pb.Width - 15, pb.Height - 15);
+            else
+                e.Graphics.DrawImage(settingsBmp, pb.Width - 15, pb.Height - 15);
+
+            if (world.Player.Target != null)
+            {
+                if (world.Player.Target is L2Character)
+                {
+                    var ch = world.Player.Target as L2Character;
+                    hpChar.Draw(e.Graphics, 3, 3, ch.CurHP, ch.MaxHP);
+                    mpChar.Draw(e.Graphics, 3, 16, ch.CurMP, ch.MaxMP);
+                    e.Graphics.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, 2, 28);
+                }
+                if (world.Player.Target is L2Npc)
+                {
+                    var npc = world.Player.Target as L2Npc;
+                    hpNpc.Draw(e.Graphics, 27, 3, npc.CurHP, npc.MaxHP);
+                    mpNpc.Draw(e.Graphics, 27, 16, npc.CurMP, npc.MaxMP);
+                    lvl.Draw(e.Graphics, 3, 3, npc.Level);
+                    e.Graphics.DrawString(npc.Name, GUI.Font, GUI.NpcBrush, 2, 28);
+                    var str = "ID: " + npc.NpcID;
+                    if (npc.IsNameAbove)
+                        str += ", " + npc.OwnerName;
+                    e.Graphics.DrawString(str, GUI.Font, Brushes.Black, 2, 40);
+                }
+            }
         }
 
         public void Update()
@@ -87,7 +180,7 @@ namespace ulHelper.App.Drawing
         void RedrawThreadFunc()
         {
             int delay = Properties.Settings.Default.TargetPanelRefreshTime;
-            while (true)
+            while (!needTerminate)
             {
                 needRedraw = false;
                 if (form.IsHandleCreated)
@@ -101,7 +194,33 @@ namespace ulHelper.App.Drawing
         void DrawBorder(Graphics g)
         {
             g.Clear(GUI.BgColor);
-            GUI.RoundedRectangle(g, 0, 0, pb.Width - 1, pb.Height - 1);
+            GUI.CroppedRectangle(g, 0, 0, pb.Width - 1, pb.Height - 1, 17, 17);
         }
+
+        #region Dispose pattern
+
+        private bool _disposed;
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    needRedraw = true;
+                    needTerminate = true;
+                    redrawThread.Join();
+                }
+                _disposed = true;
+            }
+        }
+
+        #endregion
     }
 }

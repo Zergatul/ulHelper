@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,7 +23,10 @@ namespace ulHelper.App
         PlayerPanel playerPanel;
         TargetPanel targetPanel;
         Radar radar;
-        ObjectsPanel objects;
+        ObjectsPanel objectsPanel;
+
+        Tooltips.CharacterToolTip characterToolTip;
+        Tooltips.NpcToolTip npcToolTip;
 
         public AccountForm(AccountData accData)
             : base()
@@ -36,10 +39,27 @@ namespace ulHelper.App
 
         void PrepareControls()
         {
+            characterToolTip = new Tooltips.CharacterToolTip();
+            npcToolTip = new Tooltips.NpcToolTip();
             playerPanel = new PlayerPanel(kryptonPanel, accData.World);
-            targetPanel = new TargetPanel(kryptonPanel, accData.World);
+            targetPanel = new TargetPanel(kryptonPanel, accData.World, characterToolTip, npcToolTip);
+            targetPanel.SettingsClick += targetPanel_SettingsClick;
             radar = new Radar(kryptonPanel, accData.World);
-            objects = new ObjectsPanel(kryptonPanel, accData.World);
+            objectsPanel = new ObjectsPanel(kryptonPanel, accData.World, characterToolTip, npcToolTip);
+            objectsPanel.ObjectClick += objects_ObjectClick;
+        }
+
+        void objects_ObjectClick(object sender, ObjectClickEventArgs e)
+        {
+            var pck = new ulHelper.Packets.Action();
+            pck.ActionID = 0;
+            pck.ObjectID = e.Object.ObjectID;
+            accData.SendPacket(pck);
+        }
+
+        void targetPanel_SettingsClick(object sender, EventArgs e)
+        {
+            settings.Visible = !settings.Visible;
         }
         
         private void AccountForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -52,18 +72,15 @@ namespace ulHelper.App
                     if (acc.Form == this)
                         MainForm.Instance.accountsCLB.SetItemChecked(MainForm.Instance.accountsCLB.FindString(acc.Name), false);
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            settings.Visible = !settings.Visible;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var pck = new RequestUserCommand();
-            pck.Command = 0;
-            accData.SendPacket(pck);
+            else
+            {
+                playerPanel.Dispose();
+                targetPanel.Dispose();
+                radar.Dispose();
+                objectsPanel.Dispose();
+                characterToolTip.Dispose();
+                npcToolTip.Dispose();
+            }
         }
     }
 }

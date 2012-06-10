@@ -25,7 +25,7 @@ namespace ulHelper.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("250")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public int PlayerPanelRefreshTime {
             get {
                 return ((int)(this["PlayerPanelRefreshTime"]));
@@ -34,7 +34,7 @@ namespace ulHelper.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("250")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public int TargetPanelRefreshTime {
             get {
                 return ((int)(this["TargetPanelRefreshTime"]));
@@ -43,7 +43,7 @@ namespace ulHelper.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("250")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public int ObjectsPanelRefreshTime {
             get {
                 return ((int)(this["ObjectsPanelRefreshTime"]));
@@ -52,7 +52,7 @@ namespace ulHelper.App.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("250")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int RadarRefreshTime {
             get {
                 return ((int)(this["RadarRefreshTime"]));

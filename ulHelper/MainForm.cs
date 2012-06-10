@@ -40,14 +40,15 @@ namespace ulHelper.App
             if (DebugDraw)
             {
                 Accounts.Add(new AccountData("ololo"));
-                Accounts.First().World.Player.Target = new L2Objects.L2Npc
+                Accounts.First().World.Npcs.Add(new L2Objects.L2Npc
                 {
                     CurHP = 12344,
                     MaxHP = 19222,
                     Level = 99,
                     Name = "Волякасик",
                     NpcID = 93120
-                };
+                });
+                Accounts.First().World.Player.Target = Accounts.First().World.Npcs.First();
                 for (int i = 0; i < 20; i++)
                     Accounts.First().World.Characters.Add(new L2Objects.L2Character
                     {

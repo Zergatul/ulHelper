@@ -40,8 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\L2LiveObjectEventArgs.cs" />
+    <Compile Include="Events\L2NpcEventArgs.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="L2Character.cs" />
+    <Compile Include="Events\L2CharacterEventArgs.cs" />
     <Compile Include="L2LiveObject.cs" />
     <Compile Include="L2Player.cs" />
     <Compile Include="L2Npc.cs" />

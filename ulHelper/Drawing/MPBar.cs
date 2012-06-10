@@ -59,7 +59,7 @@ namespace ulHelper.App.Drawing
 
         public void Draw(Graphics g, int x, int y, int cur, int max)
         {
-            float pos = 1f * width * cur / max;
+            float pos = max == 0 ? 0 : 1f * width * cur / max;
             g.DrawImage(bg, x, y);
             g.DrawImage(active, x, y, pos, 12);
             var str = cur + " / " + max;

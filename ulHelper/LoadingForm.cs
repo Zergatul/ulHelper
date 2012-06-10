@@ -47,6 +47,7 @@ namespace ulHelper.App
             LevelBar.Load();
             MiniHPBar.Load();
             ObjectsList.Load();
+            TargetPanel.Load();
             progress = 50;
 
             operText = "Загрузка игровых классов . . .";

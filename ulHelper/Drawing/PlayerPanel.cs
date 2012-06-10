@@ -6,14 +6,16 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
 using ulHelper.L2Objects;
+using ulHelper.App.Tooltips;
 
 namespace ulHelper.App.Drawing
 {
-    public class PlayerPanel
+    public class PlayerPanel : IDisposable
     {
         PictureBox pb;
         Form form;
         bool needRedraw;
+        bool needTerminate;
         Thread redrawThread;
         GameWorld world;
 
@@ -26,7 +28,7 @@ namespace ulHelper.App.Drawing
         public PlayerPanel(Control parent, GameWorld world)
         {
             this.world = world;
-            this.world.PlayerStatusUpdate += (s, e) => { this.Update(); };
+            this.world.PlayerUpdate += (s, e) => { this.Update(); };
 
             pb = new PictureBox();
             pb.Width = 230;
@@ -49,7 +51,6 @@ namespace ulHelper.App.Drawing
         void form_HandleCreated(object sender, EventArgs e)
         {
             redrawThread = new Thread((ThreadStart)RedrawThreadFunc);
-            redrawThread.IsBackground = true;
             redrawThread.Start();
             Update();
         }
@@ -59,16 +60,13 @@ namespace ulHelper.App.Drawing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
-            lock (world.Player)
-            {
-                cp.Draw(e.Graphics, 4, 3, world.Player.CurCP, world.Player.MaxCP);
-                hp.Draw(e.Graphics, 4, 16, world.Player.CurHP, world.Player.MaxHP);
-                mp.Draw(e.Graphics, 27, 29, world.Player.CurMP, world.Player.MaxMP);
-                exp.Draw(e.Graphics, 27, 42,
-                    world.Player.Exp - GameInfo.LevelsExp[world.Player.Level],
-                    world.Player.Level == 99 ? 0 : GameInfo.LevelsExp[world.Player.Level + 1] - GameInfo.LevelsExp[world.Player.Level]);
-                lvl.Draw(e.Graphics, 4, 31, world.Player.Level);
-            }
+            cp.Draw(e.Graphics, 4, 3, world.Player.CurCP, world.Player.MaxCP);
+            hp.Draw(e.Graphics, 4, 16, world.Player.CurHP, world.Player.MaxHP);
+            mp.Draw(e.Graphics, 27, 29, world.Player.CurMP, world.Player.MaxMP);
+            exp.Draw(e.Graphics, 27, 42,
+                world.Player.Exp - GameInfo.LevelsExp[world.Player.Level],
+                world.Player.Level == 99 ? 0 : GameInfo.LevelsExp[world.Player.Level + 1] - GameInfo.LevelsExp[world.Player.Level]);
+            lvl.Draw(e.Graphics, 4, 31, world.Player.Level);
         }
 
         public void Update()
@@ -79,7 +77,7 @@ namespace ulHelper.App.Drawing
         void RedrawThreadFunc()
         {
             int delay = Properties.Settings.Default.PlayerPanelRefreshTime;
-            while (true)
+            while (!needTerminate)
             {
                 needRedraw = false;
                 if (form.IsHandleCreated)
@@ -95,5 +93,31 @@ namespace ulHelper.App.Drawing
             g.Clear(GUI.BgColor);
             GUI.RoundedRectangle(g, 0, 0, pb.Width - 1, pb.Height - 1);
         }
+
+        #region Dispose pattern
+
+        private bool _disposed;
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    needRedraw = true;
+                    needTerminate = true;
+                    redrawThread.Join();
+                }
+                _disposed = true;
+            }
+        }
+
+        #endregion
     }
 }

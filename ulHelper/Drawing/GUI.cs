@@ -32,5 +32,22 @@ namespace ulHelper.App.Drawing
             g.DrawLine(Pens.Black, width - 2, 0, width, 2);
             g.DrawLine(Pens.Black, width - 2, height, width, height - 2);
         }
+
+        public static void CroppedRectangle(Graphics g, int x, int y, int width, int height, int dx, int dy)
+        {
+            g.DrawLine(Pens.Black, 1, 0, width - 1, 0);
+            g.DrawLine(Pens.Black, 1, height, width - 1  - dx, height);
+            g.DrawLine(Pens.Black, 0, 1, 0, height - 1);
+            g.DrawLine(Pens.Black, width, 1, width, height - 1 - dy);
+            g.DrawLine(Pens.Black, width - dx + 1, height - dy, width - 1, height - dy);
+            g.DrawLine(Pens.Black, width - dx, height - dy + 1, width - dx, height - 1);
+
+            g.DrawLine(Pens.Black, 2, 0, 0, 2);
+            g.DrawLine(Pens.Black, 2, height, 0, height - 2);
+            g.DrawLine(Pens.Black, width - 2, 0, width, 2);
+            g.DrawLine(Pens.Black, width - dx + 2, height - dy, width - dx, height - dy + 2);
+            g.DrawLine(Pens.Black, width, height - dy - 2, width - 2, height - dy);
+            g.DrawLine(Pens.Black, width - dx - 2, height, width - dx, height - 2);
+        }
     }
 }

@@ -33,6 +33,8 @@ namespace ulHelper.App
         {
             this.Name = name;
             this.World = new GameWorld();
+            this.World.AddNpc += World_AddNpc;
+            this.World.AddCharacter += World_AddCharacter;
             this.Form = new AccountForm(this);
             this.LoadedPlugins = new List<BasePlugin>();
             this.SendBuffer = new List<ClientPacket>();
@@ -44,6 +46,20 @@ namespace ulHelper.App
                 appLive = new AppLiveModule(this);
                 pckSend = new PacketsSendModule(this);
             }
+        }
+
+        void World_AddCharacter(object sender, L2Objects.Events.L2CharacterEventArgs e)
+        {
+            e.Character.ClassName = "[unknown]";
+            if (GameInfo.Classes.ContainsKey(e.Character.ClassID))
+                e.Character.ClassName = GameInfo.Classes[e.Character.ClassID].Name;
+        }
+
+        void World_AddNpc(object sender, L2Objects.Events.L2NpcEventArgs e)
+        {
+            e.Npc.Name = "[unknown]";
+            if (GameInfo.Npcs.ContainsKey(e.Npc.NpcID))
+                e.Npc.Name = GameInfo.Npcs[e.Npc.NpcID];
         }
 
         public override string ToString()
@@ -95,11 +111,10 @@ namespace ulHelper.App
                         appLive.Terminate();
                         pckSend.Terminate();
                     }
+                    this.World.Dispose();
                     this.Form.NeedTerminate = true;
-                    if (this.Form.InvokeRequired)
-                        this.Form.Invoke((ThreadStart)this.Form.Close);
-                    else
-                        this.Form.Close();
+                    this.Form.Close();
+                    this.Form.Dispose();
                 }
                 _disposed = true;
             }

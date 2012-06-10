@@ -65,5 +65,18 @@ namespace ulHelper.App
            int nOrientation, int fnWeight, uint fdwItalic, uint fdwUnderline, uint
            fdwStrikeOut, uint fdwCharSet, uint fdwOutputPrecision, uint
            fdwClipPrecision, uint fdwQuality, uint fdwPitchAndFamily, string lpszFace);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowPos")]
+        public static extern bool SetWindowPos(
+             IntPtr hWnd,           
+             int hWndInsertAfter,
+             int X,  
+             int Y,  
+             int cx, 
+             int cy, 
+             uint uFlags);       
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     }
 }

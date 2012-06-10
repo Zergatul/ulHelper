@@ -10,8 +10,12 @@ namespace ulHelper.L2Objects
     {
         public int Relation { get; set; }
         public int ClassID { get; set; }
+        public string ClassName { get; set; }
         public int MaxCP { get; set; }
         public int CurCP { get; set; }
+        public int Karma { get; set; }
+        public bool Noble { get; set; }
+        public bool Hero { get; set; }
 
         public L2Character()
         {
@@ -31,6 +35,17 @@ namespace ulHelper.L2Objects
             this.Name = pck.VisibleName;
             this.Title = pck.VisibleTitle;
             this.ClassID = pck.ClassID;
+            this.CurHP = pck.CurHP;
+            this.MaxHP = pck.MaxHP;
+            this.CurMP = pck.CurMP;
+            this.MaxMP = pck.MaxMP;
+            this.Speed = (int)Math.Round((pck.IsRun == 1 ? pck.RunSpeed : pck.WalkSpeed) * pck.MoveMult);
+            this.CastSpeed = pck.CastSpeed;
+            this.AtkSpeed = pck.AtkSpeed;
+            this.Karma = pck.Karma;
+            this.Noble = pck.IsNoble == 1;
+            this.Hero = pck.IsHero == 1;
+            this.CurCP = pck.CurCP;
         }
     }
 }

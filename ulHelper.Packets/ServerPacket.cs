@@ -47,10 +47,14 @@ namespace ulHelper.Packets
                 return new TargetSelected(this);
             if (ID == 0x24)
                 return new TargetUnselected(this);
+            if (ID == 0x2F)
+                return new MoveToLocation(this);
             if (ID == 0x31)
                 return new CharInfo(this);
             if (ID == 0x32)
                 return new UserInfo(this);
+            if (ID == 0x47)
+                return new StopMove(this);
             if (ID == 0x62)
                 return new SystemMessage(this);
             if (ID == 0xB9)
@@ -92,6 +96,13 @@ namespace ulHelper.Packets
             return result;
         }
 
+        protected double ReadDouble()
+        {
+            double result = BitConverter.ToDouble(Data, Position);
+            Position += 8;
+            return result;
+        }
+
         protected string ReadString()
         {
             int start = Position;
@@ -99,6 +110,18 @@ namespace ulHelper.Packets
                 Position += 2;
             Position += 2;
             return Encoding.Unicode.GetString(Data, start, Position - start - 2);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(ID.ToString("X2"));
+            for (int i = 0; i < Data.Length; i++)
+            {
+                sb.Append(' ');
+                sb.Append(Data[i].ToString("X2"));
+            }
+            return sb.ToString();
         }
     }
 }
