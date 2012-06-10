@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +9,7 @@ using ComponentFactory.Krypton.Toolkit;
 using System.Threading;
 using ulHelper.L2Objects;
 using ulHelper.App.Drawing;
+using ulHelper.GameInfo;
 
 namespace ulHelper.App
 {
@@ -32,12 +33,12 @@ namespace ulHelper.App
 
         void AppLoad()
         {
-            operText = "Загрузка карты . . .";
+            operText = "Р—Р°РіСЂСѓР·РєР° РєР°СЂС‚С‹ . . .";
             this.Invoke((SimpleCall)TextChange);
             WorldMap.Load();
             progress = 30;
 
-            operText = "Загрузка рисунков . . .";
+            operText = "Р—Р°РіСЂСѓР·РєР° СЂРёСЃСѓРЅРєРѕРІ . . .";
             this.Invoke((SimpleCall)TextChange);
             this.Invoke((SimpleCall)ProgressChange);
             CPBar.Load();
@@ -50,26 +51,32 @@ namespace ulHelper.App
             TargetPanel.Load();
             progress = 50;
 
-            operText = "Загрузка игровых классов . . .";
+            operText = "Р—Р°РіСЂСѓР·РєР° РёРіСЂРѕРІС‹С… РєР»Р°СЃСЃРѕРІ . . .";
             this.Invoke((SimpleCall)TextChange);
             this.Invoke((SimpleCall)ProgressChange);
-            GameInfo.LoadClasses();
-            GameInfo.LoadLevels();
+            Info.LoadClasses();
+            Info.LoadLevels();
             progress = 55;
 
-            operText = "Загрузка NPC . . .";
+            operText = "Р—Р°РіСЂСѓР·РєР° NPC . . .";
             this.Invoke((SimpleCall)TextChange);
             this.Invoke((SimpleCall)ProgressChange);
-            GameInfo.LoadNpcs();
+            Info.LoadNpcs();
             progress = 60;
 
-            operText = "Загрузка плагинов . . .";
+            operText = "Р—Р°РіСЂСѓР·РєР° СЃРєРёР»Р»РѕРІ . . .";
+            this.Invoke((SimpleCall)TextChange);
+            this.Invoke((SimpleCall)ProgressChange);
+            Info.LoadSkills();
+            progress = 65;
+
+            operText = "Р—Р°РіСЂСѓР·РєР° РїР»Р°РіРёРЅРѕРІ . . .";
             this.Invoke((SimpleCall)TextChange);
             this.Invoke((SimpleCall)ProgressChange);
             AppPlugins.Load();
             progress = 100;
 
-            operText = "Завершено";
+            operText = "Р—Р°РІРµСЂС€РµРЅРѕ";
             this.Invoke((SimpleCall)TextChange);
             this.Invoke((SimpleCall)ProgressChange);
 

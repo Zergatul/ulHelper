@@ -23,10 +23,14 @@ namespace ulHelper.L2Objects
         public event EventHandler PlayerUpdate;
         public event EventHandler PlayerTargetUpdate;
         public event EventHandler<L2LiveObjectEventArgs> L2LiveObjectUpdate;
+        public event EventHandler<L2AttackEventArgs> ObjectAttack;
+        public event EventHandler<L2SkillUseEventArgs> ObjectSkillUse;
 
         L2CharacterEventArgs characterEventArgs = new L2CharacterEventArgs();
         L2NpcEventArgs npcEventArgs = new L2NpcEventArgs();
         L2LiveObjectEventArgs liveObjEventArgs = new L2LiveObjectEventArgs();
+        L2AttackEventArgs attackEventArgs = new L2AttackEventArgs();
+        L2SkillUseEventArgs skillUseEventArgs = new L2SkillUseEventArgs();
 
         Thread thread;
         bool _needTerminate;
@@ -53,22 +57,35 @@ namespace ulHelper.L2Objects
                 lock (movingObjects)
                 {
                     foreach (var obj in movingObjects)
-                    {
-                        double time = (now - obj.StartMove).TotalSeconds;
-                        double distance = time * obj.Speed;
-                        if (distance > obj.MovingDistance)
+                        if (obj.MoveType == MoveType.MoveToLocation)
                         {
-                            needRemove.Add(obj);
-                            obj.IsMoving = false;
-                            obj.X = obj.MoveToX;
-                            obj.Y = obj.MoveToY;
+                            double time = (now - obj.StartMove).TotalSeconds;
+                            double distance = time * obj.Speed;
+                            if (distance > obj.MovingDistance)
+                            {
+                                needRemove.Add(obj);
+                                obj.MoveType = MoveType.None;
+                                obj.X = obj.MoveToX;
+                                obj.Y = obj.MoveToY;
+                            }
+                            else
+                            {
+                                obj.X = obj.MoveFromX + obj.Cos * distance;
+                                obj.Y = obj.MoveFromY + obj.Sin * distance;
+                            }
                         }
                         else
                         {
-                            obj.X = obj.MoveFromX + (int)Math.Round(obj.Cos * distance);
-                            obj.Y = obj.MoveFromY + (int)Math.Round(obj.Sin * distance);
+                            obj.PrepareMoveToPawn();
+                            double time = (now - obj.StartMove).TotalSeconds;
+                            double distance = time * obj.Speed;
+                            if (obj.MovingDistance > 100)
+                            {
+                                obj.X += obj.Cos * distance;
+                                obj.Y += obj.Sin * distance;
+                            }
+                            obj.StartMove = now;
                         }
-                    }
                     foreach (var obj in needRemove)
                         movingObjects.Remove(obj);
                 }
@@ -118,15 +135,92 @@ namespace ulHelper.L2Objects
                 ProcessUserInfo(pck as UserInfo);
                 return;
             }
+            if (pck is Attack)
+            {
+                ProcessAttack(pck as Attack);
+                return;
+            }
             if (pck is StopMove)
             {
                 ProcessStopMove(pck as StopMove);
+                return;
+            }
+            if (pck is MagicSkillUse)
+            {
+                ProcessMagicSkillUse(pck as MagicSkillUse);
+                return;
+            }
+            if (pck is MoveToPawn)
+            {
+                ProcessMoveToPawn(pck as MoveToPawn);
                 return;
             }
             if (pck is MyTargetSelected)
             {
                 ProcessMyTargetSelected(pck as MyTargetSelected);
                 return;
+            }
+        }
+
+        private void ProcessMagicSkillUse(MagicSkillUse pck)
+        {
+            var obj = FindObject(pck.ObjectID);
+            var target = FindObject(pck.TargetID);
+            if (obj != null)
+            {
+                obj.X = pck.X;
+                obj.Y = pck.Y;
+                obj.Z = pck.Z;
+            }
+            if (target != null)
+            {
+                target.X = pck.TargetX;
+                target.Y = pck.TargetY;
+                target.Z = pck.TargetZ;
+            }
+            if (obj != null && target != null)
+                OnObjectSkillUse(obj, target, pck.SkillID, pck.SkillLevel, pck.CastTimeMs, pck.ReuseTimeMs);
+        }
+
+        private void ProcessAttack(Attack pck)
+        {
+            var obj = FindObject(pck.AttackerObjectID);
+            if (obj != null)
+            {
+                var targets = new List<AttackInfo>();
+                var target = FindObject(pck.TargetObjectID);
+                if (target != null)
+                    targets.Add(new AttackInfo { Object = target, Damage = pck.Damage });
+                foreach (var hit in pck.Hits)
+                {
+                    target = FindObject(hit.TargetID);
+                    if (target != null)
+                        targets.Add(new AttackInfo { Object = target, Damage = hit.Damage });
+                }
+                if (targets.Count > 0)
+                    OnAttack(obj, targets);
+            }
+        }
+
+        private void ProcessMoveToPawn(MoveToPawn pck)
+        {
+            var obj = FindObject(pck.CharID);
+            var pawn = FindObject(pck.TargetID);
+            if (obj != null && pawn != null)
+            {
+                lock (movingObjects)
+                    if (!movingObjects.Contains(obj))
+                        movingObjects.Add(obj);
+
+                obj.MoveType = MoveType.MoveToPawn;
+                obj.StartMove = DateTime.Now;
+                obj.X = pck.X;
+                obj.Y = pck.Y;
+                obj.Z = pck.Z;
+                pawn.X = pck.TargetX;
+                pawn.Y = pck.TargetY;
+                pawn.Z = pck.TargetZ;
+                obj.Pawn = pawn;
             }
         }
 
@@ -137,7 +231,7 @@ namespace ulHelper.L2Objects
             {
                 lock (movingObjects)
                     movingObjects.Remove(obj);
-                obj.IsMoving = false;
+                obj.MoveType = MoveType.None;
                 obj.X = pck.X;
                 obj.Y = pck.Y;
                 obj.Z = pck.Z;
@@ -153,7 +247,7 @@ namespace ulHelper.L2Objects
                     if (!movingObjects.Contains(obj))
                         movingObjects.Add(obj);
 
-                obj.IsMoving = true;
+                obj.MoveType = MoveType.MoveToLocation;
                 obj.MoveFromX = pck.CurX;
                 obj.MoveFromY = pck.CurY;
                 obj.MoveToX = pck.DestX;
@@ -177,7 +271,7 @@ namespace ulHelper.L2Objects
             }
             if (ch != null)
             {
-                PerformPlayerTargetUpdate();
+                OnPlayerTargetUpdate();
                 return;
             }
 
@@ -192,13 +286,13 @@ namespace ulHelper.L2Objects
                 }
             }
             if (npc != null)
-                PerformPlayerTargetUpdate();
+                OnPlayerTargetUpdate();
         }
 
         private void ProcessUserInfo(UserInfo pck)
         {
             Player.Update(pck);
-            PerformPlayerUpdate();
+            OnPlayerUpdate();
         }
 
         private void ProcessCharInfo(CharInfo pck)
@@ -216,13 +310,13 @@ namespace ulHelper.L2Objects
                 }
             }
             if (added)
-                PerformAddCharacter(ch);
+                OnAddCharacter(ch);
             else
             {
                 ch.Update(pck);
                 if (Player.Target == ch)
-                    PerformPlayerTargetUpdate();
-                PerformL2LiveObjectUpdate(ch);
+                    OnPlayerTargetUpdate();
+                OnL2LiveObjectUpdate(ch);
             }
         }
 
@@ -231,7 +325,7 @@ namespace ulHelper.L2Objects
             if (pck.TargetID == Player.ObjectID)
             {
                 Player.Target = null;
-                PerformPlayerTargetUpdate();
+                OnPlayerTargetUpdate();
             }
         }
 
@@ -243,7 +337,7 @@ namespace ulHelper.L2Objects
                     Characters.Clear();
                 lock (Npcs)
                     Npcs.Clear();
-                PerformDeleteAllObjects();
+                OnDeleteAllObjects();
             }
         }
 
@@ -284,12 +378,12 @@ namespace ulHelper.L2Objects
                             break;
                     }
                 if (obj == Player)
-                    PerformPlayerUpdate();
+                    OnPlayerUpdate();
                 else
                 {
-                    PerformL2LiveObjectUpdate(obj);
+                    OnL2LiveObjectUpdate(obj);
                     if (Player.Target == obj)
-                        PerformPlayerTargetUpdate();
+                        OnPlayerTargetUpdate();
                 }
             }
         }
@@ -309,13 +403,13 @@ namespace ulHelper.L2Objects
                 }
             }
             if (added)
-                PerformAddNpc(npc);
+                OnAddNpc(npc);
             else
             {
                 npc.Update(pck);
                 if (Player.Target == npc)
-                    PerformPlayerTargetUpdate();
-                PerformL2LiveObjectUpdate(npc);
+                    OnPlayerTargetUpdate();
+                OnL2LiveObjectUpdate(npc);
             }
         }
 
@@ -330,11 +424,11 @@ namespace ulHelper.L2Objects
             }
             if (ch != null)
             {
-                PerformDeleteCharacter(ch);
+                OnDeleteCharacter(ch);
                 if (Player.Target == ch)
                 {
                     Player.Target = null;
-                    PerformPlayerTargetUpdate();
+                    OnPlayerTargetUpdate();
                 }
                 return;
             }
@@ -347,11 +441,11 @@ namespace ulHelper.L2Objects
             }
             if (npc != null)
             {
-                PerformDeleteNpc(npc);
+                OnDeleteNpc(npc);
                 if (Player.Target == npc)
                 {
                     Player.Target = null;
-                    PerformPlayerTargetUpdate();
+                    OnPlayerTargetUpdate();
                 }
             }
         }
@@ -370,76 +464,110 @@ namespace ulHelper.L2Objects
             return obj;
         }
 
-        void PerformAddNpc(L2Npc npc)
+        void OnAddNpc(L2Npc npc)
         {
-            if (AddNpc != null)
+            var eh = AddNpc;
+            if (eh != null)
             {
                 npcEventArgs.Npc = npc;
-                AddNpc(this, npcEventArgs);
+                eh(this, npcEventArgs);
             }
         }
 
-        void PerformDeleteCharacter(L2Character ch)
+        void OnDeleteCharacter(L2Character ch)
         {
             lock (movingObjects)
                 movingObjects.Remove(ch);
-            if (DeleteCharacter != null)
+            var eh = DeleteCharacter;
+            if (eh != null)
             {
                 characterEventArgs.Character = ch;
-                DeleteCharacter(this, characterEventArgs);
+                eh(this, characterEventArgs);
             }
         }
 
-        void PerformPlayerTargetUpdate()
+        void OnPlayerTargetUpdate()
         {
-            if (PlayerTargetUpdate != null)
-                PlayerTargetUpdate(this, EventArgs.Empty);
+            var eh = PlayerTargetUpdate;
+            if (eh != null)
+                eh(this, EventArgs.Empty);
         }
 
-        void PerformDeleteNpc(L2Npc npc)
+        void OnDeleteNpc(L2Npc npc)
         {
             lock (movingObjects)
                 movingObjects.Remove(npc);
-            if (DeleteNpc != null)
+            var eh = DeleteNpc;
+            if (eh != null)
             {
                 npcEventArgs.Npc = npc;
-                DeleteNpc(this, npcEventArgs);
+                eh(this, npcEventArgs);
             }
         }
 
-        void PerformL2LiveObjectUpdate(L2LiveObject obj)
+        void OnL2LiveObjectUpdate(L2LiveObject obj)
         {
-            if (L2LiveObjectUpdate != null)
+            var eh = L2LiveObjectUpdate;
+            if (eh != null)
             {
                 liveObjEventArgs.LiveObject = obj;
-                L2LiveObjectUpdate(this, liveObjEventArgs);
+                eh(this, liveObjEventArgs);
             }
         }
 
-        void PerformPlayerUpdate()
+        void OnPlayerUpdate()
         {
-            if (PlayerUpdate != null)
-                PlayerUpdate(this, EventArgs.Empty);
+            var eh = PlayerUpdate;
+            if (eh != null)
+                eh(this, EventArgs.Empty);
         }
 
-        void PerformDeleteAllObjects()
+        void OnDeleteAllObjects()
         {
             lock (movingObjects)
                 movingObjects.Clear();
-            if (DeleteAllObjects != null)
-                DeleteAllObjects(this, EventArgs.Empty);
+            var eh = DeleteAllObjects;
+            if (eh != null)
+                eh(this, EventArgs.Empty);
         }
 
-        void PerformAddCharacter(L2Character ch)
+        void OnAddCharacter(L2Character ch)
         {
-            if (AddCharacter != null)
+            var eh = AddCharacter;
+            if (eh != null)
             {
                 characterEventArgs.Character = ch;
-                AddCharacter(this, characterEventArgs);
+                eh(this, characterEventArgs);
             }
         }
 
-        public void ___PerformAddCharacter()
+        void OnAttack(L2LiveObject attacker, List<AttackInfo> targets)
+        {
+            var eh = ObjectAttack;
+            if (eh != null)
+            {
+                attackEventArgs.Attacker = attacker;
+                attackEventArgs.Targets = targets;
+                eh(this, attackEventArgs);
+            }
+        }
+
+        void OnObjectSkillUse(L2LiveObject obj, L2LiveObject target, int skillID, int skillLevel, int castTimeMs, int reuseTimeMs)
+        {
+            var eh = ObjectSkillUse;
+            if (eh != null)
+            {
+                skillUseEventArgs.Object = obj;
+                skillUseEventArgs.Target = target;
+                skillUseEventArgs.SkillID = skillID;
+                skillUseEventArgs.SkillLevel = skillLevel;
+                skillUseEventArgs.CastTimeMs = castTimeMs;
+                skillUseEventArgs.ReuseTimeMs = reuseTimeMs;
+                eh(this, skillUseEventArgs);
+            }
+        }
+
+        public void ___OnAddCharacter()
         {
             characterEventArgs.Character = Characters.First();
             if (AddCharacter != null)

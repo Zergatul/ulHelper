@@ -21,11 +21,12 @@ namespace ulHelper.L2Objects
         public int Level { get; set; }
         public L2LiveObject Target { get; set; }
 
-        internal bool IsMoving { get; set; }
+        internal MoveType MoveType { get; set; }
         internal int MoveFromX { get; set; }
         internal int MoveFromY { get; set; }
         internal int MoveToX { get; set; }
         internal int MoveToY { get; set; }
+        internal L2LiveObject Pawn { get; set; }
         internal double Cos { get; set; }
         internal double Sin { get; set; }
         internal double MovingDistance { get; set; }
@@ -43,6 +44,13 @@ namespace ulHelper.L2Objects
             this.Cos = (MoveToX - MoveFromX) / MovingDistance;
             this.Sin = (MoveToY - MoveFromY) / MovingDistance;
             this.StartMove = DateTime.Now;
+        }
+
+        internal void PrepareMoveToPawn()
+        {
+            MovingDistance = Math.Sqrt((X - Pawn.X) * (X - Pawn.X) + (Y - Pawn.Y) * (Y - Pawn.Y));
+            this.Cos = (Pawn.X - X) / MovingDistance;
+            this.Sin = (Pawn.Y - Y) / MovingDistance;
         }
     }
 }

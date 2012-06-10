@@ -70,9 +70,9 @@ namespace ulHelper.App.Drawing
             DrawBorder(e.Graphics);
 
             int pX, pY;
-            WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.Player.X, world.Player.Y, scale);
-            pX = world.Player.X;
-            pY = world.Player.Y;
+            WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.Player.IntX, world.Player.IntY, scale);
+            pX = world.Player.IntX;
+            pY = world.Player.IntY;
             float xc = 1.0f * pb.Width / 2;
             float yc = 1.0f * pb.Height / 2;
 
@@ -83,8 +83,8 @@ namespace ulHelper.App.Drawing
             e.Graphics.SetClip(clipRectanle);
             foreach (var ch in characters)
             {
-                int dx = ch.X - pX;
-                int dy = ch.Y - pY;
+                int dx = ch.IntX - pX;
+                int dy = ch.IntY - pY;
                 e.Graphics.DrawEllipse(NeutralPen,
                     xc + WorldMap.ScaleX(dx) * pb.Width / scale - 1.5f,
                     yc + WorldMap.ScaleX(dy) * pb.Height / scale - 1.5f,

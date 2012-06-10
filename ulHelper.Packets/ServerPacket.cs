@@ -53,10 +53,16 @@ namespace ulHelper.Packets
                 return new CharInfo(this);
             if (ID == 0x32)
                 return new UserInfo(this);
+            if (ID == 0x33)
+                return new Attack(this);
             if (ID == 0x47)
                 return new StopMove(this);
+            if (ID == 0x48)
+                return new MagicSkillUse(this);
             if (ID == 0x62)
                 return new SystemMessage(this);
+            if (ID == 0x72)
+                return new MoveToPawn(this);
             if (ID == 0xB9)
                 return new MyTargetSelected(this);
             if (ID == 0xCE)

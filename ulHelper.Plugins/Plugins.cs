@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ulHelper.Packets;
 using System.Windows.Forms;
+using ulHelper.L2Objects;
 
 namespace ulHelper.Plugins
 {
@@ -13,13 +14,16 @@ namespace ulHelper.Plugins
         public abstract string Info { get; }
         public abstract string Version { get; }
 
+        public event EventHandler UserStopped;
+
         public abstract void Run();
         public abstract void Stop();
 
-        public Form CreateForm()
+        public virtual void OnUserStopped()
         {
-            var result = new Form();
-            return result;
+            var eh = UserStopped;
+            if (eh != null)
+                eh(this, EventArgs.Empty);
         }
     }
 
@@ -43,6 +47,6 @@ namespace ulHelper.Plugins
 
     public abstract class L2ObjectsPlugin : BasePlugin
     {
-
+        public GameWorld World { get; set; }
     }
 }

@@ -77,6 +77,9 @@
     <Compile Include="ServerPackets\62_SystemMessage.cs" />
     <Compile Include="ServerPackets\2F_MoveToLocation.cs" />
     <Compile Include="ServerPackets\47_StopMove.cs" />
+    <Compile Include="ServerPackets\72_MoveToPawn.cs" />
+    <Compile Include="ServerPackets\33_Attack.cs" />
+    <Compile Include="ServerPackets\48_MagicSkillUse.cs" />
     <Compile Include="ServerPackets\D0_MultiSellList.cs" />
     <Compile Include="ServerPackets\FEF6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

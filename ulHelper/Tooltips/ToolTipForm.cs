@@ -23,7 +23,6 @@ namespace ulHelper.App.Tooltips
         {
             InitializeComponent();
             needTerminate = false;
-            this.FormClosing += ToolTipForm_FormClosing;
             thread = new Thread(PictureBoxUpdateFunc);
             thread.Start();
         }
@@ -85,7 +84,7 @@ namespace ulHelper.App.Tooltips
                 Hide();
         }
 
-        void ToolTipForm_FormClosing(object sender, FormClosingEventArgs e)
+        public void DisposeResources()
         {
             needRedraw = true;
             needTerminate = true;

@@ -72,15 +72,16 @@ namespace ulHelper.App
                     if (acc.Form == this)
                         MainForm.Instance.accountsCLB.SetItemChecked(MainForm.Instance.accountsCLB.FindString(acc.Name), false);
             }
-            else
-            {
-                playerPanel.Dispose();
-                targetPanel.Dispose();
-                radar.Dispose();
-                objectsPanel.Dispose();
-                characterToolTip.Dispose();
-                npcToolTip.Dispose();
-            }
+        }
+
+        public void DisposeResources()
+        {
+            playerPanel.Dispose();
+            targetPanel.Dispose();
+            radar.Dispose();
+            objectsPanel.Dispose();
+            characterToolTip.Dispose();
+            npcToolTip.Dispose();
         }
     }
 }

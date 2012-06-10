@@ -13,6 +13,7 @@ namespace ulHelper.App
     public partial class AccountSettingsForm : KryptonForm
     {
         private AccountData AccData;
+        bool uncheckFromCode;
 
         public AccountSettingsForm(AccountData accData)
             : base()
@@ -34,10 +35,13 @@ namespace ulHelper.App
                 var plugin = (pluginsCLB.Items[e.Index] as PluginInfo).CreateInstance(true);
                 if (plugin is ParsedPacketsPlugin)
                     (plugin as ParsedPacketsPlugin).OnClientPacketAdd += OnClientPacketAdd;
+                if (plugin is L2ObjectsPlugin)
+                    (plugin as L2ObjectsPlugin).World = AccData.World;
+                plugin.UserStopped += plugin_UserStopped;
                 plugin.Run();
                 AccData.LoadedPlugins.Add(plugin);
             }
-            if (e.NewValue == CheckState.Unchecked)
+            if (e.NewValue == CheckState.Unchecked && !uncheckFromCode)
             {
                 var pluginInfo = pluginsCLB.Items[e.Index] as PluginInfo;
                 Plugins.BasePlugin selectedPlugin = null;
@@ -62,6 +66,27 @@ namespace ulHelper.App
         {
             e.Cancel = true;
             Hide();
+        }
+
+        private void plugin_UserStopped(object sender, EventArgs e)
+        {
+            for (int i = 0; i < pluginsCLB.Items.Count; i++)
+                if (sender.GetType().FullName == (pluginsCLB.Items[i] as PluginInfo).Type.FullName)
+                {
+                    if (pluginsCLB.InvokeRequired)
+                        pluginsCLB.Invoke((System.Threading.ThreadStart)(() => { SetUnchecked(i); }));
+                    else
+                        SetUnchecked(i);
+                    break;
+                }
+            AccData.LoadedPlugins.Remove(sender as BasePlugin);
+        }
+
+        private void SetUnchecked(int index)
+        {
+            uncheckFromCode = true;
+            pluginsCLB.SetItemChecked(index, false);
+            uncheckFromCode = false;
         }
     }
 }

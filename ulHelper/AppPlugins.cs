@@ -30,6 +30,8 @@ namespace ulHelper.App
                         Plugins.Add(new PluginInfo(type));
                     if (type.BaseType.FullName == typeof(UnparsedPacketsPlugin).FullName)
                         Plugins.Add(new PluginInfo(type));
+                    if (type.BaseType.FullName == typeof(L2ObjectsPlugin).FullName)
+                        Plugins.Add(new PluginInfo(type));
                 }
             }
         }

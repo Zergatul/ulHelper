@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ulHelper.L2Objects\ulHelper.L2Objects.csproj">
+      <Project>{7E56F3D1-8F45-4C62-9A46-F11D7F960865}</Project>
+      <Name>ulHelper.L2Objects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ulHelper.Packets\ulHelper.Packets.csproj">
       <Project>{0D0633F3-6F55-4512-A7B7-5D489B795BE4}</Project>
       <Name>ulHelper.Packets</Name>

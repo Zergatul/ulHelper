@@ -5,12 +5,13 @@ using System.Text;
 using System.Xml.Linq;
 using System.Drawing;
 
-namespace ulHelper.App
+namespace ulHelper.GameInfo
 {
-    public static class GameInfo
+    public static class Info
     {
         public static Dictionary<int, L2Class> Classes;
         public static SortedDictionary<int, string> Npcs;
+        public static SortedDictionary<int, string> Skills;
         public static SortedDictionary<int, long> LevelsExp;
 
         public static void LoadClasses()
@@ -47,6 +48,14 @@ namespace ulHelper.App
             var xDoc = XDocument.Load(@"Data\Npcs.xml");
             foreach (var npcNode in xDoc.Element("npcs").Elements("npc"))
                 Npcs.Add((int)npcNode.Attribute("id"), (string)npcNode.Attribute("name"));
+        }
+
+        public static void LoadSkills()
+        {
+            Skills = new SortedDictionary<int, string>();
+            var xDoc = XDocument.Load(@"Data\Skills.xml");
+            foreach (var skillNode in xDoc.Element("skills").Elements("skill"))
+                Skills.Add((int)skillNode.Attribute("id"), (string)skillNode.Attribute("name"));
         }
 
         public static void LoadLevels()

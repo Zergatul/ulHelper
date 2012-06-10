@@ -7,6 +7,7 @@ using System.Threading;
 using System.Drawing;
 using ulHelper.L2Objects;
 using ulHelper.App.Tooltips;
+using ulHelper.GameInfo;
 
 namespace ulHelper.App.Drawing
 {
@@ -64,8 +65,8 @@ namespace ulHelper.App.Drawing
             hp.Draw(e.Graphics, 4, 16, world.Player.CurHP, world.Player.MaxHP);
             mp.Draw(e.Graphics, 27, 29, world.Player.CurMP, world.Player.MaxMP);
             exp.Draw(e.Graphics, 27, 42,
-                world.Player.Exp - GameInfo.LevelsExp[world.Player.Level],
-                world.Player.Level == 99 ? 0 : GameInfo.LevelsExp[world.Player.Level + 1] - GameInfo.LevelsExp[world.Player.Level]);
+                world.Player.Exp - Info.LevelsExp[world.Player.Level],
+                world.Player.Level == 99 ? 0 : Info.LevelsExp[world.Player.Level + 1] - Info.LevelsExp[world.Player.Level]);
             lvl.Draw(e.Graphics, 4, 31, world.Player.Level);
         }
 

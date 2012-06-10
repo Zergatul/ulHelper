@@ -127,7 +127,7 @@ namespace ulHelper.App.Tooltips
             {
                 if (disposing)
                 {
-                    form.Close();
+                    form.DisposeResources();
                     form.Dispose();
                 }
                 _disposed = true;

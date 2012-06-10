@@ -112,7 +112,8 @@ namespace ulHelper.App.Drawing
             this.Update();
             if (world.Player.Target == null)
             {
-                currentToolTip.Hide();
+                if (currentToolTip != null)
+                    currentToolTip.Hide();
                 currentToolTip = null;
             }
             else

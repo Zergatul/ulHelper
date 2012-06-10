@@ -84,7 +84,6 @@
     <Compile Include="ExceptionForm.Designer.cs">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameInfo.cs" />
     <Compile Include="Drawing\PlayerPanel.cs" />
     <Compile Include="Modules\AccountLiveModule.cs" />
     <Compile Include="Modules\AccountManagerModule.cs" />
@@ -92,7 +91,7 @@
     <Compile Include="Modules\PacketsReceiveModule.cs" />
     <Compile Include="Modules\PacketsSendModule.cs" />
     <Compile Include="PluginInfo.cs" />
-    <Compile Include="Plugins.cs" />
+    <Compile Include="AppPlugins.cs" />
     <Compile Include="Tooltips\CharacterToolTip.cs" />
     <Compile Include="Tooltips\NpcToolTip.cs" />
     <Compile Include="Tooltips\IToolTip.cs" />
@@ -170,6 +169,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\Npcs.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Skills.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Classes.png">
@@ -271,6 +273,10 @@
     <Content Include="ulHelper.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ulHelper.GameInfo\ulHelper.GameInfo.csproj">
+      <Project>{6CD440C8-C0B2-4EEF-88A5-E1E8524315BB}</Project>
+      <Name>ulHelper.GameInfo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ulHelper.L2Objects\ulHelper.L2Objects.csproj">
       <Project>{7E56F3D1-8F45-4C62-9A46-F11D7F960865}</Project>
       <Name>ulHelper.L2Objects</Name>

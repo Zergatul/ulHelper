@@ -7,6 +7,7 @@ using System.Drawing;
 using ulHelper.L2Objects;
 using ComponentFactory.Krypton.Toolkit;
 using ulHelper.App.Tooltips;
+using ulHelper.GameInfo;
 
 namespace ulHelper.App.Drawing
 {
@@ -109,13 +110,15 @@ namespace ulHelper.App.Drawing
                 bool change = false;
                 if (currentToolTip == characterToolTip)
                 {
-                    if (characterToolTip.Character != objList[hoveredIndex])
-                        change = true;
+                    if (0 <= hoveredIndex && hoveredIndex < objList.Count)
+                        if (characterToolTip.Character != objList[hoveredIndex])
+                            change = true;
                 }
                 else
                 {
-                    if (npcToolTip.Npc != objList[hoveredIndex])
-                        change = true;
+                    if (0 <= hoveredIndex && hoveredIndex < objList.Count)
+                        if (npcToolTip.Npc != objList[hoveredIndex])
+                            change = true;
                 }
                 if (change)
                 {
@@ -259,8 +262,8 @@ namespace ulHelper.App.Drawing
 
         void DrawL2Character(Graphics g, L2Character ch, int x, int y, int width)
         {
-            if (GameInfo.Classes.ContainsKey(ch.ClassID))
-                g.DrawImage(GameInfo.Classes[ch.ClassID].Icon, x, y);
+            if (Info.Classes.ContainsKey(ch.ClassID))
+                g.DrawImage(Info.Classes[ch.ClassID].Icon, x, y);
             else
                 g.DrawImage(unknownClass,  x, y);
             bar.Draw(g, x + 12, y + 1, ch.CurHP, ch.MaxHP);

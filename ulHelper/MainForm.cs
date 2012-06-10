@@ -59,7 +59,7 @@ namespace ulHelper.App
                         MaxHP = 2000,
                         ClassID = 140 + i
                     });
-                Accounts.First().World.___PerformAddCharacter();
+                Accounts.First().World.___OnAddCharacter();
                 RefreshAccounts();
             }
         }        
