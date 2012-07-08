@@ -86,9 +86,10 @@ namespace ulHelper.App.Tooltips
 
         public void DisposeResources()
         {
-            needRedraw = true;
+            /*needRedraw = true;
             needTerminate = true;
-            thread.Join();
+            thread.Join();*/
+            thread.Abort();
         }
     }
 }

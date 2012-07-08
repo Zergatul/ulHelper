@@ -21,8 +21,9 @@ namespace ulHelper.App.Modules
 
         public void Terminate()
         {
-            if (this.thread.ThreadState != ThreadState.Stopped)
-                thread.Join();
+            /*if (this.thread.ThreadState != ThreadState.Stopped)
+                thread.Join();*/
+            thread.Abort();
         }
 
         unsafe void ThreadFunc()

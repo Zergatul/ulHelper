@@ -27,7 +27,8 @@ namespace ulHelper.App.Modules
             if (thread.ThreadState != ThreadState.Stopped)
             {
                 eventWH.Set();
-                thread.Join();
+                //thread.Join();
+                thread.Abort();
             }
         }
 
@@ -127,6 +128,10 @@ namespace ulHelper.App.Modules
 
                 WinAPI.UnmapViewOfFile(lpBaseAddress);
                 WinAPI.CloseHandle(hFile);
+            }
+            catch (ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {

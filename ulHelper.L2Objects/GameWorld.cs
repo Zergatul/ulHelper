@@ -590,19 +590,11 @@ namespace ulHelper.L2Objects
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        void Dispose(bool disposing)
-        {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    _needTerminate = true;
-                    thread.Join();
-                }
+                /*_needTerminate = true;
+                thread.Join();*/
+                thread.Abort();
                 _disposed = true;
             }
         }

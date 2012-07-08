@@ -28,19 +28,13 @@ namespace ulHelper.App
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.kryptonManager = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
             this.kryptonPanel = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
             this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.accountsCLB = new ComponentFactory.Krypton.Toolkit.KryptonCheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel)).BeginInit();
             this.kryptonPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // kryptonManager
-            // 
-            this.kryptonManager.GlobalPaletteMode = ComponentFactory.Krypton.Toolkit.PaletteModeManager.SparkleOrange;
             // 
             // kryptonPanel
             // 
@@ -66,9 +60,9 @@ namespace ulHelper.App
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.accountsCLB.CheckOnClick = true;
-            this.accountsCLB.Location = new System.Drawing.Point(2, 20);
+            this.accountsCLB.Location = new System.Drawing.Point(2, 25);
             this.accountsCLB.Name = "accountsCLB";
-            this.accountsCLB.Size = new System.Drawing.Size(139, 147);
+            this.accountsCLB.Size = new System.Drawing.Size(139, 142);
             this.accountsCLB.TabIndex = 3;
             this.accountsCLB.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.accountsCLB_ItemCheck);
             // 
@@ -79,7 +73,6 @@ namespace ulHelper.App
             this.ClientSize = new System.Drawing.Size(143, 168);
             this.Controls.Add(this.kryptonPanel);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -97,7 +90,6 @@ namespace ulHelper.App
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager;
         private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel;
         private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
         public ComponentFactory.Krypton.Toolkit.KryptonCheckedListBox accountsCLB;

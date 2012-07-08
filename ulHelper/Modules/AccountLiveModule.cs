@@ -30,11 +30,12 @@ namespace ulHelper.App.Modules
 
         public void Terminate()
         {
-            if (this.thread.ThreadState != ThreadState.Stopped)
+            thread.Abort();
+            /*if (this.thread.ThreadState != ThreadState.Stopped)
             {
                 eventWH.Set();
                 thread.Join();
-            }
+            }*/
         }
 
         unsafe void ThreadFunc()
@@ -69,12 +70,16 @@ namespace ulHelper.App.Modules
                                 AccountManagerModule.Mutex.ReleaseMutex();
                             }
                             acc.Form.NeedTerminate = true;
-                            acc.Form.Invoke((ThreadStart)acc.Form.Close);
+                            acc.Form.InvokeIfNeeded(acc.Form.Close);
                             PerformRemoveAccount();
                             acc.Dispose();
                             break;
                         }
                     }
+            }
+            catch (ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {

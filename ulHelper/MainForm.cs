@@ -17,12 +17,13 @@ namespace ulHelper.App
     public partial class MainForm : KryptonForm
     {
         public static MainForm Instance;
-        public static bool DebugDraw = true;
+        public static bool DebugDraw = false;
         static Random rnd = new Random();
 
         static public volatile bool NeedTerminate;
 
-        public MainForm()
+        public MainForm() : 
+            base()
         {
             InitializeComponent();
             Instance = this;

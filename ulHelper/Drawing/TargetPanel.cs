@@ -246,9 +246,10 @@ namespace ulHelper.App.Drawing
             {
                 if (disposing)
                 {
-                    needRedraw = true;
+                    /*needRedraw = true;
                     needTerminate = true;
-                    redrawThread.Join();
+                    redrawThread.Join();*/
+                    redrawThread.Abort();
                 }
                 _disposed = true;
             }
