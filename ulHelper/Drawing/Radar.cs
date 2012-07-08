@@ -70,9 +70,9 @@ namespace ulHelper.App.Drawing
             DrawBorder(e.Graphics);
 
             int pX, pY;
-            WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.Player.IntX, world.Player.IntY, scale);
-            pX = world.Player.IntX;
-            pY = world.Player.IntY;
+            WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.User.IntX, world.User.IntY, scale);
+            pX = world.User.IntX;
+            pY = world.User.IntY;
             float xc = 1.0f * pb.Width / 2;
             float yc = 1.0f * pb.Height / 2;
 

@@ -20,7 +20,7 @@ namespace ulHelper.App
         public Boolean NeedTerminate;
         AccountData accData;
 
-        PlayerPanel playerPanel;
+        UserPanel playerPanel;
         TargetPanel targetPanel;
         Radar radar;
         ObjectsPanel objectsPanel;
@@ -41,7 +41,7 @@ namespace ulHelper.App
         {
             characterToolTip = new Tooltips.CharacterToolTip();
             npcToolTip = new Tooltips.NpcToolTip();
-            playerPanel = new PlayerPanel(kryptonPanel, accData.World);
+            playerPanel = new UserPanel(kryptonPanel, accData.World);
             targetPanel = new TargetPanel(kryptonPanel, accData.World, characterToolTip, npcToolTip);
             targetPanel.SettingsClick += targetPanel_SettingsClick;
             radar = new Radar(kryptonPanel, accData.World);
@@ -59,10 +59,10 @@ namespace ulHelper.App
 
         void targetPanel_SettingsClick(object sender, EventArgs e)
         {
-            //settings.Visible = !settings.Visible;
-            var pck = new ReqBypassToServer();
+            settings.Visible = !settings.Visible;
+            /*var pck = new ReqBypassToServer();
             pck.Command = "menu_select?ask=-303&reply=810";
-            accData.SendPacket(pck);
+            accData.SendPacket(pck);*/
         }
         
         private void AccountForm_FormClosing(object sender, FormClosingEventArgs e)

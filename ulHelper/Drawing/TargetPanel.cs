@@ -68,9 +68,42 @@ namespace ulHelper.App.Drawing
 
         void pb_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left)
+                return;
+
             if (buttonHovered)
                 if (SettingsClick != null)
                     SettingsClick(this, EventArgs.Empty);
+
+            if (world.User.Target != null)
+            {
+                if (world.User.Target is L2Npc)
+                {
+                    if (e.X >= 27 && e.Y >= 3 && e.X <= 27 + hpNpc.Width && e.Y <= 3 + hpNpc.Height)
+                    {
+                        hpNpc.OnMouseClick();
+                        Update();
+                    }
+                    if (e.X >= 27 && e.Y >= 16 && e.X <= 27 + mpNpc.Width && e.Y <= 16 + mpNpc.Height)
+                    {
+                        mpNpc.OnMouseClick();
+                        Update();
+                    }
+                }
+                if (world.User.Target is L2Character)
+                {
+                    if (e.X >= 3 && e.Y >= 3 && e.X <= 3 + hpNpc.Width && e.Y <= 3 + hpNpc.Height)
+                    {
+                        hpNpc.OnMouseClick();
+                        Update();
+                    }
+                    if (e.X >= 3 && e.Y >= 16 && e.X <= 3 + mpNpc.Width && e.Y <= 16 + mpNpc.Height)
+                    {
+                        mpNpc.OnMouseClick();
+                        Update();
+                    }
+                }
+            }
         }
 
         void pb_MouseLeave(object sender, EventArgs e)
@@ -95,7 +128,7 @@ namespace ulHelper.App.Drawing
             }
 
             bool toolTipVisible = e.X < pb.Width - 17 || e.Y < pb.Height - 17;
-            if (world.Player.Target != null)
+            if (world.User.Target != null)
                 if (currentToolTip != null)
                     if (toolTipVisible)
                     {
@@ -110,7 +143,7 @@ namespace ulHelper.App.Drawing
         void world_TargetPlayerUpdate(object sender, EventArgs e)
         {
             this.Update();
-            if (world.Player.Target == null)
+            if (world.User.Target == null)
             {
                 if (currentToolTip != null)
                     currentToolTip.Hide();
@@ -118,14 +151,14 @@ namespace ulHelper.App.Drawing
             }
             else
             {
-                if (world.Player.Target is L2Character)
+                if (world.User.Target is L2Character)
                 {
-                    characterToolTip.Character = world.Player.Target as L2Character;
+                    characterToolTip.Character = world.User.Target as L2Character;
                     currentToolTip = characterToolTip;
                 }
                 else
                 {
-                    npcToolTip.Npc = world.Player.Target as L2Npc;
+                    npcToolTip.Npc = world.User.Target as L2Npc;
                     currentToolTip = npcToolTip;
                 }
                 currentToolTip.Update();
@@ -149,18 +182,18 @@ namespace ulHelper.App.Drawing
             else
                 e.Graphics.DrawImage(settingsBmp, pb.Width - 15, pb.Height - 15);
 
-            if (world.Player.Target != null)
+            if (world.User.Target != null)
             {
-                if (world.Player.Target is L2Character)
+                if (world.User.Target is L2Character)
                 {
-                    var ch = world.Player.Target as L2Character;
+                    var ch = world.User.Target as L2Character;
                     hpChar.Draw(e.Graphics, 3, 3, ch.CurHP, ch.MaxHP);
                     mpChar.Draw(e.Graphics, 3, 16, ch.CurMP, ch.MaxMP);
                     e.Graphics.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, 2, 28);
                 }
-                if (world.Player.Target is L2Npc)
+                if (world.User.Target is L2Npc)
                 {
-                    var npc = world.Player.Target as L2Npc;
+                    var npc = world.User.Target as L2Npc;
                     hpNpc.Draw(e.Graphics, 27, 3, npc.CurHP, npc.MaxHP);
                     mpNpc.Draw(e.Graphics, 27, 16, npc.CurMP, npc.MaxMP);
                     lvl.Draw(e.Graphics, 3, 3, npc.Level);

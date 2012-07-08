@@ -11,7 +11,7 @@ using ulHelper.GameInfo;
 
 namespace ulHelper.App.Drawing
 {
-    public class PlayerPanel : IDisposable
+    public class UserPanel : IDisposable
     {
         PictureBox pb;
         Form form;
@@ -26,7 +26,7 @@ namespace ulHelper.App.Drawing
         ExpBar exp;
         LevelBar lvl;
 
-        public PlayerPanel(Control parent, GameWorld world)
+        public UserPanel(Control parent, GameWorld world)
         {
             this.world = world;
             this.world.PlayerUpdate += (s, e) => { this.Update(); };
@@ -37,6 +37,7 @@ namespace ulHelper.App.Drawing
             pb.Top = 0;
             pb.Left = 0;
             pb.Paint += pb_Paint;
+            pb.MouseClick += pb_MouseClick;
             parent.Controls.Add(pb);
 
             form = parent.FindForm();
@@ -47,6 +48,28 @@ namespace ulHelper.App.Drawing
             mp = new MPBar(pb.Width - 8 - 23);
             exp = new ExpBar(pb.Width - 8 - 23);
             lvl = new LevelBar();
+        }
+
+        void pb_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            if (e.X >= 4 && e.Y >= 3 && e.X <= 4 + cp.Width && e.Y <= 3 + cp.Height)
+            {
+                cp.OnMouseClick();
+                Update();
+            }
+            if (e.X >= 4 && e.Y >= 16 && e.X <= 4 + hp.Width && e.Y <= 16 + hp.Height)
+            {
+                hp.OnMouseClick();
+                Update();
+            }
+            if (e.X >= 27 && e.Y >= 29 && e.X <= 27 + mp.Width && e.Y <= 29 + mp.Height)
+            {
+                mp.OnMouseClick();
+                Update();
+            }
         }
 
         void form_HandleCreated(object sender, EventArgs e)
@@ -61,13 +84,13 @@ namespace ulHelper.App.Drawing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
-            cp.Draw(e.Graphics, 4, 3, world.Player.CurCP, world.Player.MaxCP);
-            hp.Draw(e.Graphics, 4, 16, world.Player.CurHP, world.Player.MaxHP);
-            mp.Draw(e.Graphics, 27, 29, world.Player.CurMP, world.Player.MaxMP);
+            cp.Draw(e.Graphics, 4, 3, world.User.CurCP, world.User.MaxCP);
+            hp.Draw(e.Graphics, 4, 16, world.User.CurHP, world.User.MaxHP);
+            mp.Draw(e.Graphics, 27, 29, world.User.CurMP, world.User.MaxMP);
             exp.Draw(e.Graphics, 27, 42,
-                world.Player.Exp - Info.LevelsExp[world.Player.Level],
-                world.Player.Level == 99 ? 0 : Info.LevelsExp[world.Player.Level + 1] - Info.LevelsExp[world.Player.Level]);
-            lvl.Draw(e.Graphics, 4, 31, world.Player.Level);
+                world.User.Exp - Info.LevelsExp[world.User.Level],
+                world.User.Level == 99 ? 0 : Info.LevelsExp[world.User.Level + 1] - Info.LevelsExp[world.User.Level]);
+            lvl.Draw(e.Graphics, 4, 31, world.User.Level);
         }
 
         public void Update()

@@ -17,7 +17,7 @@ namespace ulHelper.App
     public partial class MainForm : KryptonForm
     {
         public static MainForm Instance;
-        public static bool DebugDraw = false;
+        public static bool DebugDraw = true;
         static Random rnd = new Random();
 
         internal List<AccountData> Accounts;
@@ -48,7 +48,7 @@ namespace ulHelper.App
                     Name = "Волякасик",
                     NpcID = 93120
                 });
-                Accounts.First().World.Player.Target = Accounts.First().World.Npcs.First();
+                Accounts.First().World.User.Target = Accounts.First().World.Npcs.First();
                 for (int i = 0; i < 20; i++)
                     Accounts.First().World.Characters.Add(new L2Objects.L2Character
                     {

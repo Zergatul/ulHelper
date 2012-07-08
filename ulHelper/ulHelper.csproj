@@ -66,6 +66,7 @@
       <DependentUpon>AccountSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlExtensions.cs" />
+    <Compile Include="Drawing\BarInfoMode.cs" />
     <Compile Include="Drawing\BitmapFunctions.cs" />
     <Compile Include="Drawing\MiniHPBar.cs" />
     <Compile Include="Drawing\ExpBar.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="ExceptionForm.Designer.cs">
       <DependentUpon>ExceptionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Drawing\PlayerPanel.cs" />
+    <Compile Include="Drawing\UserPanel.cs" />
     <Compile Include="Modules\AccountLiveModule.cs" />
     <Compile Include="Modules\AccountManagerModule.cs" />
     <Compile Include="Modules\AppLiveModule.cs" />

@@ -26,14 +26,25 @@ namespace ulHelper.App.Drawing
 
         Bitmap bg, active;
         int width;
+        BarInfoMode mode;
 
         public HPBar(int width)
         {
             this.width = width;
             bg = new Bitmap(width, 12);
             active = new Bitmap(width, 12);
+            mode = BarInfoMode.Absolutely;
             PrepareBitmaps();
         }
+
+        public void OnMouseClick()
+        {
+            mode = mode.GetNext();
+        }
+
+        public int Width { get { return width; } }
+
+        public int Height { get { return 12; } }
 
         unsafe void PrepareBitmaps()
         {
@@ -62,7 +73,13 @@ namespace ulHelper.App.Drawing
             float pos = max == 0 ? 0 : 1f * width * cur / max;
             g.DrawImage(bg, x, y);
             g.DrawImage(active, x, y, pos, 12);
-            var str = cur + " / " + max;
+            string str = null;
+            if (mode == BarInfoMode.Absolutely)
+                str = cur + " / " + max;
+            if (mode == BarInfoMode.Relative)
+                str = Math.Round(max == 0 ? 0 : 100f * cur / max).ToString() + "%";
+            if (mode == BarInfoMode.Both)
+                str = cur + " / " + max + " [" + Math.Round(max == 0 ? 0 : 100f * cur / max).ToString() + "%" + "]";
             float strWidth = g.MeasureString(str, GUI.Font).Width;
             g.DrawString(str, GUI.Font, Brushes.White, x + (width - strWidth) / 2, y);
         }
