@@ -23,7 +23,7 @@ namespace ulHelper.App.Drawing
         PictureBox pb;
         Form form;
         bool needRedraw;
-        bool needTerminate;
+        volatile bool needTerminate;
         Thread redrawThread;
         GameWorld world;
         HPBar hpNpc;
@@ -184,8 +184,7 @@ namespace ulHelper.App.Drawing
             while (!needTerminate)
             {
                 needRedraw = false;
-                if (form.IsHandleCreated)
-                    pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
+                form.InvokeIfNeeded(() => { pb.Invalidate(); });
                 Thread.Sleep(delay);
                 while (!needRedraw)
                     Thread.Sleep(1);

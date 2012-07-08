@@ -21,7 +21,7 @@ namespace ulHelper.App
         static Random rnd = new Random();
 
         internal List<AccountData> Accounts;
-        internal bool NeedTerminate;
+        internal volatile bool NeedTerminate;
         internal AccountManagerModule AccManager;
 
         public MainForm()

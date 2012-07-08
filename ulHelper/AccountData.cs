@@ -21,7 +21,7 @@ namespace ulHelper.App
         internal GameWorld World;
 
         internal AccountForm Form;
-        internal bool NeedTerminate;
+        internal volatile bool NeedTerminate;
         internal List<BasePlugin> LoadedPlugins;
         internal List<ClientPacket> SendBuffer;
 
@@ -106,29 +106,20 @@ namespace ulHelper.App
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        void Dispose(bool disposing)
-        {
             if (!_disposed)
             {
-                if (disposing)
+                NeedTerminate = true;
+                if (!MainForm.DebugDraw)
                 {
-                    NeedTerminate = true;
-                    if (!MainForm.DebugDraw)
-                    {
-                        pckReceive.Terminate();
-                        accLive.Terminate();
-                        appLive.Terminate();
-                        pckSend.Terminate();
-                    }
-                    this.World.Dispose();
-                    this.Form.NeedTerminate = true;
-                    this.Form.DisposeResources();
-                    this.Form.Dispose();
+                    pckReceive.Terminate();
+                    accLive.Terminate();
+                    appLive.Terminate();
+                    pckSend.Terminate();
                 }
+                this.World.Dispose();
+                this.Form.NeedTerminate = true;
+                this.Form.DisposeResources();
+                this.Form.Dispose();
                 _disposed = true;
             }
         }

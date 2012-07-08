@@ -18,7 +18,7 @@ namespace ulHelper.App.Drawing
 
         PictureBox pb;
         Form form;
-        bool needTerminate;
+        volatile bool needTerminate;
         Thread redrawThread;
         GameWorld world;
         float scale;
@@ -99,9 +99,7 @@ namespace ulHelper.App.Drawing
             int delay = Properties.Settings.Default.RadarRefreshTime;
             while (!needTerminate)
             {
-                if (form.IsHandleCreated)
-                    //if (!(form as AccountForm).NeedTerminate)
-                        pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
+                form.InvokeIfNeeded(() => { pb.Invalidate(); });
                 Thread.Sleep(delay);
             }
         }
@@ -116,22 +114,13 @@ namespace ulHelper.App.Drawing
 
         private bool _disposed;
 
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        public void Dispose()
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    needTerminate = true;
-                    //redrawThread.Join();
-                    redrawThread.Abort();
-                }
+                needTerminate = true;
+                //redrawThread.Join();
+                redrawThread.Abort();
                 _disposed = true;
             }
         }

@@ -16,7 +16,7 @@ namespace ulHelper.App.Drawing
         PictureBox pb;
         Form form;
         bool needRedraw;
-        bool needTerminate;
+        volatile bool needTerminate;
         Thread redrawThread;
         GameWorld world;
         KryptonCheckBox showWar, showAlly, showNeutral, showNpc;
@@ -164,23 +164,13 @@ namespace ulHelper.App.Drawing
 
         private bool _disposed;
 
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        public void Dispose()
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
                     needRedraw = true;
                     needTerminate = true;
-                    //redrawThread.Join();
-                    redrawThread.Abort();
-                }
+                    redrawThread.Join();
                 _disposed = true;
             }
         }

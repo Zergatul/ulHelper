@@ -16,7 +16,7 @@ namespace ulHelper.App.Drawing
         PictureBox pb;
         Form form;
         bool needRedraw;
-        bool needTerminate;
+        volatile bool needTerminate;
         Thread redrawThread;
         GameWorld world;
 
@@ -81,8 +81,7 @@ namespace ulHelper.App.Drawing
             while (!needTerminate)
             {
                 needRedraw = false;
-                if (form.IsHandleCreated)
-                    pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
+                form.InvokeIfNeeded(() => { pb.Invalidate(); });
                 Thread.Sleep(delay);
                 while (!needRedraw)
                     Thread.Sleep(1);
@@ -99,22 +98,13 @@ namespace ulHelper.App.Drawing
 
         private bool _disposed;
 
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        public void Dispose()
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    needRedraw = true;
-                    needTerminate = true;
-                    redrawThread.Join();
-                }
+                needRedraw = true;
+                needTerminate = true;
+                redrawThread.Join();
                 _disposed = true;
             }
         }

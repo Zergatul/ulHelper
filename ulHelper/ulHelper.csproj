@@ -65,6 +65,7 @@
     <Compile Include="AccountSettingsForm.Designer.cs">
       <DependentUpon>AccountSettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ControlExtensions.cs" />
     <Compile Include="Drawing\BitmapFunctions.cs" />
     <Compile Include="Drawing\MiniHPBar.cs" />
     <Compile Include="Drawing\ExpBar.cs" />
@@ -173,6 +174,7 @@
     </Content>
     <Content Include="Data\Skills.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Images\Classes.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
