@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace ulHelper.App.Drawing
 {
-    public class MPBar
+    public class MPBar : Bar
     {
         static Bitmap leftBmp, rightBmp, centerBmp, leftBgBmp, rightBgBmp, centerBgBmp;
 
@@ -24,64 +24,38 @@ namespace ulHelper.App.Drawing
             BitmapFunctions.RemoveAlphaChannel(rightBgBmp);
         }
 
-        Bitmap bg, active;
-        int width;
-        BarInfoMode mode;
-
-        public MPBar(int width)
+        public MPBar(int left, int top, int width)
         {
-            this.width = width;
-            bg = new Bitmap(width, 12);
-            active = new Bitmap(width, 12);
-            mode = BarInfoMode.Absolutely;
+            this._left = left;
+            this._top = top;
+            this._width = width;
+            this._height = 12;
+            this._bg = new Bitmap(width, 12);
+            this._active = new Bitmap(width, 12);
+            this._mode = BarInfoMode.Absolutely;
             PrepareBitmaps();
         }
 
-        public void OnMouseClick()
-        {
-            mode = mode.GetNext();
-        }
-
-        public int Width { get { return width; } }
-
-        public int Height { get { return 12; } }
-
         unsafe void PrepareBitmaps()
         {
-            using (var g = Graphics.FromImage(bg))
+            using (var g = Graphics.FromImage(_bg))
             {
                 g.DrawImage(leftBgBmp, 0, 0);
-                g.DrawImage(rightBgBmp, width - rightBgBmp.Width, 0);
+                g.DrawImage(rightBgBmp, _width - rightBgBmp.Width, 0);
                 g.DrawImage(centerBgBmp,
-                    new RectangleF(leftBgBmp.Width, 0, width - leftBgBmp.Width - rightBgBmp.Width, 12),
+                    new RectangleF(leftBgBmp.Width, 0, _width - leftBgBmp.Width - rightBgBmp.Width, 12),
                     new RectangleF(0, 0, 1, 12),
                     GraphicsUnit.Pixel);
             }
-            using (var g = Graphics.FromImage(active))
+            using (var g = Graphics.FromImage(_active))
             {
                 g.DrawImage(leftBmp, 0, 0);
-                g.DrawImage(rightBmp, width - rightBmp.Width, 0);
+                g.DrawImage(rightBmp, _width - rightBmp.Width, 0);
                 g.DrawImage(centerBmp,
-                    new RectangleF(leftBmp.Width, 0, width - leftBmp.Width - rightBmp.Width, 12),
+                    new RectangleF(leftBmp.Width, 0, _width - leftBmp.Width - rightBmp.Width, 12),
                     new RectangleF(0, 0, 1, 12),
                     GraphicsUnit.Pixel);
             }
-        }
-
-        public void Draw(Graphics g, int x, int y, int cur, int max)
-        {
-            float pos = max == 0 ? 0 : 1f * width * cur / max;
-            g.DrawImage(bg, x, y);
-            g.DrawImage(active, x, y, pos, 12);
-            string str = null;
-            if (mode == BarInfoMode.Absolutely)
-                str = cur + " / " + max;
-            if (mode == BarInfoMode.Relative)
-                str = Math.Round(max == 0 ? 0 : 100f * cur / max).ToString() + "%";
-            if (mode == BarInfoMode.Both)
-                str = cur + " / " + max + " [" + Math.Round(max == 0 ? 0 : 100f * cur / max).ToString() + "%" + "]";
-            float strWidth = g.MeasureString(str, GUI.Font).Width;
-            g.DrawString(str, GUI.Font, Brushes.White, x + (width - strWidth) / 2, y);
         }
     }
 }

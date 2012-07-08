@@ -59,6 +59,7 @@
     <Compile Include="AccountForm.Designer.cs">
       <DependentUpon>AccountForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Accounts.cs" />
     <Compile Include="AccountSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +67,7 @@
       <DependentUpon>AccountSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlExtensions.cs" />
+    <Compile Include="Drawing\Bar.cs" />
     <Compile Include="Drawing\BarInfoMode.cs" />
     <Compile Include="Drawing\BitmapFunctions.cs" />
     <Compile Include="Drawing\MiniHPBar.cs" />

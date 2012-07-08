@@ -37,39 +37,35 @@ namespace ulHelper.App.Drawing
             pb.Top = 0;
             pb.Left = 0;
             pb.Paint += pb_Paint;
-            pb.MouseClick += pb_MouseClick;
+            pb.MouseDown += pb_MouseDown;
             parent.Controls.Add(pb);
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
 
-            cp = new CPBar(pb.Width - 8);
-            hp = new HPBar(pb.Width - 8);
-            mp = new MPBar(pb.Width - 8 - 23);
+            cp = new CPBar(4, 3, pb.Width - 8);
+            cp.RequestUpdate += bar_RequestUpdate;
+            hp = new HPBar(4, 16, pb.Width - 8);
+            hp.RequestUpdate += bar_RequestUpdate;
+            mp = new MPBar(27, 29, pb.Width - 8 - 23);
+            mp.RequestUpdate += bar_RequestUpdate;
             exp = new ExpBar(pb.Width - 8 - 23);
             lvl = new LevelBar();
         }
 
-        void pb_MouseClick(object sender, MouseEventArgs e)
+        void pb_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
                 return;
 
-            if (e.X >= 4 && e.Y >= 3 && e.X <= 4 + cp.Width && e.Y <= 3 + cp.Height)
-            {
-                cp.OnMouseClick();
-                Update();
-            }
-            if (e.X >= 4 && e.Y >= 16 && e.X <= 4 + hp.Width && e.Y <= 16 + hp.Height)
-            {
-                hp.OnMouseClick();
-                Update();
-            }
-            if (e.X >= 27 && e.Y >= 29 && e.X <= 27 + mp.Width && e.Y <= 29 + mp.Height)
-            {
-                mp.OnMouseClick();
-                Update();
-            }
+            cp.OnMouseClick(e.X, e.Y);
+            hp.OnMouseClick(e.X, e.Y);
+            mp.OnMouseClick(e.X, e.Y);
+        }
+
+        void bar_RequestUpdate(object sender, EventArgs e)
+        {
+            Update();
         }
 
         void form_HandleCreated(object sender, EventArgs e)
@@ -84,9 +80,9 @@ namespace ulHelper.App.Drawing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
-            cp.Draw(e.Graphics, 4, 3, world.User.CurCP, world.User.MaxCP);
-            hp.Draw(e.Graphics, 4, 16, world.User.CurHP, world.User.MaxHP);
-            mp.Draw(e.Graphics, 27, 29, world.User.CurMP, world.User.MaxMP);
+            cp.Draw(e.Graphics, world.User.CurCP, world.User.MaxCP);
+            hp.Draw(e.Graphics, world.User.CurHP, world.User.MaxHP);
+            mp.Draw(e.Graphics, world.User.CurMP, world.User.MaxMP);
             exp.Draw(e.Graphics, 27, 42,
                 world.User.Exp - Info.LevelsExp[world.User.Level],
                 world.User.Level == 99 ? 0 : Info.LevelsExp[world.User.Level + 1] - Info.LevelsExp[world.User.Level]);

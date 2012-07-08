@@ -34,7 +34,17 @@ namespace ulHelper.App
             InitializeComponent();
             this.accData = accData;
             settings = new AccountSettingsForm(accData);
+            accData.World.PlayerUpdate += World_PlayerUpdate;
             PrepareControls();
+        }
+
+        void World_PlayerUpdate(object sender, EventArgs e)
+        {
+            this.InvokeIfNeeded(() =>
+                {
+                    if (this.Name != ((GameWorld)sender).User.Name)
+                        this.Name = ((GameWorld)sender).User.Name;
+                });
         }
 
         void PrepareControls()
@@ -71,7 +81,7 @@ namespace ulHelper.App
             {
                 Hide();
                 e.Cancel = true;
-                foreach (var acc in MainForm.Instance.Accounts)
+                foreach (var acc in Accounts.List)
                     if (acc.Form == this)
                         MainForm.Instance.accountsCLB.SetItemChecked(MainForm.Instance.accountsCLB.FindString(acc.Name), false);
             }

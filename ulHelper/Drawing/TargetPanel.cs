@@ -55,15 +55,45 @@ namespace ulHelper.App.Drawing
             pb.MouseMove += pb_MouseMove;
             pb.MouseLeave += pb_MouseLeave;
             pb.MouseClick += pb_MouseClick;
+            pb.MouseDown += pb_MouseDown;
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
 
-            hpNpc = new HPBar(pb.Width - 8 - 23);
-            hpChar = new HPBar(pb.Width - 8);
-            mpNpc = new MPBar(pb.Width - 8 - 23);
-            mpChar = new MPBar(pb.Width - 8);
+            hpNpc = new HPBar(27, 3, pb.Width - 8 - 23);
+            hpNpc.RequestUpdate += bar_RequestUpdate;
+            hpChar = new HPBar(3, 3, pb.Width - 8);
+            hpChar.RequestUpdate += bar_RequestUpdate;
+            mpNpc = new MPBar(27, 16, pb.Width - 8 - 23);
+            mpNpc.RequestUpdate += bar_RequestUpdate;
+            mpChar = new MPBar(3, 16, pb.Width - 8);
+            mpChar.RequestUpdate += bar_RequestUpdate;
             lvl = new LevelBar();
+        }
+
+        void pb_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            if (world.User.Target != null)
+            {
+                if (world.User.Target is L2Character)
+                {
+                    hpChar.OnMouseClick(e.X, e.Y);
+                    mpChar.OnMouseClick(e.X, e.Y);
+                }
+                if (world.User.Target is L2Npc)
+                {
+                    hpNpc.OnMouseClick(e.X, e.Y);
+                    mpNpc.OnMouseClick(e.X, e.Y);
+                }
+            }
+        }
+
+        void bar_RequestUpdate(object sender, EventArgs e)
+        {
+            Update();
         }
 
         void pb_MouseClick(object sender, MouseEventArgs e)
@@ -73,37 +103,7 @@ namespace ulHelper.App.Drawing
 
             if (buttonHovered)
                 if (SettingsClick != null)
-                    SettingsClick(this, EventArgs.Empty);
-
-            if (world.User.Target != null)
-            {
-                if (world.User.Target is L2Npc)
-                {
-                    if (e.X >= 27 && e.Y >= 3 && e.X <= 27 + hpNpc.Width && e.Y <= 3 + hpNpc.Height)
-                    {
-                        hpNpc.OnMouseClick();
-                        Update();
-                    }
-                    if (e.X >= 27 && e.Y >= 16 && e.X <= 27 + mpNpc.Width && e.Y <= 16 + mpNpc.Height)
-                    {
-                        mpNpc.OnMouseClick();
-                        Update();
-                    }
-                }
-                if (world.User.Target is L2Character)
-                {
-                    if (e.X >= 3 && e.Y >= 3 && e.X <= 3 + hpNpc.Width && e.Y <= 3 + hpNpc.Height)
-                    {
-                        hpNpc.OnMouseClick();
-                        Update();
-                    }
-                    if (e.X >= 3 && e.Y >= 16 && e.X <= 3 + mpNpc.Width && e.Y <= 16 + mpNpc.Height)
-                    {
-                        mpNpc.OnMouseClick();
-                        Update();
-                    }
-                }
-            }
+                    SettingsClick(this, EventArgs.Empty);            
         }
 
         void pb_MouseLeave(object sender, EventArgs e)
@@ -187,15 +187,15 @@ namespace ulHelper.App.Drawing
                 if (world.User.Target is L2Character)
                 {
                     var ch = world.User.Target as L2Character;
-                    hpChar.Draw(e.Graphics, 3, 3, ch.CurHP, ch.MaxHP);
-                    mpChar.Draw(e.Graphics, 3, 16, ch.CurMP, ch.MaxMP);
+                    hpChar.Draw(e.Graphics, ch.CurHP, ch.MaxHP);
+                    mpChar.Draw(e.Graphics, ch.CurMP, ch.MaxMP);
                     e.Graphics.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, 2, 28);
                 }
                 if (world.User.Target is L2Npc)
                 {
                     var npc = world.User.Target as L2Npc;
-                    hpNpc.Draw(e.Graphics, 27, 3, npc.CurHP, npc.MaxHP);
-                    mpNpc.Draw(e.Graphics, 27, 16, npc.CurMP, npc.MaxMP);
+                    hpNpc.Draw(e.Graphics, npc.CurHP, npc.MaxHP);
+                    mpNpc.Draw(e.Graphics, npc.CurMP, npc.MaxMP);
                     lvl.Draw(e.Graphics, 3, 3, npc.Level);
                     e.Graphics.DrawString(npc.Name, GUI.Font, GUI.NpcBrush, 2, 28);
                     var str = "ID: " + npc.NpcID;

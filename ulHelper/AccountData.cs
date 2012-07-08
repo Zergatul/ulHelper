@@ -46,9 +46,15 @@ namespace ulHelper.App
             {
                 pckReceive = new PacketsReceiveModule(this);
                 accLive = new AccountLiveModule(this);
+                accLive.RemoveAccount += accLive_RemoveAccount;
                 appLive = new AppLiveModule(this);
                 pckSend = new PacketsSendModule(this);
             }
+        }
+
+        void accLive_RemoveAccount(object sender, EventArgs e)
+        {
+            MainForm.Instance.InvokeIfNeeded(MainForm.Instance.RefreshAccounts);
         }
 
         void CreateForm()
