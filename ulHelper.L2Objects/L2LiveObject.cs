@@ -30,6 +30,7 @@ namespace ulHelper.L2Objects
         internal double Cos { get; set; }
         internal double Sin { get; set; }
         internal double MovingDistance { get; set; }
+        internal int PawnDistance { get; set; }
         internal DateTime StartMove { get; set; }
 
         public L2LiveObject()

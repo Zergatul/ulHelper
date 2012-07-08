@@ -33,7 +33,7 @@ namespace ulHelper.L2Objects
         L2SkillUseEventArgs skillUseEventArgs = new L2SkillUseEventArgs();
 
         Thread thread;
-        bool _needTerminate;
+        volatile bool _needTerminate;
         List<L2LiveObject> movingObjects;
 
         public GameWorld()
@@ -79,10 +79,19 @@ namespace ulHelper.L2Objects
                             obj.PrepareMoveToPawn();
                             double time = (now - obj.StartMove).TotalSeconds;
                             double distance = time * obj.Speed;
-                            if (obj.MovingDistance > 100)
+                            if (obj.MovingDistance - distance > obj.PawnDistance)
                             {
                                 obj.X += obj.Cos * distance;
                                 obj.Y += obj.Sin * distance;
+                            }
+                            else
+                            {
+                                distance = obj.MovingDistance - obj.PawnDistance;
+                                if (distance > 1)
+                                {
+                                    obj.X += obj.Cos * distance;
+                                    obj.Y += obj.Sin * distance;
+                                }
                             }
                             obj.StartMove = now;
                         }
@@ -221,6 +230,7 @@ namespace ulHelper.L2Objects
                 pawn.Y = pck.TargetY;
                 pawn.Z = pck.TargetZ;
                 obj.Pawn = pawn;
+                obj.PawnDistance = pck.Distance;
             }
         }
 

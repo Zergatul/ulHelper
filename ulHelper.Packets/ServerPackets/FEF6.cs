@@ -15,7 +15,6 @@ namespace ulHelper.Packets
         public FEF6(ServerPacket pck)
             : base(pck)
         {
-            return;
             this.Position += 12;
             int count = ReadInt();
             this.Position += 2;
