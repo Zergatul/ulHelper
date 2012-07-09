@@ -38,12 +38,13 @@ namespace ulHelper.App
             _captionFont = new Font("Tahoma", 11, FontStyle.Regular, GraphicsUnit.Pixel);
 
             this.BackColor = bgColor;
-            this.Paint += BaseForm_Paint;
             this.MouseDown += BaseForm_MouseDown;
             this.MouseMove += BaseForm_MouseMove;
             this.MouseUp += BaseForm_MouseUp;
             this.GotFocus += BaseForm_GotFocus;
             this.LostFocus += BaseForm_LostFocus;
+            this.SizeChanged += BaseForm_SizeChanged;
+            this.Paint += BaseForm_Paint;
         }
 
         void BaseForm_LostFocus(object sender, EventArgs e)
@@ -85,16 +86,11 @@ namespace ulHelper.App
             DrawCaption(e.Graphics);
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-        }
-
         void DrawCaption(Graphics g)
         {
             g.FillPath(_captionBrush, _captionPath);
             Brush captBrush = this.Focused ? Brushes.White : Brushes.LightGray;
-            g.DrawString(this.Name, _captionFont, captBrush, _borderRadius + 2, _borderRadius);
+            g.DrawString(this.Text, _captionFont, captBrush, _borderRadius + 2, _borderRadius);
         }
 
         private void BaseForm_SizeChanged(object sender, EventArgs e)
@@ -115,7 +111,7 @@ namespace ulHelper.App
             _captionPath.StartFigure();
             _captionPath.AddArc(r - cu, r - cu, 2 * r + 1, 2 * r + 1, 180 - da, 90 + 2 * da);
             _captionPath.AddArc(Width - 3 * r - 1 + cu, r - cu, 2 * r + 1, 2 * r + 1, -90 - da, 90 + 2 * da);
-            _captionPath.AddArc(Width - 3 * r -1 + cu, _captionHeight - r - 1 - cu, 2 * r + 1, 2 * r + 1, 0 - da, 90 + 2 * da);
+            _captionPath.AddArc(Width - 3 * r - 1 + cu, _captionHeight - r - 1 - cu, 2 * r + 1, 2 * r + 1, 0 - da, 90 + 2 * da);
             _captionPath.AddArc(r - cu, _captionHeight - r - 1 - cu, 2 * r + 1, 2 * r + 1, 90 - da, 90 + 2 * da);
             _captionPath.CloseFigure();
 

@@ -69,10 +69,10 @@ namespace ulHelper.App
 
         void targetPanel_SettingsClick(object sender, EventArgs e)
         {
-            settings.Visible = !settings.Visible;
-            /*var pck = new ReqBypassToServer();
-            pck.Command = "menu_select?ask=-303&reply=810";
-            accData.SendPacket(pck);*/
+            //settings.Visible = !settings.Visible;
+            var pck = new ReqBypassToServer();
+            pck.Command = "menu_select?ask=-303&reply=809";
+            accData.SendPacket(pck);
         }
         
         private void AccountForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -81,9 +81,9 @@ namespace ulHelper.App
             {
                 Hide();
                 e.Cancel = true;
-                foreach (var acc in Accounts.List)
+                /*foreach (var acc in Accounts.List)
                     if (acc.Form == this)
-                        MainForm.Instance.accountsCLB.SetItemChecked(MainForm.Instance.accountsCLB.FindString(acc.Name), false);
+                        MainForm.Instance.accountsCLB.SetItemChecked(MainForm.Instance.accountsCLB.FindString(acc.Name), false);*/
             }
         }
 

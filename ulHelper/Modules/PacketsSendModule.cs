@@ -99,6 +99,10 @@ namespace ulHelper.App.Modules
                 WinAPI.UnmapViewOfFile(lpBaseAddress);
                 WinAPI.CloseHandle(hFile);
             }
+            catch (ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 var f = new ExceptionForm(ex);

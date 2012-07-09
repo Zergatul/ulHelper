@@ -40,7 +40,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "BaseForm";
             this.Text = "BaseForm";
-            this.SizeChanged += new System.EventHandler(this.BaseForm_SizeChanged);
             this.ResumeLayout(false);
 
         }
