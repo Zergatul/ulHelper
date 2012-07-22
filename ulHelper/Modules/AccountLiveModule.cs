@@ -79,7 +79,7 @@ namespace ulHelper.App.Modules
             }
             catch (ThreadAbortException)
             {
-                throw;
+                return;
             }
             catch (Exception ex)
             {

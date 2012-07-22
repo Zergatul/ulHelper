@@ -23,8 +23,11 @@ namespace ulHelper.App
         int _captionUp = 2;
         Font _captionFont;
         bool _drag;
+        bool _onCloseBtn;
         Point _dragPoint;
         Rectangle _closeBtnRect;
+        Pen _closeBtnPen;
+        LinearGradientBrush _btnSelectedBrush;
 
         public BaseForm()
         {
@@ -36,7 +39,13 @@ namespace ulHelper.App
                 new Point(0, _borderRadius + _captionHeight - 2),
                 Color.FromArgb(0x05, 0x06, 0x06),
                 Color.FromArgb(0x59, 0x61, 0x7A));
+            _btnSelectedBrush = new LinearGradientBrush(
+                new Point(0, 5),
+                new Point(0, 5 + 14),
+                Color.FromArgb(0x9F, 0x9F, 0xA0),
+                Color.FromArgb(0x45, 0x46, 0x46));
             _captionFont = new Font("Tahoma", 11, FontStyle.Regular, GraphicsUnit.Pixel);
+            _closeBtnPen = new Pen(Color.White, 2);
 
             this.BackColor = bgColor;
             this.MouseDown += BaseForm_MouseDown;
@@ -58,23 +67,6 @@ namespace ulHelper.App
             Invalidate();
         }
 
-        void BaseForm_MouseUp(object sender, MouseEventArgs e)
-        {
-            _drag = false;
-
-            if (_closeBtnRect.Contains(e.Location))
-                this.Close();
-        }
-
-        void BaseForm_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_drag)
-            {
-                var p = this.PointToScreen(e.Location);
-                this.Location = new Point(p.X - _dragPoint.X, p.Y - _dragPoint.Y);
-            }
-        }
-
         void BaseForm_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Y >= _borderRadius - _captionUp && e.Y < _borderRadius - _captionUp + _captionHeight)
@@ -82,6 +74,40 @@ namespace ulHelper.App
                 _drag = true;
                 _dragPoint = e.Location;
             }
+        }
+
+        void BaseForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_closeBtnRect.Contains(e.Location))
+            {
+                if (!_onCloseBtn)
+                {
+                    _onCloseBtn = true;
+                    Invalidate();
+                    return;
+                }
+            }
+            else
+            {
+                if (_onCloseBtn)
+                {
+                    _onCloseBtn = false;
+                    this.Invalidate();
+                }
+            }
+            if (_drag)
+            {
+                var p = this.PointToScreen(e.Location);
+                this.Location = new Point(p.X - _dragPoint.X, p.Y - _dragPoint.Y);
+            }
+        }
+
+        void BaseForm_MouseUp(object sender, MouseEventArgs e)
+        {
+            _drag = false;
+
+            if (_closeBtnRect.Contains(e.Location))
+                this.Close();
         }
 
         void BaseForm_Paint(object sender, PaintEventArgs e)
@@ -96,7 +122,15 @@ namespace ulHelper.App
             Brush captBrush = this.Focused ? Brushes.White : Brushes.LightGray;
             g.DrawString(this.Text, _captionFont, captBrush, _borderRadius + 2, _borderRadius);
 
-            g.DrawRectangle(Pens.White, _closeBtnRect);
+            if (_onCloseBtn)
+            {
+                g.FillRectangle(_btnSelectedBrush, _closeBtnRect);
+                g.DrawRectangle(Pens.Brown, _closeBtnRect);
+            }
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.DrawLine(_closeBtnPen, _closeBtnRect.Left + 3, _closeBtnRect.Top + 3, _closeBtnRect.Right - 3, _closeBtnRect.Bottom - 3);
+            g.DrawLine(_closeBtnPen, _closeBtnRect.Left + 3, _closeBtnRect.Bottom - 3, _closeBtnRect.Right - 3, _closeBtnRect.Top + 3);
+            g.SmoothingMode = SmoothingMode.Default;
         }
 
         private void BaseForm_SizeChanged(object sender, EventArgs e)
