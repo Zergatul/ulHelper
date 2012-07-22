@@ -1,0 +1,10 @@
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\bin\Debug\ulHelper.Plugins.dll
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\bin\Debug\ulHelper.Plugins.pdb
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\bin\Debug\ulHelper.Packets.dll
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\bin\Debug\ulHelper.Packets.pdb
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\obj\Debug\ulHelper.Plugins.dll
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\obj\Debug\ulHelper.Plugins.pdb
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\bin\Debug\ulHelper.L2Objects.dll
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\bin\Debug\ulHelper.L2Objects.pdb
+C:\Users\Zergatul\Documents\Visual Studio 2010\Projects\ulHelper\ulHelper.Plugins\obj\Debug\ulHelper.Plugins.csprojResolveAssemblyReference.cache

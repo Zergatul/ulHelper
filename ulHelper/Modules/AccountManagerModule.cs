@@ -7,38 +7,31 @@ using System.IO;
 
 namespace ulHelper.App.Modules
 {
-    public static class AccountManagerModule
+    class AccountManagerModule
     {
-        public static Mutex Mutex;
-        static EventWaitHandle eventWH;
-        static Thread thread;
-        public static UnmanagedMemoryStream Stream;
+        MainForm form;
+        internal Mutex Mutex;
+        EventWaitHandle eventWH;
+        Thread thread;
+        internal UnmanagedMemoryStream Stream;
 
-        public static event EventHandler NewAccount;
-
-        static AccountManagerModule()
+        public AccountManagerModule(MainForm form)
         {
-            thread = new Thread((ThreadStart)ThreadFunc);
+            this.form = form;
+            this.thread = new Thread((ThreadStart)ThreadFunc);
             thread.Start();
         }
 
-        public static void Terminate()
+        public void Terminate()
         {
-            if (thread.ThreadState != ThreadState.Stopped)
+            if (this.thread.ThreadState != ThreadState.Stopped)
             {
                 eventWH.Set();
-                //thread.Join();
-                thread.Abort();
+                thread.Join();
             }
         }
 
-        static void PerformNewAccount()
-        {
-            if (NewAccount != null)
-                NewAccount(null, EventArgs.Empty);
-        }
-
-        unsafe private static void ThreadFunc()
+        unsafe private void ThreadFunc()
         {
             try
             {
@@ -90,17 +83,17 @@ namespace ulHelper.App.Modules
                 while (true)
                 {
                     eventWH.WaitOne();
-                    if (MainForm.NeedTerminate)
+                    if (form.NeedTerminate)
                         break;
                     Mutex.WaitOne();
                     try
                     {
                         Stream.Position = 0;
                         accCount = Stream.ReadByte();
-                        lock (Accounts.List)
-                            if (Accounts.List.Count != accCount)
+                        lock (form.Accounts)
+                            if (form.Accounts.Count != accCount)
                             {
-                                foreach (var acc in Accounts.List)
+                                foreach (var acc in form.Accounts)
                                     acc.Active = false;
                                 for (int i = 0; i < accCount; i++)
                                 {
@@ -110,14 +103,14 @@ namespace ulHelper.App.Modules
                                     Stream.Read(buf, 0, 128);
                                     while (buf[index] != 0)
                                         accountName += (char)buf[index++];
-                                    if (!Accounts.List.Any(acc => acc.Name == accountName))
+                                    if (!form.Accounts.Any(acc => acc.Name == accountName))
                                     {
                                         var accData = new AccountData(accountName);
-                                        Accounts.List.Add(accData);
+                                        form.Accounts.Add(accData);
                                     }
-                                    Accounts.List.First(acc => acc.Name == accountName).Active = true;
+                                    form.Accounts.First(acc => acc.Name == accountName).Active = true;
                                 }
-                                PerformNewAccount();
+                                form.Invoke((ThreadStart)form.RefreshAccounts);
                             }
                     }
                     finally
@@ -128,10 +121,6 @@ namespace ulHelper.App.Modules
 
                 WinAPI.UnmapViewOfFile(lpBaseAddress);
                 WinAPI.CloseHandle(hFile);
-            }
-            catch (ThreadAbortException)
-            {
-                throw;
             }
             catch (Exception ex)
             {

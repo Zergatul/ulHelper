@@ -11,22 +11,20 @@ using System.Linq;
 using System.IO;
 using System.Threading;
 using ulHelper.App.Modules;
-using ulHelper.App.Drawing;
 
 namespace ulHelper.App
 {
-    public partial class MainForm : BaseForm
+    public partial class MainForm : KryptonForm
     {
         public static MainForm Instance;
         public static bool DebugDraw = false;
         static Random rnd = new Random();
 
-        public static volatile bool NeedTerminate;
+        internal List<AccountData> Accounts;
+        internal bool NeedTerminate;
+        internal AccountManagerModule AccManager;
 
-        AccountList accList;
-
-        public MainForm() : 
-            base()
+        public MainForm()
         {
             InitializeComponent();
             Instance = this;
@@ -36,14 +34,13 @@ namespace ulHelper.App
         {
             var lf = new LoadingForm();
             lf.ShowDialog();
-            AccountManagerModule.NewAccount += AccountManagerModuler_NewAccount;
-
-            accList = new AccountList(this, 5, 38, this.Width - 9, this.Height - 43);
+            Accounts = new List<AccountData>();
+            AccManager = new AccountManagerModule(this);
 
             if (DebugDraw)
             {
-                Accounts.List.Add(new AccountData("ololo"));
-                Accounts.List.First().World.Npcs.Add(new L2Objects.L2Npc
+                Accounts.Add(new AccountData("ololo"));
+                Accounts.First().World.Npcs.Add(new L2Objects.L2Npc
                 {
                     CurHP = 12344,
                     MaxHP = 19222,
@@ -51,9 +48,9 @@ namespace ulHelper.App
                     Name = "Волякасик",
                     NpcID = 93120
                 });
-                Accounts.List.First().World.User.Target = Accounts.List.First().World.Npcs.First();
+                Accounts.First().World.Player.Target = Accounts.First().World.Npcs.First();
                 for (int i = 0; i < 20; i++)
-                    Accounts.List.First().World.Characters.Add(new L2Objects.L2Character
+                    Accounts.First().World.Characters.Add(new L2Objects.L2Character
                     {
                         X = (int)Math.Round(3000 * Math.Sin(2 * i * Math.PI / 20)),
                         Y = (int)Math.Round(3000 * Math.Cos(2 * i * Math.PI / 20)),
@@ -62,26 +59,21 @@ namespace ulHelper.App
                         MaxHP = 2000,
                         ClassID = 140 + i
                     });
-                Accounts.List.First().World.___OnAddCharacter();
+                Accounts.First().World.___OnAddCharacter();
                 RefreshAccounts();
             }
-        }
-
-        void AccountManagerModuler_NewAccount(object sender, EventArgs e)
-        {
-            this.InvokeIfNeeded(RefreshAccounts);
         }        
 
         internal void RefreshAccounts()
         {
-            /*accountsCLB.BeginUpdate();
+            accountsCLB.BeginUpdate();
             accountsCLB.Items.Clear();
-            foreach (var acc in Accounts.List)
+            foreach (var acc in Accounts)
             {
                 accountsCLB.Items.Add(acc);
                 accountsCLB.SetSelected(accountsCLB.Items.Count - 1, acc.Selected);
             }
-            accountsCLB.EndUpdate();*/
+            accountsCLB.EndUpdate();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -90,7 +82,7 @@ namespace ulHelper.App
 
         private void accountsCLB_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            /*var acc = accountsCLB.Items[e.Index] as AccountData;
+            var acc = accountsCLB.Items[e.Index] as AccountData;
             if (e.NewValue == CheckState.Checked)
             {
                 acc.Form.Show();
@@ -100,15 +92,15 @@ namespace ulHelper.App
             {
                 acc.Form.Hide();
                 acc.Selected = false;
-            }*/
+            }
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            foreach (var acc in Accounts.List)
+            foreach (var acc in Accounts)
                 acc.Dispose();
-            NeedTerminate = true;
-            AccountManagerModule.Terminate();
+            this.NeedTerminate = true;
+            AccManager.Terminate();
         }
     }
 }

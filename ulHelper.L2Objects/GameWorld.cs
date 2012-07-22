@@ -10,7 +10,7 @@ namespace ulHelper.L2Objects
 {
     public class GameWorld : IDisposable
     {
-        public L2Player User;
+        public L2Player Player;
         public List<L2Character> Characters;
         public List<L2Npc> Npcs;
         public List<ItemList.InventoryItem> Inventory;
@@ -38,7 +38,7 @@ namespace ulHelper.L2Objects
 
         public GameWorld()
         {
-            User = new L2Player();
+            Player = new L2Player();
             Characters = new List<L2Character>();
             Npcs = new List<L2Npc>();
             _needTerminate = false;
@@ -277,7 +277,7 @@ namespace ulHelper.L2Objects
             {
                 ch = Characters.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
                 if (ch != null)
-                    User.Target = ch;
+                    Player.Target = ch;
             }
             if (ch != null)
             {
@@ -291,8 +291,8 @@ namespace ulHelper.L2Objects
                 npc = Npcs.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
                 if (npc != null)
                 {
-                    npc.Level = User.Level - pck.Color;
-                    User.Target = npc;
+                    npc.Level = Player.Level - pck.Color;
+                    Player.Target = npc;
                 }
             }
             if (npc != null)
@@ -301,7 +301,7 @@ namespace ulHelper.L2Objects
 
         private void ProcessUserInfo(UserInfo pck)
         {
-            User.Update(pck);
+            Player.Update(pck);
             OnPlayerUpdate();
         }
 
@@ -324,7 +324,7 @@ namespace ulHelper.L2Objects
             else
             {
                 ch.Update(pck);
-                if (User.Target == ch)
+                if (Player.Target == ch)
                     OnPlayerTargetUpdate();
                 OnL2LiveObjectUpdate(ch);
             }
@@ -332,16 +332,16 @@ namespace ulHelper.L2Objects
 
         private void ProcessTargetUnselected(TargetUnselected pck)
         {
-            if (pck.TargetID == User.ObjectID)
+            if (pck.TargetID == Player.ObjectID)
             {
-                User.Target = null;
+                Player.Target = null;
                 OnPlayerTargetUpdate();
             }
         }
 
         private void ProcessTeletortToLocation(TeleportToLocation pck)
         {
-            if (User.ObjectID == pck.TargetID)
+            if (Player.ObjectID == pck.TargetID)
             {
                 lock (Characters)
                     Characters.Clear();
@@ -359,8 +359,8 @@ namespace ulHelper.L2Objects
             if (obj == null)
                 lock (Npcs)
                     obj = Npcs.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-            if (obj == null && pck.ObjectID == User.ObjectID)
-                obj = User;
+            if (obj == null && pck.ObjectID == Player.ObjectID)
+                obj = Player;
             if (obj != null)
             {
                 foreach (var attr in pck.Attributes)
@@ -387,12 +387,12 @@ namespace ulHelper.L2Objects
                         default:
                             break;
                     }
-                if (obj == User)
+                if (obj == Player)
                     OnPlayerUpdate();
                 else
                 {
                     OnL2LiveObjectUpdate(obj);
-                    if (User.Target == obj)
+                    if (Player.Target == obj)
                         OnPlayerTargetUpdate();
                 }
             }
@@ -417,7 +417,7 @@ namespace ulHelper.L2Objects
             else
             {
                 npc.Update(pck);
-                if (User.Target == npc)
+                if (Player.Target == npc)
                     OnPlayerTargetUpdate();
                 OnL2LiveObjectUpdate(npc);
             }
@@ -435,9 +435,9 @@ namespace ulHelper.L2Objects
             if (ch != null)
             {
                 OnDeleteCharacter(ch);
-                if (User.Target == ch)
+                if (Player.Target == ch)
                 {
-                    User.Target = null;
+                    Player.Target = null;
                     OnPlayerTargetUpdate();
                 }
                 return;
@@ -452,9 +452,9 @@ namespace ulHelper.L2Objects
             if (npc != null)
             {
                 OnDeleteNpc(npc);
-                if (User.Target == npc)
+                if (Player.Target == npc)
                 {
-                    User.Target = null;
+                    Player.Target = null;
                     OnPlayerTargetUpdate();
                 }
             }
@@ -469,8 +469,8 @@ namespace ulHelper.L2Objects
                 lock (Npcs)
                     obj = Npcs.FirstOrDefault(c => c.ObjectID == objectID);
             if (obj == null)
-                if (User.ObjectID == objectID)
-                    obj = User;
+                if (Player.ObjectID == objectID)
+                    obj = Player;
             return obj;
         }
 
@@ -590,11 +590,19 @@ namespace ulHelper.L2Objects
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
             if (!_disposed)
             {
-                /*_needTerminate = true;
-                thread.Join();*/
-                thread.Abort();
+                if (disposing)
+                {
+                    _needTerminate = true;
+                    thread.Join();
+                }
                 _disposed = true;
             }
         }

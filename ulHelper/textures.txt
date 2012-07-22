@@ -1,0 +1,17 @@
+CT1:
+autopartymatchingwnd_... (change something btn)
+gauge_... (hp mp cp may be)
+HUD_Gauge (exp)\
+headdisplay (...)
+pagelist_ (run stop plugin)
+partystatuswnd_ (vitality)
+personalconnectionswnd_...plus... (plus btn)
+questtutorialwnd_df_guidebook (good bg)
+sellingagencywnd_df_... (good mini +)
+shortcutwnd_df_key.... (keys)
+guide_df_main.tga (good bg)
+CH3:
+br_bar... (ht mp cp)
+chatting_options2.tha (settings btn mini)
+__:
+minimp, minihp

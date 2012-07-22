@@ -17,7 +17,7 @@ namespace ulHelper.App.Tooltips
 
         Thread thread;
         bool needRedraw;
-        volatile bool needTerminate;
+        bool needTerminate;
 
         public ToolTipForm()
         {
@@ -86,9 +86,9 @@ namespace ulHelper.App.Tooltips
 
         public void DisposeResources()
         {
-            /*needRedraw = true;
+            needRedraw = true;
             needTerminate = true;
-            thread.Join();*/
+            //thread.Join();
             thread.Abort();
         }
     }

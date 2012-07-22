@@ -24,12 +24,11 @@ namespace ulHelper.App.Modules
 
         public void Terminate()
         {
-            thread.Abort();
-            /*if (this.thread.ThreadState != ThreadState.Stopped)
+            if (this.thread.ThreadState != ThreadState.Stopped)
             {
                 eventWH.Set();
                 thread.Join();
-            }*/
+            }
         }
 
         unsafe void ThreadFunc()
@@ -94,10 +93,6 @@ namespace ulHelper.App.Modules
 
                 WinAPI.UnmapViewOfFile(lpBaseAddress);
                 WinAPI.CloseHandle(hFile);
-            }
-            catch (ThreadAbortException)
-            {
-                throw;
             }
             catch (Exception ex)
             {

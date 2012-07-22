@@ -21,7 +21,7 @@ namespace ulHelper.App
         internal GameWorld World;
 
         internal AccountForm Form;
-        internal volatile bool NeedTerminate;
+        internal bool NeedTerminate;
         internal List<BasePlugin> LoadedPlugins;
         internal List<ClientPacket> SendBuffer;
 
@@ -46,15 +46,9 @@ namespace ulHelper.App
             {
                 pckReceive = new PacketsReceiveModule(this);
                 accLive = new AccountLiveModule(this);
-                accLive.RemoveAccount += accLive_RemoveAccount;
                 appLive = new AppLiveModule(this);
                 pckSend = new PacketsSendModule(this);
             }
-        }
-
-        void accLive_RemoveAccount(object sender, EventArgs e)
-        {
-            MainForm.Instance.InvokeIfNeeded(MainForm.Instance.RefreshAccounts);
         }
 
         void CreateForm()
@@ -112,20 +106,29 @@ namespace ulHelper.App
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
             if (!_disposed)
             {
-                NeedTerminate = true;
-                if (!MainForm.DebugDraw)
+                if (disposing)
                 {
-                    pckReceive.Terminate();
-                    accLive.Terminate();
-                    appLive.Terminate();
-                    pckSend.Terminate();
+                    NeedTerminate = true;
+                    if (!MainForm.DebugDraw)
+                    {
+                        pckReceive.Terminate();
+                        accLive.Terminate();
+                        appLive.Terminate();
+                        pckSend.Terminate();
+                    }
+                    this.World.Dispose();
+                    this.Form.NeedTerminate = true;
+                    this.Form.DisposeResources();
+                    this.Form.Dispose();
                 }
-                this.World.Dispose();
-                this.Form.NeedTerminate = true;
-                this.Form.DisposeResources();
-                this.Form.Dispose();
                 _disposed = true;
             }
         }

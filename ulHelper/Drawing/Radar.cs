@@ -18,7 +18,7 @@ namespace ulHelper.App.Drawing
 
         PictureBox pb;
         Form form;
-        volatile bool needTerminate;
+        bool needTerminate;
         Thread redrawThread;
         GameWorld world;
         float scale;
@@ -70,9 +70,9 @@ namespace ulHelper.App.Drawing
             DrawBorder(e.Graphics);
 
             int pX, pY;
-            WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.User.IntX, world.User.IntY, scale);
-            pX = world.User.IntX;
-            pY = world.User.IntY;
+            WorldMap.DrawAt(e.Graphics, 3, 3, pb.Width - 6, pb.Height - 6, world.Player.IntX, world.Player.IntY, scale);
+            pX = world.Player.IntX;
+            pY = world.Player.IntY;
             float xc = 1.0f * pb.Width / 2;
             float yc = 1.0f * pb.Height / 2;
 
@@ -99,7 +99,9 @@ namespace ulHelper.App.Drawing
             int delay = Properties.Settings.Default.RadarRefreshTime;
             while (!needTerminate)
             {
-                form.InvokeIfNeeded(() => { pb.Invalidate(); });
+                if (form.IsHandleCreated)
+                    //if (!(form as AccountForm).NeedTerminate)
+                        pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
                 Thread.Sleep(delay);
             }
         }
@@ -114,13 +116,22 @@ namespace ulHelper.App.Drawing
 
         private bool _disposed;
 
-        public void Dispose()
+        public virtual void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
             {
-                needTerminate = true;
-                //redrawThread.Join();
-                redrawThread.Abort();
+                if (disposing)
+                {
+                    needTerminate = true;
+                    //redrawThread.Join();
+                    redrawThread.Abort();
+                }
                 _disposed = true;
             }
         }

@@ -113,10 +113,19 @@ namespace ulHelper.App.Tooltips
 
         public virtual void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
             if (!_disposed)
             {
-                form.DisposeResources();
-                form.Dispose();
+                if (disposing)
+                {
+                    form.DisposeResources();
+                    form.Dispose();
+                }
                 _disposed = true;
             }
         }

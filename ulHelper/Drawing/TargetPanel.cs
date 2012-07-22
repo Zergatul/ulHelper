@@ -23,7 +23,7 @@ namespace ulHelper.App.Drawing
         PictureBox pb;
         Form form;
         bool needRedraw;
-        volatile bool needTerminate;
+        bool needTerminate;
         Thread redrawThread;
         GameWorld world;
         HPBar hpNpc;
@@ -55,55 +55,22 @@ namespace ulHelper.App.Drawing
             pb.MouseMove += pb_MouseMove;
             pb.MouseLeave += pb_MouseLeave;
             pb.MouseClick += pb_MouseClick;
-            pb.MouseDown += pb_MouseDown;
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
 
-            hpNpc = new HPBar(27, 3, pb.Width - 8 - 23);
-            hpNpc.RequestUpdate += bar_RequestUpdate;
-            hpChar = new HPBar(3, 3, pb.Width - 8);
-            hpChar.RequestUpdate += bar_RequestUpdate;
-            mpNpc = new MPBar(27, 16, pb.Width - 8 - 23);
-            mpNpc.RequestUpdate += bar_RequestUpdate;
-            mpChar = new MPBar(3, 16, pb.Width - 8);
-            mpChar.RequestUpdate += bar_RequestUpdate;
+            hpNpc = new HPBar(pb.Width - 8 - 23);
+            hpChar = new HPBar(pb.Width - 8);
+            mpNpc = new MPBar(pb.Width - 8 - 23);
+            mpChar = new MPBar(pb.Width - 8);
             lvl = new LevelBar();
-        }
-
-        void pb_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Left)
-                return;
-
-            if (world.User.Target != null)
-            {
-                if (world.User.Target is L2Character)
-                {
-                    hpChar.OnMouseClick(e.X, e.Y);
-                    mpChar.OnMouseClick(e.X, e.Y);
-                }
-                if (world.User.Target is L2Npc)
-                {
-                    hpNpc.OnMouseClick(e.X, e.Y);
-                    mpNpc.OnMouseClick(e.X, e.Y);
-                }
-            }
-        }
-
-        void bar_RequestUpdate(object sender, EventArgs e)
-        {
-            Update();
         }
 
         void pb_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left)
-                return;
-
             if (buttonHovered)
                 if (SettingsClick != null)
-                    SettingsClick(this, EventArgs.Empty);            
+                    SettingsClick(this, EventArgs.Empty);
         }
 
         void pb_MouseLeave(object sender, EventArgs e)
@@ -128,7 +95,7 @@ namespace ulHelper.App.Drawing
             }
 
             bool toolTipVisible = e.X < pb.Width - 17 || e.Y < pb.Height - 17;
-            if (world.User.Target != null)
+            if (world.Player.Target != null)
                 if (currentToolTip != null)
                     if (toolTipVisible)
                     {
@@ -143,7 +110,7 @@ namespace ulHelper.App.Drawing
         void world_TargetPlayerUpdate(object sender, EventArgs e)
         {
             this.Update();
-            if (world.User.Target == null)
+            if (world.Player.Target == null)
             {
                 if (currentToolTip != null)
                     currentToolTip.Hide();
@@ -151,14 +118,14 @@ namespace ulHelper.App.Drawing
             }
             else
             {
-                if (world.User.Target is L2Character)
+                if (world.Player.Target is L2Character)
                 {
-                    characterToolTip.Character = world.User.Target as L2Character;
+                    characterToolTip.Character = world.Player.Target as L2Character;
                     currentToolTip = characterToolTip;
                 }
                 else
                 {
-                    npcToolTip.Npc = world.User.Target as L2Npc;
+                    npcToolTip.Npc = world.Player.Target as L2Npc;
                     currentToolTip = npcToolTip;
                 }
                 currentToolTip.Update();
@@ -182,20 +149,20 @@ namespace ulHelper.App.Drawing
             else
                 e.Graphics.DrawImage(settingsBmp, pb.Width - 15, pb.Height - 15);
 
-            if (world.User.Target != null)
+            if (world.Player.Target != null)
             {
-                if (world.User.Target is L2Character)
+                if (world.Player.Target is L2Character)
                 {
-                    var ch = world.User.Target as L2Character;
-                    hpChar.Draw(e.Graphics, ch.CurHP, ch.MaxHP);
-                    mpChar.Draw(e.Graphics, ch.CurMP, ch.MaxMP);
+                    var ch = world.Player.Target as L2Character;
+                    hpChar.Draw(e.Graphics, 3, 3, ch.CurHP, ch.MaxHP);
+                    mpChar.Draw(e.Graphics, 3, 16, ch.CurMP, ch.MaxMP);
                     e.Graphics.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, 2, 28);
                 }
-                if (world.User.Target is L2Npc)
+                if (world.Player.Target is L2Npc)
                 {
-                    var npc = world.User.Target as L2Npc;
-                    hpNpc.Draw(e.Graphics, npc.CurHP, npc.MaxHP);
-                    mpNpc.Draw(e.Graphics, npc.CurMP, npc.MaxMP);
+                    var npc = world.Player.Target as L2Npc;
+                    hpNpc.Draw(e.Graphics, 27, 3, npc.CurHP, npc.MaxHP);
+                    mpNpc.Draw(e.Graphics, 27, 16, npc.CurMP, npc.MaxMP);
                     lvl.Draw(e.Graphics, 3, 3, npc.Level);
                     e.Graphics.DrawString(npc.Name, GUI.Font, GUI.NpcBrush, 2, 28);
                     var str = "ID: " + npc.NpcID;
@@ -217,7 +184,8 @@ namespace ulHelper.App.Drawing
             while (!needTerminate)
             {
                 needRedraw = false;
-                form.InvokeIfNeeded(() => { pb.Invalidate(); });
+                if (form.IsHandleCreated)
+                    pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
                 Thread.Sleep(delay);
                 while (!needRedraw)
                     Thread.Sleep(1);
@@ -246,10 +214,9 @@ namespace ulHelper.App.Drawing
             {
                 if (disposing)
                 {
-                    /*needRedraw = true;
+                    needRedraw = true;
                     needTerminate = true;
-                    redrawThread.Join();*/
-                    redrawThread.Abort();
+                    redrawThread.Join();
                 }
                 _disposed = true;
             }
