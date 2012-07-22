@@ -20,7 +20,7 @@ namespace ulHelper.App
         public Boolean NeedTerminate;
         AccountData accData;
 
-        PlayerPanel playerPanel;
+        UserPanel playerPanel;
         TargetPanel targetPanel;
         Radar radar;
         ObjectsPanel objectsPanel;
@@ -33,15 +33,26 @@ namespace ulHelper.App
         {
             InitializeComponent();
             this.accData = accData;
+            this.HandleCreated += (s, e) => this.Show();
             settings = new AccountSettingsForm(accData);
+            accData.World.PlayerUpdate += World_PlayerUpdate;
             PrepareControls();
+        }
+
+        void World_PlayerUpdate(object sender, EventArgs e)
+        {
+            this.InvokeIfNeeded(() =>
+                {
+                    if (this.Name != ((GameWorld)sender).User.Name)
+                        this.Name = ((GameWorld)sender).User.Name;
+                });
         }
 
         void PrepareControls()
         {
             characterToolTip = new Tooltips.CharacterToolTip();
             npcToolTip = new Tooltips.NpcToolTip();
-            playerPanel = new PlayerPanel(kryptonPanel, accData.World);
+            playerPanel = new UserPanel(kryptonPanel, accData.World);
             targetPanel = new TargetPanel(kryptonPanel, accData.World, characterToolTip, npcToolTip);
             targetPanel.SettingsClick += targetPanel_SettingsClick;
             radar = new Radar(kryptonPanel, accData.World);
@@ -59,7 +70,10 @@ namespace ulHelper.App
 
         void targetPanel_SettingsClick(object sender, EventArgs e)
         {
-            settings.Visible = !settings.Visible;
+            //settings.Visible = !settings.Visible;
+            var pck = new ReqBypassToServer();
+            pck.Command = "menu_select?ask=-303&reply=809";
+            accData.SendPacket(pck);
         }
         
         private void AccountForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -68,9 +82,9 @@ namespace ulHelper.App
             {
                 Hide();
                 e.Cancel = true;
-                foreach (var acc in MainForm.Instance.Accounts)
+                /*foreach (var acc in Accounts.List)
                     if (acc.Form == this)
-                        MainForm.Instance.accountsCLB.SetItemChecked(MainForm.Instance.accountsCLB.FindString(acc.Name), false);
+                        MainForm.Instance.accountsCLB.SetItemChecked(MainForm.Instance.accountsCLB.FindString(acc.Name), false);*/
             }
         }
 

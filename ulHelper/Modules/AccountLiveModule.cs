@@ -13,6 +13,8 @@ namespace ulHelper.App.Modules
         EventWaitHandle eventWH;
         Thread thread;
 
+        public event EventHandler RemoveAccount;
+
         public AccountLiveModule(AccountData acc)
         {
             this.acc = acc;
@@ -20,13 +22,20 @@ namespace ulHelper.App.Modules
             this.thread.Start();
         }
 
+        void PerformRemoveAccount()
+        {
+            if (RemoveAccount != null)
+                RemoveAccount(this, EventArgs.Empty);
+        }
+
         public void Terminate()
         {
-            if (this.thread.ThreadState != ThreadState.Stopped)
+            thread.Abort();
+            /*if (this.thread.ThreadState != ThreadState.Stopped)
             {
                 eventWH.Set();
                 thread.Join();
-            }
+            }*/
         }
 
         unsafe void ThreadFunc()
@@ -39,16 +48,16 @@ namespace ulHelper.App.Modules
                     {
                         if (acc.NeedTerminate)
                             break;
-                        lock (MainForm.Instance.Accounts)
+                        lock (Accounts.List)
                         {
-                            MainForm.Instance.Accounts.Remove(this.acc);
-                            var bw = new BinaryWriter(MainForm.Instance.AccManager.Stream);
-                            MainForm.Instance.AccManager.Mutex.WaitOne();
+                            Accounts.List.Remove(this.acc);
+                            var bw = new BinaryWriter(AccountManagerModule.Stream);
+                            AccountManagerModule.Mutex.WaitOne();
                             try
                             {
                                 bw.BaseStream.Position = 0;
-                                bw.Write(MainForm.Instance.Accounts.Count);
-                                for (int i = 0; i < MainForm.Instance.Accounts.Count; i++)
+                                bw.Write(Accounts.List.Count);
+                                for (int i = 0; i < Accounts.List.Count; i++)
                                 {
                                     bw.BaseStream.Position = 8 + i * 128;
                                     var buf = Encoding.ASCII.GetBytes(acc.Name);
@@ -58,15 +67,19 @@ namespace ulHelper.App.Modules
                             }
                             finally
                             {
-                                MainForm.Instance.AccManager.Mutex.ReleaseMutex();
+                                AccountManagerModule.Mutex.ReleaseMutex();
                             }
                             acc.Form.NeedTerminate = true;
-                            acc.Form.Invoke((ThreadStart)acc.Form.Close);
-                            MainForm.Instance.Invoke((ThreadStart)MainForm.Instance.RefreshAccounts);
+                            acc.Form.InvokeIfNeeded(acc.Form.Close);
+                            PerformRemoveAccount();
                             acc.Dispose();
                             break;
                         }
                     }
+            }
+            catch (ThreadAbortException)
+            {
+                throw;
             }
             catch (Exception ex)
             {

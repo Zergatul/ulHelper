@@ -11,12 +11,12 @@ using ulHelper.GameInfo;
 
 namespace ulHelper.App.Drawing
 {
-    public class PlayerPanel : IDisposable
+    public class UserPanel : IDisposable
     {
         PictureBox pb;
         Form form;
         bool needRedraw;
-        bool needTerminate;
+        volatile bool needTerminate;
         Thread redrawThread;
         GameWorld world;
 
@@ -26,7 +26,7 @@ namespace ulHelper.App.Drawing
         ExpBar exp;
         LevelBar lvl;
 
-        public PlayerPanel(Control parent, GameWorld world)
+        public UserPanel(Control parent, GameWorld world)
         {
             this.world = world;
             this.world.PlayerUpdate += (s, e) => { this.Update(); };
@@ -37,16 +37,35 @@ namespace ulHelper.App.Drawing
             pb.Top = 0;
             pb.Left = 0;
             pb.Paint += pb_Paint;
+            pb.MouseDown += pb_MouseDown;
             parent.Controls.Add(pb);
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
 
-            cp = new CPBar(pb.Width - 8);
-            hp = new HPBar(pb.Width - 8);
-            mp = new MPBar(pb.Width - 8 - 23);
+            cp = new CPBar(4, 3, pb.Width - 8);
+            cp.RequestUpdate += bar_RequestUpdate;
+            hp = new HPBar(4, 16, pb.Width - 8);
+            hp.RequestUpdate += bar_RequestUpdate;
+            mp = new MPBar(27, 29, pb.Width - 8 - 23);
+            mp.RequestUpdate += bar_RequestUpdate;
             exp = new ExpBar(pb.Width - 8 - 23);
             lvl = new LevelBar();
+        }
+
+        void pb_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            cp.OnMouseClick(e.X, e.Y);
+            hp.OnMouseClick(e.X, e.Y);
+            mp.OnMouseClick(e.X, e.Y);
+        }
+
+        void bar_RequestUpdate(object sender, EventArgs e)
+        {
+            Update();
         }
 
         void form_HandleCreated(object sender, EventArgs e)
@@ -61,13 +80,13 @@ namespace ulHelper.App.Drawing
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             DrawBorder(e.Graphics);
-            cp.Draw(e.Graphics, 4, 3, world.Player.CurCP, world.Player.MaxCP);
-            hp.Draw(e.Graphics, 4, 16, world.Player.CurHP, world.Player.MaxHP);
-            mp.Draw(e.Graphics, 27, 29, world.Player.CurMP, world.Player.MaxMP);
+            cp.Draw(e.Graphics, world.User.CurCP, world.User.MaxCP);
+            hp.Draw(e.Graphics, world.User.CurHP, world.User.MaxHP);
+            mp.Draw(e.Graphics, world.User.CurMP, world.User.MaxMP);
             exp.Draw(e.Graphics, 27, 42,
-                world.Player.Exp - Info.LevelsExp[world.Player.Level],
-                world.Player.Level == 99 ? 0 : Info.LevelsExp[world.Player.Level + 1] - Info.LevelsExp[world.Player.Level]);
-            lvl.Draw(e.Graphics, 4, 31, world.Player.Level);
+                world.User.Exp - Info.LevelsExp[world.User.Level],
+                world.User.Level == 99 ? 0 : Info.LevelsExp[world.User.Level + 1] - Info.LevelsExp[world.User.Level]);
+            lvl.Draw(e.Graphics, 4, 31, world.User.Level);
         }
 
         public void Update()
@@ -81,8 +100,7 @@ namespace ulHelper.App.Drawing
             while (!needTerminate)
             {
                 needRedraw = false;
-                if (form.IsHandleCreated)
-                    pb.Invoke((ThreadStart)(() => { pb.Invalidate(); }));
+                form.InvokeIfNeeded(() => { pb.Invalidate(); });
                 Thread.Sleep(delay);
                 while (!needRedraw)
                     Thread.Sleep(1);
@@ -99,22 +117,14 @@ namespace ulHelper.App.Drawing
 
         private bool _disposed;
 
-        public virtual void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
+        public void Dispose()
         {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    needRedraw = true;
-                    needTerminate = true;
-                    redrawThread.Join();
-                }
+                /*needRedraw = true;
+                needTerminate = true;
+                redrawThread.Join();*/
+                redrawThread.Abort();
                 _disposed = true;
             }
         }
