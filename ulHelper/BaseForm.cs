@@ -62,7 +62,8 @@ namespace ulHelper.App
         {
             _drag = false;
 
-            if (e.
+            if (_closeBtnRect.Contains(e.Location))
+                this.Close();
         }
 
         void BaseForm_MouseMove(object sender, MouseEventArgs e)

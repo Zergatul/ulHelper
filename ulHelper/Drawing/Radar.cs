@@ -120,7 +120,8 @@ namespace ulHelper.App.Drawing
             {
                 needTerminate = true;
                 //redrawThread.Join();
-                redrawThread.Abort();
+                if (redrawThread != null)
+                    redrawThread.Abort();
                 _disposed = true;
             }
         }

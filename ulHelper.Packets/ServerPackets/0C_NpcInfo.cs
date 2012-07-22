@@ -97,6 +97,7 @@ namespace ulHelper.Packets
             this.Position += 4 * 9;
             this.Position += 16; // coll double data
             this.Position += 4 * 7;
+            this.Position -= 4;
             this.CurHP = ReadInt();
             this.MaxHP = ReadInt();
             this.CurMP = ReadInt();

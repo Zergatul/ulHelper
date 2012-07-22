@@ -39,6 +39,7 @@ namespace ulHelper.App
             AccountManagerModule.NewAccount += AccountManagerModuler_NewAccount;
 
             accList = new AccountList(this, 5, 38, this.Width - 9, this.Height - 43);
+            accList.AccountClick += new EventHandler<AccountClickEventArgs>(accList_AccountClick);
 
             if (DebugDraw)
             {
@@ -67,41 +68,19 @@ namespace ulHelper.App
             }
         }
 
+        void accList_AccountClick(object sender, AccountClickEventArgs e)
+        {
+            e.Account.Form.Show();
+        }
+
         void AccountManagerModuler_NewAccount(object sender, EventArgs e)
         {
             this.InvokeIfNeeded(RefreshAccounts);
-            //Accounts.List.First().Form.Show();
         }        
 
         internal void RefreshAccounts()
         {
-            /*accountsCLB.BeginUpdate();
-            accountsCLB.Items.Clear();
-            foreach (var acc in Accounts.List)
-            {
-                accountsCLB.Items.Add(acc);
-                accountsCLB.SetSelected(accountsCLB.Items.Count - 1, acc.Selected);
-            }
-            accountsCLB.EndUpdate();*/
-        }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-        }
-
-        private void accountsCLB_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            /*var acc = accountsCLB.Items[e.Index] as AccountData;
-            if (e.NewValue == CheckState.Checked)
-            {
-                acc.Form.Show();
-                acc.Selected = true;
-            }
-            else
-            {
-                acc.Form.Hide();
-                acc.Selected = false;
-            }*/
+            accList.Update();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

@@ -73,6 +73,7 @@
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ControlExtensions.cs" />
+    <Compile Include="Drawing\AccountClickEventArgs.cs" />
     <Compile Include="Drawing\AccountList.cs" />
     <Compile Include="Drawing\Bar.cs" />
     <Compile Include="Drawing\BarInfoMode.cs" />

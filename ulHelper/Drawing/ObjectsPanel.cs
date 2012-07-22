@@ -171,7 +171,8 @@ namespace ulHelper.App.Drawing
                 /*needRedraw = true;
                 needTerminate = true;
                 redrawThread.Join();*/
-                redrawThread.Abort();
+                if (redrawThread != null)
+                    redrawThread.Abort();
                 _disposed = true;
             }
         }

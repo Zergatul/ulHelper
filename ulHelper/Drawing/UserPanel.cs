@@ -121,10 +121,11 @@ namespace ulHelper.App.Drawing
         {
             if (!_disposed)
             {
-                /*needRedraw = true;
+                needRedraw = true;
                 needTerminate = true;
-                redrawThread.Join();*/
-                redrawThread.Abort();
+                /*redrawThread.Join();*/
+                if (redrawThread != null)
+                    redrawThread.Abort();
                 _disposed = true;
             }
         }

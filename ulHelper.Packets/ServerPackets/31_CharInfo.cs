@@ -168,7 +168,6 @@ namespace ulHelper.Packets
             for (int i = 0; i < cubicsCount; i++)
                 this.Cubics.Add(ReadShort());
             this.FindParty = ReadByte();
-            this.AbnormalEffect = ReadInt();
             this.IsFly = ReadByte();
             this.ReccomendHave = ReadShort();
             this.MountNpcID = ReadInt();
@@ -192,7 +191,7 @@ namespace ulHelper.Packets
             this.ClanReputation = ReadInt();
             this.TransformationID = ReadInt();
             this.AgathionID = ReadInt();
-            this.Position += 5 * 4;
+            this.Position += 4 * 4;
             this.CurCP = ReadInt();
             this.CurHP = ReadInt();
             this.MaxHP = ReadInt();

@@ -25,12 +25,12 @@ namespace ulHelper.App.Modules
 
         public void Terminate()
         {
-            thread.Abort();
-            /*if (this.thread.ThreadState != ThreadState.Stopped)
+            if (this.thread.ThreadState != ThreadState.Stopped)
             {
                 addPacketEvent.Set();
-                thread.Join();
-            }*/
+                //thread.Join();
+                thread.Abort();
+            }
         }
 
         public void NewPacketInQueue()

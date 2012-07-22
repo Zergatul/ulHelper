@@ -30,12 +30,12 @@ namespace ulHelper.App.Modules
 
         public void Terminate()
         {
-            thread.Abort();
-            /*if (this.thread.ThreadState != ThreadState.Stopped)
+            if (this.thread.ThreadState != ThreadState.Stopped)
             {
                 eventWH.Set();
-                thread.Join();
-            }*/
+                //thread.Join();
+                thread.Abort();
+            }
         }
 
         unsafe void ThreadFunc()

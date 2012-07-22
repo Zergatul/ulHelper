@@ -35,10 +35,16 @@ namespace ulHelper.Packets
                 return new NpcInfo(this);
             if (ID == 0x11)
                 return new ItemList(this);
+            if (ID == 0x16)
+                return new DropItem(this);
+            if (ID == 0x17)
+                return new GetItem(this);
             if (ID == 0x18)
                 return new StatusUpdate(this);
             if (ID == 0x19)
                 return new NpcHtmlMessage(this);
+            if (ID == 0x1F)
+                return new ActionFailed(this);
             if (ID == 0x21)
                 return new InventoryUpdate(this);
             if (ID == 0x22)
@@ -47,8 +53,18 @@ namespace ulHelper.Packets
                 return new TargetSelected(this);
             if (ID == 0x24)
                 return new TargetUnselected(this);
+            if (ID == 0x25)
+                return new AutoAttackStart(this);
+            if (ID == 0x26)
+                return new AutoAttackStop(this);
+            if (ID == 0x27)
+                return new SocialAction(this);
+            if (ID == 0x29)
+                return new ChangeWaitType(this);
             if (ID == 0x2F)
                 return new MoveToLocation(this);
+            if (ID == 0x30)
+                return new NpcSay(this);
             if (ID == 0x31)
                 return new CharInfo(this);
             if (ID == 0x32)
@@ -59,16 +75,62 @@ namespace ulHelper.Packets
                 return new StopMove(this);
             if (ID == 0x48)
                 return new MagicSkillUse(this);
+            if (ID == 0x4A)
+                return new CreatureSay(this);
+            if (ID == 0x59)
+                return new _59(this);
+            if (ID == 0x52)
+                return new PartySmallWindowUpdate(this);
+            if (ID == 0x54)
+                return new MagicSkillLaunched(this);
+            if (ID == 0x5F)
+                return new SkillList(this);
+            if (ID == 0x61)
+                return new StopRotation(this);
             if (ID == 0x62)
                 return new SystemMessage(this);
+            if (ID == 0x6A)
+                return new PledgeCrest(this);
+            if (ID == 0x6B)
+                return new SetupGauge(this);
             if (ID == 0x72)
                 return new MoveToPawn(this);
+            if (ID == 0x75)
+                return new FriendList(this);
+            if (ID == 0x79)
+                return new ValidateLocation(this);
+            if (ID == 0x7A)
+                return new StartRotation(this);
+            if (ID == 0x85)
+                return new BuffList(this);
+            if (ID == 0x89)
+                return new PledgeInfo(this);
+            if (ID == 0xA1)
+                return new PrivateStoreListSell(this);
+            if (ID == 0xA2)
+                return new PrivateStoreMsgSell(this);
             if (ID == 0xB9)
                 return new MyTargetSelected(this);
+            if (ID == 0xBA)
+                return new PartyMemberPosition(this);
+            if (ID == 0xBE)
+                return new PrivateStoreListBuy(this);
+            if (ID == 0xBF)
+                return new PrivateStoreMsgBuy(this);
+            if (ID == 0xC7)
+                return new SkillCoolTime(this);
+            if (ID == 0xCC)
+                return new NicknameChanged(this);
             if (ID == 0xCE)
                 return new RelationChanged(this);
             if (ID == 0xD0)
                 return new MultiSellList(this);
+            if (ID == 0xD4)
+                return new FlyToLocation(this);
+            if (ID == 0xE1)
+                return new RecipeShopMsg(this);
+            if (ID == 0xF9)
+                return new EtcStatusUpdate(this);
             if (ID == 0xFE && ID2 == 0xF6)
                 return new FEF6(this);
             return this;

@@ -214,7 +214,6 @@ namespace ulHelper.Packets
             for (int i = 0; i < cubicsCount; i++)
                 this.Cubics.Add(ReadShort());
             this.Position++;
-            this.AbnormalEffect = ReadInt();
             this.FlyingMounted = ReadByte();
             this.ClanPrivileges = ReadInt();
             this.RecommendLeft = ReadShort();

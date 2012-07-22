@@ -236,21 +236,13 @@ namespace ulHelper.App.Drawing
 
         public virtual void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    /*needRedraw = true;
-                    needTerminate = true;
-                    redrawThread.Join();*/
+                needRedraw = true;
+                needTerminate = true;
+                //redrawThread.Join();
+                if (redrawThread != null)
                     redrawThread.Abort();
-                }
                 _disposed = true;
             }
         }
