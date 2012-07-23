@@ -14,6 +14,7 @@ namespace ulHelper.App.Drawing
         static float minScale = 10;
         static float maxScale = 500;
         static Pen NeutralPen = new Pen(GUI.NeutralColor, 1.5f);
+        static Pen TargetPen = new Pen(GUI.TargetColor, 1.5f);
         static Pen PlayerPen = new Pen(GUI.PlayerColor, 1.5f);
 
         PictureBox pb;
@@ -85,7 +86,10 @@ namespace ulHelper.App.Drawing
             {
                 int dx = ch.IntX - pX;
                 int dy = ch.IntY - pY;
-                e.Graphics.DrawEllipse(NeutralPen,
+                var pen = NeutralPen;
+                if (world.User.Target == ch)
+                    pen = TargetPen;
+                e.Graphics.DrawEllipse(pen,
                     xc + WorldMap.ScaleX(dx) * pb.Width / scale - 1.5f,
                     yc + WorldMap.ScaleX(dy) * pb.Height / scale - 1.5f,
                     3, 3);

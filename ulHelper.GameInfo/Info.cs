@@ -13,6 +13,7 @@ namespace ulHelper.GameInfo
         public static SortedDictionary<int, string> Npcs;
         public static SortedDictionary<int, string> Skills;
         public static SortedDictionary<int, long> LevelsExp;
+        public static SortedDictionary<int, string> Items;
 
         public static void LoadClasses()
         {
@@ -56,6 +57,14 @@ namespace ulHelper.GameInfo
             var xDoc = XDocument.Load(@"Data\Skills.xml");
             foreach (var skillNode in xDoc.Element("skills").Elements("skill"))
                 Skills.Add((int)skillNode.Attribute("id"), (string)skillNode.Attribute("name"));
+        }
+
+        public static void LoadItems()
+        {
+            Items = new SortedDictionary<int, string>();
+            var xDoc = XDocument.Load(@"Data\Items.xml");
+            foreach (var itemNode in xDoc.Element("items").Elements("item"))
+                Items.Add((int)itemNode.Attribute("id"), (string)itemNode.Attribute("name"));
         }
 
         public static void LoadLevels()

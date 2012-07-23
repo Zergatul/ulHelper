@@ -44,7 +44,7 @@ namespace ulHelper.App
                 new Point(0, 5 + 14),
                 Color.FromArgb(0x9F, 0x9F, 0xA0),
                 Color.FromArgb(0x45, 0x46, 0x46));
-            _captionFont = new Font("Tahoma", 11, FontStyle.Regular, GraphicsUnit.Pixel);
+            _captionFont = new Font("Tahoma", 11, FontStyle.Bold, GraphicsUnit.Pixel);
             _closeBtnPen = new Pen(Color.White, 2);
 
             this.BackColor = bgColor;
@@ -119,7 +119,7 @@ namespace ulHelper.App
         void DrawCaption(Graphics g)
         {
             g.FillPath(_captionBrush, _captionPath);
-            Brush captBrush = this.Focused ? Brushes.White : Brushes.LightGray;
+            Brush captBrush = this.Focused ? Brushes.White : Brushes.DarkGray;
             g.DrawString(this.Text, _captionFont, captBrush, _borderRadius + 2, _borderRadius);
 
             if (_onCloseBtn)

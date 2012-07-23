@@ -14,6 +14,7 @@ namespace ulHelper.App.Drawing
         public static Color WarColor = Color.FromArgb(0xB0, 0x00, 0x00);
         public static Color AllyColor = Color.FromArgb(0x00, 0xCA, 0x21);
         public static Color NeutralColor = Color.FromArgb(0xE8, 0xE8, 0xE8);
+        public static Color TargetColor = Color.Red;
         public static Color PlayerColor = Color.Black;
         public static Brush NpcBrush = new SolidBrush(NpcColor);
         public static Brush WarBrush = new SolidBrush(WarColor);

@@ -34,7 +34,7 @@ namespace ulHelper.App.Drawing
         bool buttonHovered;
         CharacterToolTip characterToolTip;
         NpcToolTip npcToolTip;
-        IToolTip currentToolTip;
+        ulHelper.App.Tooltips.ToolTip currentToolTip;
 
         public event EventHandler SettingsClick;
 

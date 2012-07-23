@@ -72,6 +72,12 @@ namespace ulHelper.App
             Info.LoadSkills();
             progress = 65;
 
+            operText = "Загрузка вещей . . .";
+            this.Invoke((SimpleCall)TextChange);
+            this.Invoke((SimpleCall)ProgressChange);
+            Info.LoadItems();
+            progress = 70;
+
             operText = "Загрузка плагинов . . .";
             this.Invoke((SimpleCall)TextChange);
             this.Invoke((SimpleCall)ProgressChange);

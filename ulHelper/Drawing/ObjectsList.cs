@@ -42,7 +42,7 @@ namespace ulHelper.App.Drawing
         List<L2LiveObject> objList;
         CharacterToolTip characterToolTip;
         NpcToolTip npcToolTip;
-        IToolTip currentToolTip;
+        ulHelper.App.Tooltips.ToolTip currentToolTip;
 
         public event EventHandler<ObjectClickEventArgs> ObjectClick;
 
