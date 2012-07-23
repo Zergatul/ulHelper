@@ -47,6 +47,8 @@ namespace ulHelper.App
             ExpBar.Load();
             LevelBar.Load();
             MiniHPBar.Load();
+            Mini5HPBar.Load();
+            Mini5MPBar.Load();
             ObjectsList.Load();
             TargetPanel.Load();
             progress = 50;

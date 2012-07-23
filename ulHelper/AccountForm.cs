@@ -43,8 +43,8 @@ namespace ulHelper.App
         {
             this.InvokeIfNeeded(() =>
                 {
-                    if (this.Name != ((GameWorld)sender).User.Name)
-                        this.Name = ((GameWorld)sender).User.Name;
+                    if (this.Text != ((GameWorld)sender).User.Name)
+                        this.Text = ((GameWorld)sender).User.Name;
                 });
         }
 

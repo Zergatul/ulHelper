@@ -33,7 +33,9 @@ namespace ulHelper.App.Drawing
         PictureBox pb;
         VScrollBar scroll;
         GameWorld world;
-        MiniHPBar bar;
+        MiniHPBar hpBar;
+        Mini5HPBar hpBar5;
+        Mini5MPBar mpBar5;
         Rectangle clip;
         int hoveredIndex;
         KryptonCheckBox showWar, showAlly, showNeutral, showNpc;
@@ -85,7 +87,9 @@ namespace ulHelper.App.Drawing
             pb.MouseClick += pb_MouseClick;
             pb.FindForm().MouseWheel += ObjectsList_MouseWheel;
 
-            bar = new MiniHPBar(72);
+            hpBar = new MiniHPBar(72);
+            hpBar5 = new Mini5HPBar(72);
+            mpBar5 = new Mini5MPBar(72);
         }
 
         void world_L2LiveObjectUpdate(object sender, L2Objects.Events.L2LiveObjectEventArgs e)
@@ -266,13 +270,25 @@ namespace ulHelper.App.Drawing
                 g.DrawImage(Info.Classes[ch.ClassID].Icon, x, y);
             else
                 g.DrawImage(unknownClass,  x, y);
-            bar.Draw(g, x + 12, y + 1, ch.CurHP, ch.MaxHP);
+            if (Settings.ObjectsList.ShowMP)
+            {
+                hpBar5.Draw(g, x + 12, y + 1, ch.CurHP, ch.MaxHP);
+                mpBar5.Draw(g, x + 12, y + 6, ch.CurMP, ch.MaxMP);
+            }
+            else
+                hpBar.Draw(g, x + 12, y + 1, ch.CurHP, ch.MaxHP);
             g.DrawString(ch.Name, GUI.Font, GUI.NeutralBrush, x + 84, y);
         }
 
         void DrawNpc(Graphics g, L2Npc npc, int x, int y, int width)
         {
-            bar.Draw(g, x + 12, y + 1, npc.CurHP, npc.MaxHP);
+            if (Settings.ObjectsList.ShowMP)
+            {
+                hpBar5.Draw(g, x + 12, y + 1, npc.CurHP, npc.MaxHP);
+                mpBar5.Draw(g, x + 12, y + 6, npc.CurMP, npc.MaxMP);
+            }
+            else
+                hpBar.Draw(g, x + 12, y + 1, npc.CurHP, npc.MaxHP);
             g.DrawString(npc.Name, GUI.Font, GUI.NpcBrush, x + 84, y);
         }
 
@@ -282,20 +298,11 @@ namespace ulHelper.App.Drawing
 
         public virtual void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
             if (!_disposed)
             {
-                if (disposing)
-                {
-                    panel.Dispose();
-                }
+                panel.Dispose();
                 _disposed = true;
-            }
+            }            
         }
 
         #endregion

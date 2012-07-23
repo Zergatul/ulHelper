@@ -24,6 +24,7 @@ namespace ulHelper.App
         internal volatile bool NeedTerminate;
         internal List<BasePlugin> LoadedPlugins;
         internal List<ClientPacket> SendBuffer;
+        internal bool BeginDisposing;
 
         PacketsReceiveModule pckReceive;
         AccountLiveModule accLive;
@@ -118,7 +119,8 @@ namespace ulHelper.App
                 if (!MainForm.DebugDraw)
                 {
                     pckReceive.Terminate();
-                    accLive.Terminate();
+                    if (!BeginDisposing)
+                        accLive.Terminate();
                     appLive.Terminate();
                     pckSend.Terminate();
                 }

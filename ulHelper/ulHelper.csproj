@@ -78,6 +78,9 @@
     <Compile Include="Drawing\Bar.cs" />
     <Compile Include="Drawing\BarInfoMode.cs" />
     <Compile Include="Drawing\BitmapFunctions.cs" />
+    <Compile Include="Drawing\Mini5MPBar.cs" />
+    <Compile Include="Drawing\Mini5HPBar.cs" />
+    <Compile Include="Drawing\SimpleBar.cs" />
     <Compile Include="Drawing\MiniHPBar.cs" />
     <Compile Include="Drawing\ExpBar.cs" />
     <Compile Include="Drawing\LevelBar.cs" />
@@ -104,6 +107,8 @@
     <Compile Include="Modules\PacketsSendModule.cs" />
     <Compile Include="PluginInfo.cs" />
     <Compile Include="AppPlugins.cs" />
+    <Compile Include="Settings\ObjectsListSettings.cs" />
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="Tooltips\CharacterToolTip.cs" />
     <Compile Include="Tooltips\NpcToolTip.cs" />
     <Compile Include="Tooltips\IToolTip.cs" />
@@ -244,10 +249,40 @@
     <Content Include="Images\HP_left.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\HP_mini.png">
+    <Content Include="Images\HP_mini5_bg_center.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\HP_mini_bg.png">
+    <Content Include="Images\HP_mini5_bg_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini5_bg_right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini5_center.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini5_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini5_right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini_bg_center.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini_bg_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini_bg_right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini_center.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HP_mini_right.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\HP_right.png">
@@ -272,6 +307,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\MP_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MP_mini5_bg_center.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MP_mini5_bg_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MP_mini5_bg_right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MP_mini5_center.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MP_mini5_left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\MP_mini5_right.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\MP_right.png">

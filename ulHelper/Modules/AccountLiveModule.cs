@@ -72,6 +72,7 @@ namespace ulHelper.App.Modules
                             acc.Form.NeedTerminate = true;
                             acc.Form.InvokeIfNeeded(acc.Form.Close);
                             PerformRemoveAccount();
+                            acc.BeginDisposing = true;
                             acc.Dispose();
                             break;
                         }
