@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    75=FriendList:d(count:Loop.01.0004)d(FriendID)s(FriendName)d(isOnLine)d(onlineObjID)
-    */
     /// <summary>
     /// ID = 75
     /// </summary>

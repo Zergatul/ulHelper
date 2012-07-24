@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    CC=NicknameChanged:d(ObjectID)s(Title)
-    */
     /// <summary>
     /// ID = CC
     /// </summary>

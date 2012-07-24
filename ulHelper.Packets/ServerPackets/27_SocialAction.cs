@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    27=SocialAction:d(PlayerID)d(Action:Get.F9)
-    */
     /// <summary>
     /// ID = 27
     /// </summary>

@@ -61,6 +61,7 @@
     <Compile Include="ClientPackets\D09D.cs" />
     <Compile Include="ClientPackets\D0A0.cs" />
     <Compile Include="ClientPackets\17_RequestDropItem.cs" />
+    <Compile Include="ItemInfo.cs" />
     <Compile Include="ServerPacket.cs" />
     <Compile Include="ServerPackets\08_DeleteObject.cs" />
     <Compile Include="ServerPackets\31_CharInfo.cs" />
@@ -108,11 +109,14 @@
     <Compile Include="ServerPackets\85_BuffList.cs" />
     <Compile Include="ServerPackets\75_FriendList.cs" />
     <Compile Include="ServerPackets\BA_PartyMemberPosition.cs" />
+    <Compile Include="ServerPackets\9F_StaticObject.cs" />
+    <Compile Include="ServerPackets\FD_AgitDecoInfo.cs" />
+    <Compile Include="ServerPackets\FEE6.cs" />
     <Compile Include="ServerPackets\F9_EtcStatusUpdate.cs" />
     <Compile Include="ServerPackets\D4_FlyToLocation.cs" />
     <Compile Include="ServerPackets\E1_RecipeShopMsg.cs" />
     <Compile Include="ServerPackets\D0_MultiSellList.cs" />
-    <Compile Include="ServerPackets\FEF6.cs" />
+    <Compile Include="ServerPackets\FEF6_ResponseCommissionList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerPackets\21_InventoryUpdate.cs" />
     <Compile Include="UnparsedPacket.cs" />

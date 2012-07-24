@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-     * 22=TeleportToLocation:d(TargetID)d(X)d(Y)d(Z)d(?)d(heading)
-    */
     /// <summary>
     /// ID = 22
     /// </summary>

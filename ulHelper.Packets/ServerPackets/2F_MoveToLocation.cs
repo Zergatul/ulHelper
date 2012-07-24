@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    2F=MoveToLocation:
-     * d(ObjectID)d(DestX)d(DestY)d(DestZ)d(CurX)d(CurY)d(CurZ)
-    */
     /// <summary>
     /// ID = 2F
     /// </summary>

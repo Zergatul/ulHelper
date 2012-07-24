@@ -5,17 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    11=ItemList:
-     * h(ShowWindow)h(count:Loop.01.0024)d(ObjectID)d(ItemID:Get.F0)d(LocationSlot)q(Count)
-     * h(ItemType2)h(CustomType1)h(isEquipped)
-     * d(BodyPart)
-     * h(EnchantLevel)h(CustType2)
-     * d(AugmentID:Get.F1)d(Mana)d(remainTime)
-     * h(AttackElem)h(AttackElemVal)h(DefAttrFire)h(DefAttrWater)h(DefAttrWind)
-     * h(DefAttrEarth)h(DefAttrHoly)h(DefAttrUnholy)h(EnchEff1)h(enchEff2)
-     * h(enchEff3)h(blockedItems:Loop.02.0001)c(blockMode)d(blockItem)
-    */
     /// <summary>
     /// ID = 0x21
     /// </summary>

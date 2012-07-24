@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    54=MagicSkillLaunched:
-     * d(ObjectID)d(SkillID:Get.Skill)d(SkillLevel)d(HitTimes:Loop.01.0001)d(TargetID)d(SingleTargetID)
-    */
     /// <summary>
     /// ID = 54
     /// </summary>

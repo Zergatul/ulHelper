@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    A2=PrivateStoreMsgSell:d(ObjectID)s(StoreMsg)
-    */
     /// <summary>
     /// ID = A2
     /// </summary>

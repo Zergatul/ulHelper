@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    29=ChangeWaitType:d(CharID)d(MoveType)d(X)d(Y)d(Z)
-    */
     /// <summary>
     /// ID = 29
     /// </summary>

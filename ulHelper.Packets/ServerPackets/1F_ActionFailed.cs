@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    1F=ActionFailed:
-    */
     /// <summary>
     /// ID = 1F
     /// </summary>

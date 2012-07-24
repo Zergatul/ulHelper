@@ -5,19 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-        D0=MultiSellList:
-     * d(ListId)d(Page)d(Finished)d(PageSize=28)
-     * d(EntryCount:Loop.01.0040)
-     * d(EntryID)c(isStackable)h(0)d(0)d(0)h(-2)z(0014h*7)
-     * h(ProductCount:SV0)h(IngredientCount:SV1)
-     *      v(ProductList:LV0.Loop.01.0015)d(ItemID:Get.F0)d(BodyPart)h(type2)q(count)
-     *      h(enchLvl)d(augmID:Get.F1)d(mana)h(ElemID)
-     *      h(ElemPower)h(Fire)h(Water)h(Wind)h(Earth)h(Holy)h(Unholy)
-     * v(IngredientsList:LV1.Loop.01.0014)d(ItemID:Get.F0)h(type2)q(count)h(enchLvl)
-     *      d(augmID:Get.F1)d(mana)h(ElemID)
-     *      h(ElemPower)h(Fire)h(Water)h(Wind)h(Earth)h(Holy)h(Unholy)
-    */
     /// <summary>
     /// ID = D0
     /// </summary>

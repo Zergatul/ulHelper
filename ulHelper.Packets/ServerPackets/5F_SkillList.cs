@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    5F=SkillList:d(ListCount:Loop.01.0005)d(isPassive)d(Level)d(SkillID:Get.Skill)c(isDisabled)c(enchanted)
-    */
     /// <summary>
     /// ID = 5F
     /// </summary>
@@ -23,23 +20,23 @@ namespace ulHelper.Packets
             for (int i = 0; i < count; i++)
             {
                 var info = new SkillInfo();
-                info.Passive = ReadInt() == 1;
+                info.Passive = ReadInt();
                 info.Level = ReadInt();
                 info.SkillID = ReadInt();
                 this.Position += 4;
-                info.hzDisabled = ReadByte() == 1;
-                info.hzEnchanted = ReadByte() == 1;
+                info.IsDisabled = ReadByte();
+                info.CanEnchant = ReadByte();
                 this.Skills.Add(info);
             }
         }
 
         public class SkillInfo
         {
-            public bool Passive { get; set; }
+            public int Passive { get; set; }
             public int Level { get; set; }
             public int SkillID { get; set; }
-            public bool hzDisabled { get; set; }
-            public bool hzEnchanted { get; set; }
+            public int IsDisabled { get; set; }
+            public int CanEnchant { get; set; }
         }
     }
 }

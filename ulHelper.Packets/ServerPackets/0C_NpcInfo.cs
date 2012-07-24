@@ -5,20 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    0C=NpcInfo:
-     * d(ObjID)d(NpcId:Get.NpcId)d(IsAttackable)d(X)d(Y)d(Z)d(Heading)
-     * d(0)d(CastSpd)d(AtkSpd)d(RunSpd)d(WalkSpd)d(SwimRunSpd)d(SwimWalkSpd)
-     * d(FlRunSpd)d(FlWalkSpd)d(FlyRunSpd)d(FlyWalkSpd)
-     * f(MoveMult)f(ASpdMult)f(CollisionRadius)f(CollisionHeight)
-     * d(RHand:Get.F0)d(Chest:Get.F0)d(LHand:Get.F0)
-     * c(nameabove)c(isRunning)c(isInCombat)c(isALikeDead)c(isSummoned)
-     * s(Name)s(Title)
-     * d(TitleColor:Get.FCol)d(pvpFlag)d(Karma)d(AbnormalEffect)
-     * d(clanID)d(crestID)d(allyID)d(allyCrest)c(isFlying)c(Team)
-     * f(CollisionRadius)f(CollisionHeight)d(enchEffects)d(isFlying)
-     * d(0)d(form)c(isShowName)c(isShowName)d(SpecEffects)d(dispEffect)
-    */
     /// <summary>
     /// ID = OC
     /// </summary>
@@ -50,7 +36,7 @@ namespace ulHelper.Packets
         public byte IsRun { get; set; }
         public byte InCombat { get; set; }
         public byte IsAlikeDead { get; set; }
-        public byte IsSummoned { get; set; }
+        public byte ShowSpawnAnim { get; set; }
         public string PetName { get; set; }
         public string OwnerName { get; set; }
         public int CurHP { get; set; }
@@ -89,7 +75,7 @@ namespace ulHelper.Packets
             this.IsRun = ReadByte();
             this.InCombat = ReadByte();
             this.IsAlikeDead = ReadByte();
-            this.IsSummoned = ReadByte();
+            this.ShowSpawnAnim = ReadByte();
             this.Position += 4;
             this.PetName = ReadString();
             this.Position += 4;

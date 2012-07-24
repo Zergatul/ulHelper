@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    C7=SkillCoolTime:d(listSize:Loop.01.0004)d(skillID:Get.Skill)d(skillLvl)d(reuseDelay)d(timeRemain)
-    */
     /// <summary>
     /// ID = C7
     /// </summary>
@@ -24,10 +21,9 @@ namespace ulHelper.Packets
             {
                 var skill = new Skill();
                 skill.SkillID = ReadInt();
-                int hz0 = ReadInt();
-                int hz = ReadInt();
-                short hz2 = ReadShort();
-                short hz3 = ReadShort();
+                skill.SkillLvl = ReadInt();
+                skill.ReuseBase = ReadInt();
+                skill.ReuseCurrent = ReadInt();
                 Skills.Add(skill);
             }
         }
@@ -35,6 +31,9 @@ namespace ulHelper.Packets
         public class Skill
         {
             public int SkillID {get;set;}
+            public int SkillLvl { get; set; }
+            public int ReuseBase { get; set; }
+            public int ReuseCurrent { get; set; }
         }
     }
 }

@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    D4=FlyToLocation:d(ObjectID)d(ToX)d(ToY)d(ToZ)d(OrigX)d(OrigY)d(OrigZ)d(FlyType)
-    */
     /// <summary>
     /// ID = D4
     /// </summary>

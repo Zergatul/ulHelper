@@ -105,6 +105,8 @@ namespace ulHelper.Packets
                 return new BuffList(this);
             if (ID == 0x89)
                 return new PledgeInfo(this);
+            if (ID == 0x9F)
+                return new StaticObject(this);
             if (ID == 0xA1)
                 return new PrivateStoreListSell(this);
             if (ID == 0xA2)
@@ -131,8 +133,22 @@ namespace ulHelper.Packets
                 return new RecipeShopMsg(this);
             if (ID == 0xF9)
                 return new EtcStatusUpdate(this);
-            if (ID == 0xFE && ID2 == 0xF6)
-                return new FEF6(this);
+            if (ID == 0xFE)
+            {
+                if (ID2 == 0xE6)
+                    return new FEE6(this);
+                if (ID2 == 0xF6)
+                    return new ResponseCommissionList(this);
+            }
+            // fucking packets, fuck you
+            if (ID == 0xD9)
+                return this;
+            if (ID == 0xFE)
+            {
+                if (ID2 == 0xC7)
+                    return this; 
+            }
+            // end
             return this;
         }
 
@@ -180,10 +196,42 @@ namespace ulHelper.Packets
             return Encoding.Unicode.GetString(Data, start, Position - start - 2);
         }
 
+        protected void ReadItemInfo(ItemInfo item)
+        {
+            item.ObjectID = ReadInt();
+            item.ItemID = ReadInt();
+            item.EquipSlot = ReadInt();
+            item.Count = ReadLong();
+            item.Type2 = ReadShort();
+            item.CustomType1 = ReadShort();
+            item.IsEquipped = ReadShort();
+            item.BodyPart = ReadInt();
+            item.Enchant = ReadShort();
+            item.CustomType2 = ReadShort();
+            item.AugmentID = ReadInt();
+            item.ShadowTime = ReadInt();
+            item.TempTime = ReadInt();
+            this.Position += 2;
+            item.AttackAttr = ReadShort();
+            item.AttackAttrValue = ReadShort();
+            item.DefFire = ReadShort();
+            item.DefWater = ReadShort();
+            item.DefWind = ReadShort();
+            item.DefEarth = ReadShort();
+            item.DefHoly = ReadShort();
+            item.DefDark = ReadShort();
+            item.EnchantOptions1 = ReadShort();
+            item.EnchantOptions2 = ReadShort();
+            item.EnchantOptions3 = ReadShort();
+            this.Position += 4;
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(ID.ToString("X2"));
+            if (ID2 != -1)
+                sb.Append(" [" + ID2.ToString("X2") + "]");
             for (int i = 0; i < Data.Length; i++)
             {
                 sb.Append(' ');

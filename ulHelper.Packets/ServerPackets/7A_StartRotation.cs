@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    7A=StartRotation:d(CharId)d(Degree)d(Side)d(speed)
-    */
     /// <summary>
     /// ID = 7A
     /// </summary>

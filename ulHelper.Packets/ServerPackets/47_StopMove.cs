@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    47=StopMove:
-     * d(ObjectID)d(X)d(Y)d(Z)d(Heading)
-    */
     /// <summary>
     /// ID = 47
     /// </summary>

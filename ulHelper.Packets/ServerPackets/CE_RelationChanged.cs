@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-        * CE=RelationChanged:d(ObjectID)d(Relation)d(AutoAttackable)d(Karma)d(PvpFlag)
-    */
     /// <summary>
     /// ID = CE
     /// </summary>

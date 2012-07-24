@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    6A=PledgeCrest:d(CrestID)b(CrestData)
-    */
     /// <summary>
     /// ID = 6A
     /// </summary>

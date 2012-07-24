@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    08=DeleteObject:
-        d(ObjectID)d(0)
-    */
     /// <summary>
     /// ID = 08
     /// </summary>

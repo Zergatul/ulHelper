@@ -8,11 +8,11 @@ namespace ulHelper.Packets
     /// <summary>
     /// ID = FE F6
     /// </summary>
-    public class FEF6 : ServerPacket
+    public class ResponseCommissionList : ServerPacket
     {
         public List<SellItem> Items { get; set; }
 
-        public FEF6(ServerPacket pck)
+        public ResponseCommissionList(ServerPacket pck)
             : base(pck)
         {
             this.Position += 12;

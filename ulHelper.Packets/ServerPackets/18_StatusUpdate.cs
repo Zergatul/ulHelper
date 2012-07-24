@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-     18=StatusUpdate:
-     * d(ObjectID)d(AttribCount:Loop.01.0002)d(AttrID:Get.FSup)d(AttrValue)
-     */
     /// <summary>
     /// ID = 18
     /// </summary>

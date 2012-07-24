@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    BA=PartyMemberPosition:d(Count:Loop.01.0004)d(ObjectID)d(X)d(Y)d(Z)
-    */
     /// <summary>
     /// ID = BA
     /// </summary>

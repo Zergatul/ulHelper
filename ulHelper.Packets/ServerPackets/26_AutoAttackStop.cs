@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    26=AutoAttackStop:d(TargetID)
-    */
     /// <summary>
     /// ID = 26
     /// </summary>

@@ -5,11 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    F9=EtcStatusUpdate:
-        d(Charges)d(WeightPenalty)d(isChatBanned)d(isDangerArea)d(ExpertiseWeapPenalty)
-        d(ExpertArmorPenalty)d(CharmOfCourage)d(DeathPenaltyLevel)d(Souls)
-    */
     /// <summary>
     /// ID = F9
     /// </summary>

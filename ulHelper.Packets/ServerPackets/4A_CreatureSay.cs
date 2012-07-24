@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    4A=CreatureSay:d(ObjectID)d(textType:Get.FSay2)s(charName)s(Message)
-    */
     /// <summary>
     /// ID = 4A
     /// </summary>

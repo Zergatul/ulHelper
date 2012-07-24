@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    E1=RecipeShopMsg:d(ObjectID)s(StoreName)
-    */
     /// <summary>
     /// ID = E1
     /// </summary>

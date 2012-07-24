@@ -5,11 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    33=Attack:
-     * d(AttackerObjID)d(TargetObjID)d(Damage)c(Flags)d(X)d(Y)d(Z)
-     * h(HitsLength:Loop.01.0003)d(TargetID)d(Damage)c(Flags)d(TargetX)d(TargetY)d(TargetZ)
-    */
     /// <summary>
     /// ID = 33
     /// </summary>

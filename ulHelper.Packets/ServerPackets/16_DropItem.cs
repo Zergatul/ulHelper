@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    16=DropItem:d(PlayerID)d(ObjectID)d(ItemID:Get.F0)d(X)d(Y)d(Z)d(Stackable)q(Count)d(:)
-    */
     /// <summary>
     /// ID = 16
     /// </summary>

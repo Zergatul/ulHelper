@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    30=NpcSay:d(ObjectID)d(textType)d(NpcID:Get.NpcId)d(msgType)s(Msg)s(pMsg)
-    */
     /// <summary>
     /// ID = 30
     /// </summary>

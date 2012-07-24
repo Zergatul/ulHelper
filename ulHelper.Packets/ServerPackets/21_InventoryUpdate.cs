@@ -5,16 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    21=InventoryUpdate:
-     * h(count:Loop.01.0025)
-     * h(1add 2mod 3remove)d(ObjectID)d(ItemID:Get.F0)d(Slot)q(Count)
-     * h(ItemType2)h(CustomType1)h(isEquipped)
-     * d(BodyPart)h(EnchantLevel)h(CustType2)
-     * d(AugmID:Get.F1)d(Mana)d(remainTime)
-     * h(AttackElem)h(AttackElemVal)h(DefAttrFire)h(DefAttrWater)h(DefAttrWind)
-     * h(DefAttrEarth)h(DefAttrHoly)h(DefAttrUnholy)h(EnchEff1)h(enchEff2)h(enchEff3) 
-     */
     /// <summary>
     /// ID = 0x21
     /// </summary>

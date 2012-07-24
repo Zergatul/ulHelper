@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    
-    */
     /// <summary>
     /// ID = 59
     /// </summary>

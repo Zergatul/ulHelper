@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    6B=SetupGauge:d(CharObjID)d(Dat1)d(Time)d(Time2)
-    */
     /// <summary>
     /// ID = 6B
     /// </summary>

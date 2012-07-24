@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    48=MagicSkillUse:
-     * d(charID)d(targetID)d(skillID:Get.Skill)d(skillLvl)d(hitTime)d(reuseDelay)d(X)d(Y)d(Z)d(:)d(tx)d(ty)d(tz)
-    */
     /// <summary>
     /// ID = 48
     /// </summary>

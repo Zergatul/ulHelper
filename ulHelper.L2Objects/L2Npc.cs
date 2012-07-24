@@ -36,7 +36,7 @@ namespace ulHelper.L2Objects
             this.CastSpeed = pck.CastSpeed;
             this.AtkSpeed = pck.AtkSpeed;
             this.Speed = (int)Math.Round((pck.IsRun == 1 ? pck.RunSpeed : pck.WalkSpeed) * pck.MoveMult);
-            this.IsNameAbove = pck.IsSummoned == 1;
+            this.IsNameAbove = pck.ShowSpawnAnim == 1;
             this.PetName = pck.PetName;
             this.OwnerName = pck.OwnerName;
         }

@@ -5,11 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    52=PartySmallWindowUpdate:d(MemberObjId)s(MemberName)
-        d(CurrentCP)d(MaxCP)d(CurrentHP)d(MaxHP)d(CurrentMP)d(MaxMP)
-        d(Level)d(ClassID:Get.ClassID)
-    */
     /// <summary>
     /// ID = 52
     /// </summary>

@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    23=TargetSelected:
-     * d(ObjectID)d(TargetID)d(X)d(Y)d(Z)d(0)
-    */
     /// <summary>
     /// ID = 23
     /// </summary>

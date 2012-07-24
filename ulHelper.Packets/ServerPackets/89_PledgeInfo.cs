@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    89=PledgeInfo:d(ClanID)s(ClanName)s(AllyName)
-    */
     /// <summary>
     /// ID = 89
     /// </summary>

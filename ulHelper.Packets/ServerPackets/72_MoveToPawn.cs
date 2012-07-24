@@ -5,10 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    72=MoveToPawn:
-     * d(charID)d(targetId)d(distance)d(X)d(Y)d(Z)d(tX)d(tY)d(tZ)
-    */
     /// <summary>
     /// ID = 72
     /// </summary>

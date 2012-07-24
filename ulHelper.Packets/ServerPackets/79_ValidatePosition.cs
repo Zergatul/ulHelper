@@ -5,9 +5,6 @@ using System.Text;
 
 namespace ulHelper.Packets
 {
-    /*
-    79=ValidateLocation:d(CharID)d(X)d(Y)d(Z)d(Heading)
-    */
     /// <summary>
     /// ID = 79
     /// </summary>

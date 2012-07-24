@@ -6,10 +6,6 @@ using HtmlAgilityPack;
 
 namespace ulHelper.Packets
 {
-    /*
-     19=NpcHtmlMessage:
-     * d(objID)s(HTML)d(itemID)
-     */
     /// <summary>
     /// ID = 19
     /// </summary>
