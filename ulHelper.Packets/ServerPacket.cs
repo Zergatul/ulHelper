@@ -111,6 +111,8 @@ namespace ulHelper.Packets
                 return new PrivateStoreListSell(this);
             if (ID == 0xA2)
                 return new PrivateStoreMsgSell(this);
+            if (ID == 0xAF)
+                return new PledgeCrest(this);
             if (ID == 0xB9)
                 return new MyTargetSelected(this);
             if (ID == 0xBA)

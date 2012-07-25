@@ -6,14 +6,14 @@ using System.Text;
 namespace ulHelper.Packets
 {
     /// <summary>
-    /// ID = 6A
+    /// ID = AF
     /// </summary>
-    public class PledgeCrest : ServerPacket
+    public class AllyCrest : ServerPacket
     {
         public int CrestID { get; set; }
         public byte[] CrestData { get; set; }
 
-        public PledgeCrest(ServerPacket pck)
+        public AllyCrest(ServerPacket pck)
             : base(pck)
         {
             this.CrestID = ReadInt();
