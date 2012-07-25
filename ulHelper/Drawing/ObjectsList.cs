@@ -38,7 +38,7 @@ namespace ulHelper.App.Drawing
         Mini5MPBar mpBar5;
         Rectangle clip;
         int hoveredIndex;
-        KryptonCheckBox showWar, showAlly, showNeutral, showNpc;
+        CheckTextButton showWar, showAlly, showNeutral, showNpc;
         List<L2LiveObject> objList;
         CharacterToolTip characterToolTip;
         NpcToolTip npcToolTip;
@@ -47,7 +47,7 @@ namespace ulHelper.App.Drawing
         public event EventHandler<ObjectClickEventArgs> ObjectClick;
 
         public ObjectsList(ObjectsPanel panel, PictureBox pb, GameWorld world, int x, int y, int width, int height,
-            KryptonCheckBox showWar, KryptonCheckBox showAlly, KryptonCheckBox showNeutral, KryptonCheckBox showNpc,
+            CheckTextButton showWar, CheckTextButton showAlly, CheckTextButton showNeutral, CheckTextButton showNpc,
             CharacterToolTip characterToolTip, NpcToolTip npcToolTip)
         {
             this.panel = panel;

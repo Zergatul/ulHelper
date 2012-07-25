@@ -110,6 +110,7 @@
     <Compile Include="ServerPackets\75_FriendList.cs" />
     <Compile Include="ServerPackets\BA_PartyMemberPosition.cs" />
     <Compile Include="ServerPackets\9F_StaticObject.cs" />
+    <Compile Include="ServerPackets\AF_AllyCrest.cs" />
     <Compile Include="ServerPackets\FD_AgitDecoInfo.cs" />
     <Compile Include="ServerPackets\FEE6.cs" />
     <Compile Include="ServerPackets\F9_EtcStatusUpdate.cs" />

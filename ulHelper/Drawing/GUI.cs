@@ -14,12 +14,14 @@ namespace ulHelper.App.Drawing
         public static Color WarColor = Color.FromArgb(0xB0, 0x00, 0x00);
         public static Color AllyColor = Color.FromArgb(0x00, 0xCA, 0x21);
         public static Color NeutralColor = Color.FromArgb(0xE8, 0xE8, 0xE8);
+        public static Color DropColor = Color.FromArgb(0xFF, 0x8B, 0x26);
         public static Color TargetColor = Color.Red;
         public static Color PlayerColor = Color.Black;
         public static Brush NpcBrush = new SolidBrush(NpcColor);
         public static Brush WarBrush = new SolidBrush(WarColor);
         public static Brush AllyBrush = new SolidBrush(AllyColor);
         public static Brush NeutralBrush = new SolidBrush(NeutralColor);
+        public static Brush DropBrush = new SolidBrush(DropColor);
 
         public static void RoundedRectangle(Graphics g, int x, int y, int width, int height)
         {

@@ -78,6 +78,7 @@
     <Compile Include="Drawing\Bar.cs" />
     <Compile Include="Drawing\BarInfoMode.cs" />
     <Compile Include="Drawing\BitmapFunctions.cs" />
+    <Compile Include="Drawing\CheckTextButton.cs" />
     <Compile Include="Drawing\Mini5MPBar.cs" />
     <Compile Include="Drawing\Mini5HPBar.cs" />
     <Compile Include="Drawing\SimpleBar.cs" />

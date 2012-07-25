@@ -19,7 +19,7 @@ namespace ulHelper.App.Drawing
         volatile bool needTerminate;
         Thread redrawThread;
         GameWorld world;
-        KryptonCheckBox showWar, showAlly, showNeutral, showNpc;
+        CheckTextButton showWar, showAlly, showNeutral, showNpc, showDrop;
         ObjectsList list;
 
         public event EventHandler<ObjectClickEventArgs> ObjectClick;
@@ -41,54 +41,55 @@ namespace ulHelper.App.Drawing
             pb.Paint += pb_Paint;
             parent.Controls.Add(pb);
 
-            showWar = new KryptonCheckBox();
-            showWar.Text = "";
-            showWar.Left = pb.Left + 3; 
-            showWar.Top = pb.Top + 174;
-            showWar.AutoSize = false;
-            showWar.Height = 14;
-            showWar.Width = 14;
-            parent.Controls.Add(showWar);
+            showWar = new CheckTextButton(pb);
+            showWar.Text = "war:-";
+            showWar.Left = 3; 
+            showWar.Top = 171;
+            showWar.Height = 15;
+            showWar.Width = 42;
+            showWar.FontBrush = GUI.WarBrush;
             showWar.CheckedChanged += showWar_CheckedChanged;
-            showWar.BringToFront();
 
-            showAlly = new KryptonCheckBox();
-            showAlly.Text = "";
-            showAlly.Left = showWar.Left + 55;
+            showAlly = new CheckTextButton(pb);
+            showAlly.Text = "ally:-";
+            showAlly.Left = showWar.Left + showWar.Width + 4;
             showAlly.Top = showWar.Top;
-            showAlly.AutoSize = false;
-            showAlly.Height = 14;
-            showAlly.Width = 14;
-            parent.Controls.Add(showAlly);
+            showAlly.Height = showWar.Height;
+            showAlly.Width = showWar.Width;
+            showAlly.FontBrush = GUI.AllyBrush;
             showAlly.CheckedChanged += showAlly_CheckedChanged;
-            showAlly.BringToFront();
 
-            showNeutral = new KryptonCheckBox();
-            showNeutral.Text = "";
-            showNeutral.Left = showAlly.Left + 58;
+            showNeutral = new CheckTextButton(pb);
+            showNeutral.Text = "neu:-";
+            showNeutral.Left = showAlly.Left + showAlly.Width + 4;
             showNeutral.Top = showWar.Top;
-            showNeutral.AutoSize = false;
-            showNeutral.Height = 14;
-            showNeutral.Width = 14;
+            showNeutral.Height = showWar.Height;
+            showNeutral.Width = showWar.Width;
             showNeutral.Checked = true;
-            parent.Controls.Add(showNeutral);
+            showNeutral.FontBrush = GUI.NeutralBrush;
             showNeutral.CheckedChanged += showNeutral_CheckedChanged;
-            showNeutral.BringToFront();
 
-            showNpc = new KryptonCheckBox();
-            showNpc.Text = "";
-            showNpc.Left = showNeutral.Left + 58;
+            showNpc = new CheckTextButton(pb);
+            showNpc.Text = "npc:-";
+            showNpc.Left = showNeutral.Left + showNeutral.Width + 4;
             showNpc.Top = showWar.Top;
-            showNpc.AutoSize = false;
-            showNpc.Height = 14;
-            showNpc.Width = 14;
-            parent.Controls.Add(showNpc);
+            showNpc.Height = showWar.Height;
+            showNpc.Width = showWar.Width;
+            showNpc.FontBrush = GUI.NpcBrush;
             showNpc.CheckedChanged += showNpc_CheckedChanged;
-            showNpc.BringToFront();
+
+            showDrop = new CheckTextButton(pb);
+            showDrop.Text = "drop:-";
+            showDrop.Left = showNpc.Left + showNpc.Width + 4;
+            showDrop.Top = showWar.Top;
+            showDrop.Height = showWar.Height;
+            showDrop.Width = showWar.Width;
+            showDrop.FontBrush = GUI.DropBrush;
+            //showDrop.CheckedChanged += showNpc_CheckedChanged;
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
-            list = new ObjectsList(this, pb, world, 3, 3, 223, 168, 
+            list = new ObjectsList(this, pb, world, 3, 3, 223, 166, 
                 showWar, showAlly, showNeutral, showNpc,
                 characterToolTip, npcToolTip);
             list.ObjectClick += (s, e) => { if (ObjectClick != null) ObjectClick(this, e); };
@@ -128,11 +129,19 @@ namespace ulHelper.App.Drawing
             DrawBorder(e.Graphics);
             list.Draw(e.Graphics);
 
-            e.Graphics.DrawString("war:-", GUI.Font, GUI.WarBrush, showWar.Left + 12, showWar.Top - pb.Top);
+            showWar.Text = "war:999";
+            showAlly.Text = "ally:-";
+            showNeutral.Text = "neu:" + world.Characters.Count;
+            showNpc.Text = "npc:" + world.Npcs.Count;
+            showWar.Draw(e.Graphics);
+            showAlly.Draw(e.Graphics);
+            showNeutral.Draw(e.Graphics);
+            showNpc.Draw(e.Graphics);
+            /*e.Graphics.DrawString(, GUI.Font, GUI.WarBrush, showWar.Left + 12, showWar.Top - pb.Top);
             e.Graphics.DrawString("ally:-", GUI.Font, GUI.AllyBrush, showAlly.Left + 12, showAlly.Top - pb.Top);
             e.Graphics.DrawString("neu.:" + world.Characters.Count, GUI.Font, GUI.NeutralBrush, showNeutral.Left + 12, showNeutral.Top - pb.Top);
             
-            e.Graphics.DrawString("npc:" + world.Npcs.Count, GUI.Font, GUI.NpcBrush, showNpc.Left + 12, showNpc.Top - pb.Top);
+            e.Graphics.DrawString(, GUI.Font, GUI.NpcBrush, showNpc.Left + 12, showNpc.Top - pb.Top);*/
         }
 
         public void Update()
