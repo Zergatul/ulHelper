@@ -57,12 +57,12 @@ namespace ulHelper.App.Drawing
             }
         }
 
-        public void Draw(Graphics g, int x, int y, long cur, long max)
+        public void Draw(Graphics g, int x, int y, double perc)
         {
-            float pos = max == 0 ? 0 : 1f * width * cur / max;
+            float pos = 1f * width * (float)perc;
             g.DrawImage(bg, x, y);
             g.DrawImage(active, x, y, pos, 12);
-            var str = (Math.Floor(10000d * cur / max) / 100).ToString("#00.00") + "%";
+            var str = (Math.Truncate(perc * 10000) / 100).ToString("#00.00") + "%";
             float strWidth = g.MeasureString(str, GUI.Font).Width;
             g.DrawString(str, GUI.Font, Brushes.White, x + (width - strWidth) / 2, y);
         }

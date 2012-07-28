@@ -77,12 +77,12 @@ namespace ulHelper.Packets
                 return new MagicSkillUse(this);
             if (ID == 0x4A)
                 return new CreatureSay(this);
-            if (ID == 0x59)
-                return new _59(this);
             if (ID == 0x52)
                 return new PartySmallWindowUpdate(this);
             if (ID == 0x54)
                 return new MagicSkillLaunched(this);
+            /*if (ID == 0x59)
+                return new _59(this);*/
             if (ID == 0x5F)
                 return new SkillList(this);
             if (ID == 0x61)

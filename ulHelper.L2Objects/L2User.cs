@@ -6,11 +6,12 @@ using ulHelper.Packets;
 
 namespace ulHelper.L2Objects
 {
-    public class L2Player : L2Character
+    public class L2User : L2Character
     {
         public long Exp { get; set; }
+        public double Perc { get; set; }
 
-        public L2Player()
+        public L2User()
         {
             Name = "[unknown]";
             CurCP = CurHP = CurMP = MaxCP = MaxHP = MaxMP = 1;
@@ -25,6 +26,7 @@ namespace ulHelper.L2Objects
             this.ObjectID = pck.ObjectID;
             this.Name = pck.Name;
             this.Exp = pck.Exp;
+            this.Perc = pck.ExpPerc;
             this.CurHP = pck.CurHP;
             this.MaxHP = pck.MaxHP;
             this.CurMP = pck.CurMP;

@@ -10,7 +10,7 @@ namespace ulHelper.L2Objects
 {
     public class GameWorld : IDisposable
     {
-        public L2Player User;
+        public L2User User;
         public List<L2Character> Characters;
         public List<L2Npc> Npcs;
         public List<ItemList.InventoryItem> Inventory;
@@ -20,8 +20,8 @@ namespace ulHelper.L2Objects
         public event EventHandler<L2CharacterEventArgs> DeleteCharacter;
         public event EventHandler<L2NpcEventArgs> DeleteNpc;
         public event EventHandler DeleteAllObjects;
-        public event EventHandler PlayerUpdate;
-        public event EventHandler PlayerTargetUpdate;
+        public event EventHandler UserUpdate;
+        public event EventHandler UserTargetUpdate;
         public event EventHandler<L2LiveObjectEventArgs> L2LiveObjectUpdate;
         public event EventHandler<L2AttackEventArgs> ObjectAttack;
         public event EventHandler<L2SkillUseEventArgs> ObjectSkillUse;
@@ -38,7 +38,7 @@ namespace ulHelper.L2Objects
 
         public GameWorld()
         {
-            User = new L2Player();
+            User = new L2User();
             Characters = new List<L2Character>();
             Npcs = new List<L2Npc>();
             _needTerminate = false;
@@ -159,6 +159,11 @@ namespace ulHelper.L2Objects
                 ProcessMagicSkillUse(pck as MagicSkillUse);
                 return;
             }
+            if (pck is PartySmallWindowUpdate)
+            {
+                ProcessPartySmallWindowUpdate(pck as PartySmallWindowUpdate);
+                return;
+            }
             if (pck is MoveToPawn)
             {
                 ProcessMoveToPawn(pck as MoveToPawn);
@@ -168,7 +173,19 @@ namespace ulHelper.L2Objects
             {
                 ProcessMyTargetSelected(pck as MyTargetSelected);
                 return;
+            }            
+        }
+
+        private void ProcessPartySmallWindowUpdate(PartySmallWindowUpdate pck)
+        {
+            var ch = FindCharacter(pck.ObjectID);
+            if (ch != null)
+            {
+                ch.Update(pck);
+                OnL2LiveObjectUpdate(ch);
             }
+            else
+                AddCharacterToList(new L2Character(pck));
         }
 
         private void ProcessMagicSkillUse(MagicSkillUse pck)
@@ -272,62 +289,34 @@ namespace ulHelper.L2Objects
 
         private void ProcessMyTargetSelected(MyTargetSelected pck)
         {
-            L2Character ch;
-            lock (Characters)
+            var obj = FindObject(pck.ObjectID);
+            if (obj != null)
             {
-                ch = Characters.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-                if (ch != null)
-                    User.Target = ch;
+                User.Target = obj;
+                if (obj is L2Npc)
+                    (obj as L2Npc).Level = User.Level - pck.Color;
+                OnUserTargetUpdate();
             }
-            if (ch != null)
-            {
-                OnPlayerTargetUpdate();
-                return;
-            }
-
-            L2Npc npc;
-            lock (Npcs)
-            {
-                npc = Npcs.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-                if (npc != null)
-                {
-                    npc.Level = User.Level - pck.Color;
-                    User.Target = npc;
-                }
-            }
-            if (npc != null)
-                OnPlayerTargetUpdate();
         }
 
         private void ProcessUserInfo(UserInfo pck)
         {
             User.Update(pck);
-            OnPlayerUpdate();
+            OnUserUpdate();
         }
 
         private void ProcessCharInfo(CharInfo pck)
         {
-            L2Character ch;
-            bool added = false;
-            lock (Characters)
-            {
-                ch = Characters.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-                if (ch == null)
-                {
-                    ch = new L2Character(pck);
-                    Characters.Add(ch);
-                    added = true;
-                }
-            }
-            if (added)
-                OnAddCharacter(ch);
-            else
+            L2Character ch = FindCharacter(pck.ObjectID);
+            if (ch != null)
             {
                 ch.Update(pck);
-                if (User.Target == ch)
-                    OnPlayerTargetUpdate();
                 OnL2LiveObjectUpdate(ch);
+                if (User.Target == ch)
+                    OnUserTargetUpdate();
             }
+            else
+                AddCharacterToList(new L2Character(pck));
         }
 
         private void ProcessTargetUnselected(TargetUnselected pck)
@@ -335,7 +324,7 @@ namespace ulHelper.L2Objects
             if (pck.TargetID == User.ObjectID)
             {
                 User.Target = null;
-                OnPlayerTargetUpdate();
+                OnUserTargetUpdate();
             }
         }
 
@@ -353,14 +342,7 @@ namespace ulHelper.L2Objects
 
         private void ProcessStatusUpdate(StatusUpdate pck)
         {
-            L2LiveObject obj = null;
-            lock (Characters)
-                obj = Characters.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-            if (obj == null)
-                lock (Npcs)
-                    obj = Npcs.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-            if (obj == null && pck.ObjectID == User.ObjectID)
-                obj = User;
+            L2LiveObject obj = FindObject(pck.ObjectID);
             if (obj != null)
             {
                 foreach (var attr in pck.Attributes)
@@ -388,76 +370,42 @@ namespace ulHelper.L2Objects
                             break;
                     }
                 if (obj == User)
-                    OnPlayerUpdate();
+                    OnUserUpdate();
                 else
                 {
                     OnL2LiveObjectUpdate(obj);
                     if (User.Target == obj)
-                        OnPlayerTargetUpdate();
+                        OnUserTargetUpdate();
                 }
             }
         }
 
         private void ProcessNpcInfo(NpcInfo pck)
         {
-            L2Npc npc;
-            bool added = false;
-            lock (Npcs)
-            {
-                npc = Npcs.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-                if (npc == null)
-                {
-                    npc = new L2Npc(pck);
-                    Npcs.Add(npc);
-                    added = true;
-                }
-            }
-            if (added)
-                OnAddNpc(npc);
-            else
+            L2Npc npc = FindNpc(pck.ObjectID);
+            if (npc != null)
             {
                 npc.Update(pck);
-                if (User.Target == npc)
-                    OnPlayerTargetUpdate();
                 OnL2LiveObjectUpdate(npc);
+                if (User.Target == npc)
+                    OnUserTargetUpdate();
             }
+            else
+                AddNpcToList(new L2Npc(pck));
         }
 
         private void ProcessDeleteObject(DeleteObject pck)
         {
-            L2Character ch;
-            lock (Characters)
-            {
-                ch = Characters.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-                if (ch != null)
-                    Characters.Remove(ch);
-            }
+            L2Character ch = FindCharacter(pck.ObjectID);
             if (ch != null)
             {
-                OnDeleteCharacter(ch);
-                if (User.Target == ch)
-                {
-                    User.Target = null;
-                    OnPlayerTargetUpdate();
-                }
+                DeleteCharacterFromList(ch);
                 return;
             }
-            L2Npc npc;
-            lock (Npcs)
-            {
-                npc = Npcs.FirstOrDefault(c => c.ObjectID == pck.ObjectID);
-                if (npc != null)
-                    Npcs.Remove(npc);
-            }
+
+            L2Npc npc = FindNpc(pck.ObjectID);
             if (npc != null)
-            {
-                OnDeleteNpc(npc);
-                if (User.Target == npc)
-                {
-                    User.Target = null;
-                    OnPlayerTargetUpdate();
-                }
-            }
+                DeleteNpcFromList(npc);
         }
 
         L2LiveObject FindObject(int objectID)
@@ -472,6 +420,60 @@ namespace ulHelper.L2Objects
                 if (User.ObjectID == objectID)
                     obj = User;
             return obj;
+        }
+
+        L2Character FindCharacter(int objectID)
+        {
+            L2Character ch;
+            lock (Characters)
+                ch = Characters.FirstOrDefault(c => c.ObjectID == objectID);
+            return ch;
+        }
+
+        L2Npc FindNpc(int objectID)
+        {
+            L2Npc npc;
+            lock (Npcs)
+                npc = Npcs.FirstOrDefault(n => n.ObjectID == objectID);
+            return npc;
+        }
+
+        void AddCharacterToList(L2Character ch)
+        {
+            lock (Characters)
+                Characters.Add(ch);
+            OnAddCharacter(ch);
+        }
+
+        void AddNpcToList(L2Npc npc)
+        {
+            lock (Npcs)
+                Npcs.Add(npc);
+            OnAddNpc(npc);
+        }
+
+        void DeleteCharacterFromList(L2Character ch)
+        {
+            lock (Characters)
+                Characters.Remove(ch);
+            OnDeleteCharacter(ch);
+            if (User.Target == ch)
+            {
+                User.Target = null;
+                OnUserTargetUpdate();
+            }
+        }
+
+        void DeleteNpcFromList(L2Npc npc)
+        {
+            lock (Npcs)
+                Npcs.Remove(npc);
+            OnDeleteNpc(npc);
+            if (User.Target == npc)
+            {
+                User.Target = null;
+                OnUserTargetUpdate();
+            }
         }
 
         void OnAddNpc(L2Npc npc)
@@ -496,9 +498,9 @@ namespace ulHelper.L2Objects
             }
         }
 
-        void OnPlayerTargetUpdate()
+        void OnUserTargetUpdate()
         {
-            var eh = PlayerTargetUpdate;
+            var eh = UserTargetUpdate;
             if (eh != null)
                 eh(this, EventArgs.Empty);
         }
@@ -525,9 +527,9 @@ namespace ulHelper.L2Objects
             }
         }
 
-        void OnPlayerUpdate()
+        void OnUserUpdate()
         {
-            var eh = PlayerUpdate;
+            var eh = UserUpdate;
             if (eh != null)
                 eh(this, EventArgs.Empty);
         }

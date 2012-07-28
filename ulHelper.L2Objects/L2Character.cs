@@ -16,12 +16,18 @@ namespace ulHelper.L2Objects
         public int Karma { get; set; }
         public bool Noble { get; set; }
         public bool Hero { get; set; }
+        public bool LevelStrict { get; set; }
 
         public L2Character()
         {
         }
 
         public L2Character(CharInfo pck)
+        {
+            Update(pck);
+        }
+
+        public L2Character(PartySmallWindowUpdate pck)
         {
             Update(pck);
         }
@@ -35,6 +41,9 @@ namespace ulHelper.L2Objects
             this.Name = pck.VisibleName;
             this.Title = pck.VisibleTitle;
             this.ClassID = pck.ClassID;
+            //if (!this.LevelStrict)
+                ;//this.Level = Info
+
             this.CurHP = pck.CurHP;
             this.MaxHP = pck.MaxHP;
             this.CurMP = pck.CurMP;
@@ -46,6 +55,21 @@ namespace ulHelper.L2Objects
             this.Noble = pck.IsNoble == 1;
             this.Hero = pck.IsHero == 1;
             this.CurCP = pck.CurCP;
+        }
+
+        public void Update(PartySmallWindowUpdate pck)
+        {
+            this.ObjectID = pck.ObjectID;
+            this.Name = pck.Name;
+            this.ClassID = pck.ClassID;
+            this.Level = pck.Level;
+            this.CurHP = pck.CurHP;
+            this.MaxHP = pck.MaxHP;
+            this.CurMP = pck.CurMP;
+            this.MaxMP = pck.MaxMP;
+            this.CurCP = pck.CurCP;
+            this.MaxCP = pck.MaxCP;
+            this.LevelStrict = true;
         }
     }
 }

@@ -38,7 +38,8 @@ namespace ulHelper.GameInfo
                     new L2Class
                     {
                         Name = (string)classNode.Attribute("name"),
-                        Icon = images[(int)classNode.Attribute("icon")]
+                        Icon = images[(int)classNode.Attribute("icon")],
+                        ProfLevel = (int)classNode.Attribute("prof")
                     });
             }
         }
@@ -79,6 +80,7 @@ namespace ulHelper.GameInfo
         public class L2Class
         {
             public string Name;
+            public int ProfLevel;
             public Bitmap Icon;
         }
 

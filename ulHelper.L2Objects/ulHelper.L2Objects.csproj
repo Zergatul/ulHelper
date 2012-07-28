@@ -48,7 +48,7 @@
     <Compile Include="L2Character.cs" />
     <Compile Include="Events\L2CharacterEventArgs.cs" />
     <Compile Include="L2LiveObject.cs" />
-    <Compile Include="L2Player.cs" />
+    <Compile Include="L2User.cs" />
     <Compile Include="L2Npc.cs" />
     <Compile Include="L2Object.cs" />
     <Compile Include="L2NonStaticObject.cs" />

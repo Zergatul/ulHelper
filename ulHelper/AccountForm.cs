@@ -35,7 +35,7 @@ namespace ulHelper.App
             this.accData = accData;
             this.HandleCreated += (s, e) => this.Show();
             settings = new AccountSettingsForm(accData);
-            accData.World.PlayerUpdate += World_PlayerUpdate;
+            accData.World.UserUpdate += World_PlayerUpdate;
             PrepareControls();
         }
 

@@ -29,7 +29,7 @@ namespace ulHelper.App.Drawing
         public UserPanel(Control parent, GameWorld world)
         {
             this.world = world;
-            this.world.PlayerUpdate += (s, e) => { this.Update(); };
+            this.world.UserUpdate += (s, e) => { this.Update(); };
 
             pb = new PictureBox();
             pb.Width = 230;
@@ -83,9 +83,7 @@ namespace ulHelper.App.Drawing
             cp.Draw(e.Graphics, world.User.CurCP, world.User.MaxCP);
             hp.Draw(e.Graphics, world.User.CurHP, world.User.MaxHP);
             mp.Draw(e.Graphics, world.User.CurMP, world.User.MaxMP);
-            exp.Draw(e.Graphics, 27, 42,
-                world.User.Exp - Info.LevelsExp[world.User.Level],
-                world.User.Level == 99 ? 0 : Info.LevelsExp[world.User.Level + 1] - Info.LevelsExp[world.User.Level]);
+            exp.Draw(e.Graphics, 27, 42, world.User.Perc);
             lvl.Draw(e.Graphics, 4, 31, world.User.Level);
         }
 

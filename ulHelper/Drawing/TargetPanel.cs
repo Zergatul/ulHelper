@@ -43,7 +43,7 @@ namespace ulHelper.App.Drawing
             this.world = world;
             this.characterToolTip = charToolTip;
             this.npcToolTip = npcToolTip;
-            this.world.PlayerTargetUpdate += world_TargetPlayerUpdate;
+            this.world.UserTargetUpdate += world_TargetPlayerUpdate;
 
             pb = new PictureBox();
             pb.Width = 230;
