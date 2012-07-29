@@ -70,10 +70,10 @@ namespace ulHelper.App
 
         void targetPanel_SettingsClick(object sender, EventArgs e)
         {
-            //settings.Visible = !settings.Visible;
-            var pck = new ReqBypassToServer();
+            settings.Visible = !settings.Visible;
+            /*var pck = new ReqBypassToServer();
             pck.Command = "menu_select?ask=-303&reply=809";
-            accData.SendPacket(pck);
+            accData.SendPacket(pck);*/
         }
         
         private void AccountForm_FormClosing(object sender, FormClosingEventArgs e)

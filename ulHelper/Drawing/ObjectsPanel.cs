@@ -19,7 +19,7 @@ namespace ulHelper.App.Drawing
         volatile bool needTerminate;
         Thread redrawThread;
         GameWorld world;
-        CheckTextButton showWar, showAlly, showNeutral, showNpc, showDrop;
+        CheckTextButton showWar, showCharacters, showNpc, showDrop;
         ObjectsList list;
 
         public event EventHandler<ObjectClickEventArgs> ObjectClick;
@@ -31,6 +31,8 @@ namespace ulHelper.App.Drawing
             this.world.DeleteCharacter += (s, e) => { this.Update(); };
             this.world.AddNpc += (s, e) => { this.Update(); };
             this.world.DeleteNpc += (s, e) => { this.Update(); };
+            this.world.AddDrop += (s, e) => { this.Update(); };
+            this.world.DeleteDrop += (s, e) => { this.Update(); };
             this.world.L2LiveObjectUpdate += (s, e) => { this.Update(); };
 
             pb = new PictureBox();
@@ -46,51 +48,46 @@ namespace ulHelper.App.Drawing
             showWar.Left = 3; 
             showWar.Top = 171;
             showWar.Height = 15;
-            showWar.Width = 42;
+            showWar.Width = 48;
             showWar.FontBrush = GUI.WarBrush;
             showWar.CheckedChanged += showWar_CheckedChanged;
+            showWar.PrepareBrushes();
 
-            showAlly = new CheckTextButton(pb);
-            showAlly.Text = "ally:-";
-            showAlly.Left = showWar.Left + showWar.Width + 4;
-            showAlly.Top = showWar.Top;
-            showAlly.Height = showWar.Height;
-            showAlly.Width = showWar.Width;
-            showAlly.FontBrush = GUI.AllyBrush;
-            showAlly.CheckedChanged += showAlly_CheckedChanged;
-
-            showNeutral = new CheckTextButton(pb);
-            showNeutral.Text = "neu:-";
-            showNeutral.Left = showAlly.Left + showAlly.Width + 4;
-            showNeutral.Top = showWar.Top;
-            showNeutral.Height = showWar.Height;
-            showNeutral.Width = showWar.Width;
-            showNeutral.Checked = true;
-            showNeutral.FontBrush = GUI.NeutralBrush;
-            showNeutral.CheckedChanged += showNeutral_CheckedChanged;
+            showCharacters = new CheckTextButton(pb);
+            showCharacters.Text = "chs:-";
+            showCharacters.Left = showWar.Left + showWar.Width + 4;
+            showCharacters.Top = showWar.Top;
+            showCharacters.Height = showWar.Height;
+            showCharacters.Width = showWar.Width;
+            showCharacters.Checked = true;
+            showCharacters.FontBrush = GUI.NeutralBrush;
+            showCharacters.CheckedChanged += showNeutral_CheckedChanged;
+            showCharacters.PrepareBrushes();
 
             showNpc = new CheckTextButton(pb);
             showNpc.Text = "npc:-";
-            showNpc.Left = showNeutral.Left + showNeutral.Width + 4;
+            showNpc.Left = showCharacters.Left + showCharacters.Width + 4;
             showNpc.Top = showWar.Top;
             showNpc.Height = showWar.Height;
             showNpc.Width = showWar.Width;
             showNpc.FontBrush = GUI.NpcBrush;
             showNpc.CheckedChanged += showNpc_CheckedChanged;
+            showNpc.PrepareBrushes();
 
             showDrop = new CheckTextButton(pb);
             showDrop.Text = "drop:-";
-            showDrop.Left = showNpc.Left + showNpc.Width + 4;
+            showDrop.Left = showNpc.Left + showWar.Width + 4;
             showDrop.Top = showWar.Top;
             showDrop.Height = showWar.Height;
             showDrop.Width = showWar.Width;
-            showDrop.FontBrush = GUI.DropBrush;
-            //showDrop.CheckedChanged += showNpc_CheckedChanged;
+            showDrop.FontBrush = GUI.AllyBrush;
+            showDrop.CheckedChanged += showAlly_CheckedChanged;
+            showDrop.PrepareBrushes();
 
             form = parent.FindForm();
             form.HandleCreated += form_HandleCreated;
-            list = new ObjectsList(this, pb, world, 3, 3, 223, 166, 
-                showWar, showAlly, showNeutral, showNpc,
+            list = new ObjectsList(this, pb, world, 3, 3, 223, 166,
+                showWar, showCharacters, showNpc, showDrop,
                 characterToolTip, npcToolTip);
             list.ObjectClick += (s, e) => { if (ObjectClick != null) ObjectClick(this, e); };
         }
@@ -129,19 +126,14 @@ namespace ulHelper.App.Drawing
             DrawBorder(e.Graphics);
             list.Draw(e.Graphics);
 
-            showWar.Text = "war:999";
-            showAlly.Text = "ally:-";
-            showNeutral.Text = "neu:" + world.Characters.Count;
+            showWar.Text = "war:-";
+            showCharacters.Text = "chs:" + world.Characters.Count;
             showNpc.Text = "npc:" + world.Npcs.Count;
+            showDrop.Text = "drop:" + world.DropItems.Count;
             showWar.Draw(e.Graphics);
-            showAlly.Draw(e.Graphics);
-            showNeutral.Draw(e.Graphics);
+            showDrop.Draw(e.Graphics);
+            showCharacters.Draw(e.Graphics);
             showNpc.Draw(e.Graphics);
-            /*e.Graphics.DrawString(, GUI.Font, GUI.WarBrush, showWar.Left + 12, showWar.Top - pb.Top);
-            e.Graphics.DrawString("ally:-", GUI.Font, GUI.AllyBrush, showAlly.Left + 12, showAlly.Top - pb.Top);
-            e.Graphics.DrawString("neu.:" + world.Characters.Count, GUI.Font, GUI.NeutralBrush, showNeutral.Left + 12, showNeutral.Top - pb.Top);
-            
-            e.Graphics.DrawString(, GUI.Font, GUI.NpcBrush, showNpc.Left + 12, showNpc.Top - pb.Top);*/
         }
 
         public void Update()

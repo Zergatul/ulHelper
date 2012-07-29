@@ -14,10 +14,13 @@ namespace ulHelper.L2Objects
         public List<L2Character> Characters;
         public List<L2Npc> Npcs;
         public List<ItemList.InventoryItem> Inventory;
+        public List<L2DropItem> DropItems;
 
         public event EventHandler<L2CharacterEventArgs> AddCharacter;
+        public event EventHandler<L2DropEventArgs> AddDrop;
         public event EventHandler<L2NpcEventArgs> AddNpc;
         public event EventHandler<L2CharacterEventArgs> DeleteCharacter;
+        public event EventHandler<L2DropEventArgs> DeleteDrop;
         public event EventHandler<L2NpcEventArgs> DeleteNpc;
         public event EventHandler DeleteAllObjects;
         public event EventHandler UserUpdate;
@@ -27,6 +30,7 @@ namespace ulHelper.L2Objects
         public event EventHandler<L2SkillUseEventArgs> ObjectSkillUse;
 
         L2CharacterEventArgs characterEventArgs = new L2CharacterEventArgs();
+        L2DropEventArgs dropEventArgs = new L2DropEventArgs();
         L2NpcEventArgs npcEventArgs = new L2NpcEventArgs();
         L2LiveObjectEventArgs liveObjEventArgs = new L2LiveObjectEventArgs();
         L2AttackEventArgs attackEventArgs = new L2AttackEventArgs();
@@ -41,6 +45,7 @@ namespace ulHelper.L2Objects
             User = new L2User();
             Characters = new List<L2Character>();
             Npcs = new List<L2Npc>();
+            DropItems = new List<L2DropItem>();
             _needTerminate = false;
             thread = new Thread(MoveObjects);
             thread.Start();
@@ -104,6 +109,11 @@ namespace ulHelper.L2Objects
 
         public void Update(ServerPacket pck)
         {
+            if (pck is SpawnItem)
+            {
+                ProcessSpawnItem(pck as SpawnItem);
+                return;
+            }
             if (pck is DeleteObject)
             {
                 ProcessDeleteObject(pck as DeleteObject);
@@ -112,6 +122,11 @@ namespace ulHelper.L2Objects
             if (pck is NpcInfo)
             {
                 ProcessNpcInfo(pck as NpcInfo);
+                return;
+            }
+            if (pck is DropItem)
+            {
+                ProcessDropItem(pck as DropItem);
                 return;
             }
             if (pck is StatusUpdate)
@@ -176,6 +191,16 @@ namespace ulHelper.L2Objects
             }            
         }
 
+        private void ProcessDropItem(DropItem pck)
+        {
+            AddDropToList(new L2DropItem(pck));
+        }
+
+        private void ProcessSpawnItem(SpawnItem pck)
+        {
+            AddDropToList(new L2DropItem(pck));
+        }
+
         private void ProcessPartySmallWindowUpdate(PartySmallWindowUpdate pck)
         {
             var ch = FindCharacter(pck.ObjectID);
@@ -190,8 +215,8 @@ namespace ulHelper.L2Objects
 
         private void ProcessMagicSkillUse(MagicSkillUse pck)
         {
-            var obj = FindObject(pck.ObjectID);
-            var target = FindObject(pck.TargetID);
+            var obj = FindLiveObject(pck.ObjectID);
+            var target = FindLiveObject(pck.TargetID);
             if (obj != null)
             {
                 obj.X = pck.X;
@@ -210,16 +235,16 @@ namespace ulHelper.L2Objects
 
         private void ProcessAttack(Attack pck)
         {
-            var obj = FindObject(pck.AttackerObjectID);
+            var obj = FindLiveObject(pck.AttackerObjectID);
             if (obj != null)
             {
                 var targets = new List<AttackInfo>();
-                var target = FindObject(pck.TargetObjectID);
+                var target = FindLiveObject(pck.TargetObjectID);
                 if (target != null)
                     targets.Add(new AttackInfo { Object = target, Damage = pck.Damage });
                 foreach (var hit in pck.Hits)
                 {
-                    target = FindObject(hit.TargetID);
+                    target = FindLiveObject(hit.TargetID);
                     if (target != null)
                         targets.Add(new AttackInfo { Object = target, Damage = hit.Damage });
                 }
@@ -230,8 +255,8 @@ namespace ulHelper.L2Objects
 
         private void ProcessMoveToPawn(MoveToPawn pck)
         {
-            var obj = FindObject(pck.CharID);
-            var pawn = FindObject(pck.TargetID);
+            var obj = FindLiveObject(pck.CharID);
+            var pawn = FindLiveObject(pck.TargetID);
             if (obj != null && pawn != null)
             {
                 lock (movingObjects)
@@ -253,7 +278,7 @@ namespace ulHelper.L2Objects
 
         private void ProcessStopMove(StopMove pck)
         {
-            var obj = FindObject(pck.ObjectID);
+            var obj = FindLiveObject(pck.ObjectID);
             if (obj != null)
             {
                 lock (movingObjects)
@@ -267,7 +292,7 @@ namespace ulHelper.L2Objects
 
         private void ProcessMoveToLocation(MoveToLocation pck)
         {
-            var obj = FindObject(pck.ObjectID);
+            var obj = FindLiveObject(pck.ObjectID);
             if (obj != null)
             {
                 lock (movingObjects)
@@ -289,7 +314,7 @@ namespace ulHelper.L2Objects
 
         private void ProcessMyTargetSelected(MyTargetSelected pck)
         {
-            var obj = FindObject(pck.ObjectID);
+            var obj = FindLiveObject(pck.ObjectID);
             if (obj != null)
             {
                 User.Target = obj;
@@ -342,7 +367,7 @@ namespace ulHelper.L2Objects
 
         private void ProcessStatusUpdate(StatusUpdate pck)
         {
-            L2LiveObject obj = FindObject(pck.ObjectID);
+            L2LiveObject obj = FindLiveObject(pck.ObjectID);
             if (obj != null)
             {
                 foreach (var attr in pck.Attributes)
@@ -396,19 +421,29 @@ namespace ulHelper.L2Objects
 
         private void ProcessDeleteObject(DeleteObject pck)
         {
-            L2Character ch = FindCharacter(pck.ObjectID);
+            var ch = FindCharacter(pck.ObjectID);
             if (ch != null)
             {
                 DeleteCharacterFromList(ch);
                 return;
             }
 
-            L2Npc npc = FindNpc(pck.ObjectID);
+            var npc = FindNpc(pck.ObjectID);
             if (npc != null)
+            {
                 DeleteNpcFromList(npc);
+                return;
+            }
+
+            var drop = FindDrop(pck.ObjectID);
+            if (drop != null)
+            {
+                DeleteDropFromList(drop);
+                return;
+            }
         }
 
-        L2LiveObject FindObject(int objectID)
+        L2LiveObject FindLiveObject(int objectID)
         {
             L2LiveObject obj;
             lock (Characters)
@@ -416,6 +451,23 @@ namespace ulHelper.L2Objects
             if (obj == null)
                 lock (Npcs)
                     obj = Npcs.FirstOrDefault(c => c.ObjectID == objectID);
+            if (obj == null)
+                if (User.ObjectID == objectID)
+                    obj = User;
+            return obj;
+        }
+
+        L2Object FindObject(int objectID)
+        {
+            L2Object obj;
+            lock (Characters)
+                obj = Characters.FirstOrDefault(c => c.ObjectID == objectID);
+            if (obj == null)
+                lock (Npcs)
+                    obj = Npcs.FirstOrDefault(n => n.ObjectID == objectID);
+            if (obj == null)
+                lock (DropItems)
+                    obj = DropItems.FirstOrDefault(d => d.ObjectID == objectID);
             if (obj == null)
                 if (User.ObjectID == objectID)
                     obj = User;
@@ -438,6 +490,14 @@ namespace ulHelper.L2Objects
             return npc;
         }
 
+        L2DropItem FindDrop(int objectID)
+        {
+            L2DropItem drop;
+            lock (DropItems)
+                drop = DropItems.FirstOrDefault(d => d.ObjectID == objectID);
+            return drop;
+        }
+
         void AddCharacterToList(L2Character ch)
         {
             lock (Characters)
@@ -450,6 +510,13 @@ namespace ulHelper.L2Objects
             lock (Npcs)
                 Npcs.Add(npc);
             OnAddNpc(npc);
+        }
+
+        void AddDropToList(L2DropItem drop)
+        {
+            lock (DropItems)
+                DropItems.Add(drop);
+            OnAddDrop(drop);
         }
 
         void DeleteCharacterFromList(L2Character ch)
@@ -476,13 +543,37 @@ namespace ulHelper.L2Objects
             }
         }
 
+        void DeleteDropFromList(L2DropItem drop)
+        {
+            lock (DropItems)
+                DropItems.Remove(drop);
+            OnDeleteDrop(drop);
+        }
+
+        void OnAddCharacter(L2Character ch)
+        {
+            if (AddCharacter != null)
+            {
+                characterEventArgs.Character = ch;
+                AddCharacter(this, characterEventArgs);
+            }
+        }
+
         void OnAddNpc(L2Npc npc)
         {
-            var eh = AddNpc;
-            if (eh != null)
+            if (AddNpc != null)
             {
                 npcEventArgs.Npc = npc;
-                eh(this, npcEventArgs);
+                AddNpc(this, npcEventArgs);
+            }
+        }
+
+        void OnAddDrop(L2DropItem drop)
+        {
+            if (AddDrop != null)
+            {
+                dropEventArgs.Drop = drop;
+                AddDrop(this, dropEventArgs);
             }
         }
 
@@ -490,84 +581,75 @@ namespace ulHelper.L2Objects
         {
             lock (movingObjects)
                 movingObjects.Remove(ch);
-            var eh = DeleteCharacter;
-            if (eh != null)
+            if (DeleteCharacter != null)
             {
                 characterEventArgs.Character = ch;
-                eh(this, characterEventArgs);
+                DeleteCharacter(this, characterEventArgs);
             }
         }
 
         void OnUserTargetUpdate()
         {
-            var eh = UserTargetUpdate;
-            if (eh != null)
-                eh(this, EventArgs.Empty);
+            if (UserTargetUpdate != null)
+                UserTargetUpdate(this, EventArgs.Empty);
         }
 
         void OnDeleteNpc(L2Npc npc)
         {
             lock (movingObjects)
                 movingObjects.Remove(npc);
-            var eh = DeleteNpc;
-            if (eh != null)
+            if (DeleteNpc != null)
             {
                 npcEventArgs.Npc = npc;
-                eh(this, npcEventArgs);
+                DeleteNpc(this, npcEventArgs);
+            }
+        }
+
+        void OnDeleteDrop(L2DropItem drop)
+        {
+            if (DeleteDrop != null)
+            {
+                dropEventArgs.Drop = drop;
+                DeleteDrop(this, dropEventArgs);
             }
         }
 
         void OnL2LiveObjectUpdate(L2LiveObject obj)
         {
-            var eh = L2LiveObjectUpdate;
-            if (eh != null)
+            if (L2LiveObjectUpdate != null)
             {
                 liveObjEventArgs.LiveObject = obj;
-                eh(this, liveObjEventArgs);
+                L2LiveObjectUpdate(this, liveObjEventArgs);
             }
         }
 
         void OnUserUpdate()
         {
-            var eh = UserUpdate;
-            if (eh != null)
-                eh(this, EventArgs.Empty);
+            if (UserUpdate != null)
+                UserUpdate(this, EventArgs.Empty);
         }
 
         void OnDeleteAllObjects()
         {
             lock (movingObjects)
                 movingObjects.Clear();
-            var eh = DeleteAllObjects;
-            if (eh != null)
-                eh(this, EventArgs.Empty);
-        }
-
-        void OnAddCharacter(L2Character ch)
-        {
-            var eh = AddCharacter;
-            if (eh != null)
-            {
-                characterEventArgs.Character = ch;
-                eh(this, characterEventArgs);
-            }
-        }
+            if (DeleteAllObjects != null)
+                DeleteAllObjects(this, EventArgs.Empty);
+        }        
 
         void OnAttack(L2LiveObject attacker, List<AttackInfo> targets)
         {
-            var eh = ObjectAttack;
-            if (eh != null)
+            if (ObjectAttack != null)
             {
                 attackEventArgs.Attacker = attacker;
                 attackEventArgs.Targets = targets;
-                eh(this, attackEventArgs);
+                ObjectAttack(this, attackEventArgs);
             }
         }
 
         void OnObjectSkillUse(L2LiveObject obj, L2LiveObject target, int skillID, int skillLevel, int castTimeMs, int reuseTimeMs)
         {
-            var eh = ObjectSkillUse;
-            if (eh != null)
+            if (ObjectSkillUse != null)
             {
                 skillUseEventArgs.Object = obj;
                 skillUseEventArgs.Target = target;
@@ -575,7 +657,7 @@ namespace ulHelper.L2Objects
                 skillUseEventArgs.SkillLevel = skillLevel;
                 skillUseEventArgs.CastTimeMs = castTimeMs;
                 skillUseEventArgs.ReuseTimeMs = reuseTimeMs;
-                eh(this, skillUseEventArgs);
+                ObjectSkillUse(this, skillUseEventArgs);
             }
         }
 

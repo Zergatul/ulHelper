@@ -38,8 +38,8 @@ namespace ulHelper.App.Drawing
         Mini5MPBar mpBar5;
         Rectangle clip;
         int hoveredIndex;
-        CheckTextButton showWar, showAlly, showNeutral, showNpc;
-        List<L2LiveObject> objList;
+        CheckTextButton showWar, showCharacters, showNpc, showDrop;
+        List<L2Object> objList;
         CharacterToolTip characterToolTip;
         NpcToolTip npcToolTip;
         ulHelper.App.Tooltips.ToolTip currentToolTip;
@@ -47,7 +47,7 @@ namespace ulHelper.App.Drawing
         public event EventHandler<ObjectClickEventArgs> ObjectClick;
 
         public ObjectsList(ObjectsPanel panel, PictureBox pb, GameWorld world, int x, int y, int width, int height,
-            CheckTextButton showWar, CheckTextButton showAlly, CheckTextButton showNeutral, CheckTextButton showNpc,
+            CheckTextButton showWar, CheckTextButton showCharacters, CheckTextButton showNpc, CheckTextButton showDrop,
             CharacterToolTip characterToolTip, NpcToolTip npcToolTip)
         {
             this.panel = panel;
@@ -59,15 +59,17 @@ namespace ulHelper.App.Drawing
             this.world = world;
             this.world.L2LiveObjectUpdate += world_L2LiveObjectUpdate;
             this.world.AddCharacter += (s, e) => { world_ObjectsChanged(); };
+            //this.world.AddDrop += (s, e) => { world_ObjectsChanged(); };
             this.world.AddNpc += (s, e) => { world_ObjectsChanged(); };
             this.world.DeleteCharacter += (s, e) => { world_ObjectsChanged(); };
+            //this.world.DeleteDrop += (s, e) => { world_ObjectsChanged(); };
             this.world.DeleteNpc += (s, e) => { world_ObjectsChanged(); };
             this.hoveredIndex = -1;
             this.showWar = showWar;
-            this.showAlly = showAlly;
-            this.showNeutral = showNeutral;
+            this.showCharacters = showCharacters;
             this.showNpc = showNpc;
-            this.objList = new List<L2LiveObject>();
+            this.showDrop = showDrop;
+            this.objList = new List<L2Object>();
             this.characterToolTip = characterToolTip;
             this.npcToolTip = npcToolTip;
 
@@ -233,12 +235,15 @@ namespace ulHelper.App.Drawing
             g.DrawRectangle(borderPen, x, y, width, height);
             g.SetClip(clip);
             objList.Clear();
-            if (showNeutral.Checked)
+            if (showCharacters.Checked)
                 lock (world.Characters)
                     objList.AddRange(world.Characters);
             if (showNpc.Checked)
                 lock (world.Npcs)
                     objList.AddRange(world.Npcs);
+            if (showDrop.Checked)
+                lock (world.DropItems)
+                    objList.AddRange(world.DropItems);
 
             if (objList.Count > 0)
             {
@@ -258,6 +263,8 @@ namespace ulHelper.App.Drawing
                         DrawL2Character(g, objList[i] as L2Character, 4, itemY, 206);
                     if (objList[i] is L2Npc)
                         DrawNpc(g, objList[i] as L2Npc, 4, itemY, 206);
+                    if (objList[i] is L2DropItem)
+                        DropDrop(g, objList[i] as L2DropItem, 4, itemY, 206);
                 }
             }
 
@@ -290,6 +297,11 @@ namespace ulHelper.App.Drawing
             else
                 hpBar.Draw(g, x + 12, y + 1, npc.CurHP, npc.MaxHP);
             g.DrawString(npc.Name, GUI.Font, GUI.NpcBrush, x + 84, y);
+        }
+
+        void DropDrop(Graphics g, L2DropItem drop, int x, int y, int width)
+        {
+            g.DrawString(drop.Name + " (" + drop.Count + ")", GUI.Font, GUI.DropBrush, x + 10, y);
         }
 
         #region Dispose pattern

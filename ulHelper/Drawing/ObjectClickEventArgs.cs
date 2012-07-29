@@ -7,9 +7,9 @@ namespace ulHelper.App.Drawing
 {
     public class ObjectClickEventArgs : EventArgs
     {
-        public L2Objects.L2LiveObject Object { get; set; }
+        public L2Objects.L2Object Object { get; set; }
 
-        public ObjectClickEventArgs(L2Objects.L2LiveObject obj)
+        public ObjectClickEventArgs(L2Objects.L2Object obj)
         {
             this.Object = obj;
         }

@@ -41,12 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\AttackEventArgs.cs" />
+    <Compile Include="Events\L2DropEventArgs.cs" />
     <Compile Include="Events\L2LiveObjectEventArgs.cs" />
     <Compile Include="Events\L2NpcEventArgs.cs" />
     <Compile Include="Events\L2SkillUseEventArgs.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="L2Character.cs" />
     <Compile Include="Events\L2CharacterEventArgs.cs" />
+    <Compile Include="L2DropItem.cs" />
     <Compile Include="L2LiveObject.cs" />
     <Compile Include="L2User.cs" />
     <Compile Include="L2Npc.cs" />

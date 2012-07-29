@@ -39,6 +39,7 @@ namespace ulHelper.App
             this.World = new GameWorld();
             this.World.AddNpc += World_AddNpc;
             this.World.AddCharacter += World_AddCharacter;
+            this.World.AddDrop += World_AddDrop;
             CreateForm();
             this.LoadedPlugins = new List<BasePlugin>();
             this.SendBuffer = new List<ClientPacket>();
@@ -51,6 +52,14 @@ namespace ulHelper.App
                 appLive = new AppLiveModule(this);
                 pckSend = new PacketsSendModule(this);
             }
+        }
+
+        void World_AddDrop(object sender, L2Objects.Events.L2DropEventArgs e)
+        {
+            var name = "[unknown]";
+            if (Info.Items.ContainsKey(e.Drop.ItemID))
+                name = Info.Items[e.Drop.ItemID];
+            e.Drop.Name = name;
         }
 
         void accLive_RemoveAccount(object sender, EventArgs e)

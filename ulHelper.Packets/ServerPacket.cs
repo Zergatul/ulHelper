@@ -29,6 +29,8 @@ namespace ulHelper.Packets
 
         public ServerPacket Parse()
         {
+            if (ID == 0x05)
+                return new SpawnItem(this);
             if (ID == 0x08)
                 return new DeleteObject(this);
             if (ID == 0x0C)
@@ -71,6 +73,8 @@ namespace ulHelper.Packets
                 return new UserInfo(this);
             if (ID == 0x33)
                 return new Attack(this);
+            if (ID == 0x40)
+                return new MagicAndSkillList(this);
             if (ID == 0x47)
                 return new StopMove(this);
             if (ID == 0x48)
@@ -103,14 +107,22 @@ namespace ulHelper.Packets
                 return new StartRotation(this);
             if (ID == 0x85)
                 return new BuffList(this);
+            if (ID == 0x86)
+                return new QuestList(this);
             if (ID == 0x89)
                 return new PledgeInfo(this);
+            if (ID == 0x9E)
+                return new PlaySound(this);
             if (ID == 0x9F)
                 return new StaticObject(this);
             if (ID == 0xA1)
                 return new PrivateStoreListSell(this);
             if (ID == 0xA2)
                 return new PrivateStoreMsgSell(this);
+            if (ID == 0xA7)
+                return new TutorialShowQuestionMark(this);
+            if (ID == 0xA8)
+                return new TutorialEnableClientEvent(this);
             if (ID == 0xAF)
                 return new PledgeCrest(this);
             if (ID == 0xB9)

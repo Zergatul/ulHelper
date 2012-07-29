@@ -111,6 +111,12 @@
     <Compile Include="ServerPackets\BA_PartyMemberPosition.cs" />
     <Compile Include="ServerPackets\9F_StaticObject.cs" />
     <Compile Include="ServerPackets\AF_AllyCrest.cs" />
+    <Compile Include="ServerPackets\05_SpawnItem.cs" />
+    <Compile Include="ServerPackets\40_MagicAndSkillList.cs" />
+    <Compile Include="ServerPackets\86_QuestList.cs" />
+    <Compile Include="ServerPackets\A8_TutorialEnableClientEvent.cs" />
+    <Compile Include="ServerPackets\A7_TutorialShowQuestionMark.cs" />
+    <Compile Include="ServerPackets\9E_PlaySound.cs" />
     <Compile Include="ServerPackets\FD_AgitDecoInfo.cs" />
     <Compile Include="ServerPackets\FEE6.cs" />
     <Compile Include="ServerPackets\F9_EtcStatusUpdate.cs" />
